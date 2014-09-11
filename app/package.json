@@ -1,15 +1,20 @@
 {
-  "name": "swaraserver",
-  "main": "views/index.html",
-  "version": "0.0.1",
-  "single-instance": true,
-  "window": {
-    "title": "swaraServer",
-    "width": 1366,
-    "height": 768,
-    "min_width": 1068,
-    "min_height": 600,
-    "toolbar": true
+  "name"            : "swaraserver",
+  "main"            : "views/index.html",
+  "version"         : "0.0.1",
+  "single-instance" : true,
+  "window"          : {
+    "title"      : "swaraServer",
+    "width"      : 1366,
+    "height"     : 768,
+    "min_width"  : 1068,
+    "min_height" : 600,
+    "position"   : "center",
+    "toolbar"    : true
   },
-  "chromium-args": "--child-clean-exit"
+  "chromium-args"   : "--child-clean-exit",
+  "dependencies"    : {
+    "express" : "^4.9.0",
+    "nedb"    : "^0.11.1"
+  }
 }
