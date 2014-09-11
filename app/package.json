@@ -5,10 +5,10 @@
   "single-instance": true,
   "window": {
     "title": "swaraServer",
-    "width": 1200,
-    "height": 800,
-    "min_width": 1200,
-    "min_height": 800,
+    "width": 1366,
+    "height": 768,
+    "min_width": 1068,
+    "min_height": 600,
     "toolbar": true
   },
   "chromium-args": "--child-clean-exit"
