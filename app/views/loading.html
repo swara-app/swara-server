@@ -2,38 +2,41 @@
 <html>
 <head>
     <title>Swara Server</title>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
     <style rel="stylesheet" type="text/css">
         html, body {
-            height: 100%;
-            margin: 0;
-            font-family: "Helvetic Neue", Helvetica, Arial, sans-serif;
-            background: -webkit-linear-gradient(bottom, #c9dbe9 0%, #fff 100%);
-            min-height: 100%;
+            height      : 100%;
+            margin      : 0;
+            font-family : "Helvetic Neue", Helvetica, Arial, sans-serif;
+            background  : -webkit-linear-gradient(bottom, #c9dbe9 0%, #fff 100%);
+            min-height  : 100%;
         }
 
         .root {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            display: table;
+            position : absolute;
+            height   : 100%;
+            width    : 100%;
+            display  : table;
         }
 
         .container {
-            display: table-cell;
-            vertical-align: middle;
-            text-align: center;
+            display        : table-cell;
+            vertical-align : middle;
+            text-align     : center;
         }
 
         .content {
-            margin-left: auto;
-            margin-right: auto;
-            width: 90%;
+            margin-left  : auto;
+            margin-right : auto;
+            width        : 90%;
         }
     </style>
     <script>
         function bodyOnLoad() {
-            require('../server.js');
-            window.location.assign('http://localhost:3000/api');
+            setTimeout(function () {
+                require('../server.js');
+                window.location.assign('http://localhost:3000/api');
+            }, 1000);
         }
     </script>
 </head>
@@ -41,9 +44,7 @@
     <div class="root">
         <div class="container">
             <div class="content">
-                <p><img src="../img/loading.gif" alt="Loading..."></p>
-
-                <h2>Loading&hellip;</h2>
+                <div><span class="loading large"></span></div>
 
                 <p><img src="../img/logo.png" alt="Swara Server"></p>
 
