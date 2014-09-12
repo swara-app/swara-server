@@ -1,0 +1,21 @@
+<section data-ng-controller="FoldersController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Library <small>All the folders that have been scanned into the database</small></h1>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-if="folders.$resolved && !folders.length">
+        No folders have been added into the library yet, why don't you <a href="/#!/folders/add">add one</a>?
+    </div>
+    <div data-ui-view></div>
+    <table class="table table-hover">
+        <thead>
+            <th>Path</th>
+            <th>Sub-Folders</th>
+            <th>Files</th>
+        </thead>
+        <tr data-ng-repeat="folder in folders">
+            <td>{{folder.path}}</td>
+            <td>{{folder.foldersCount}}</td>
+            <td>{{folder.filesCount}}</td>
+        </tr>
+    </table>
+</section>

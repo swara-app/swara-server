@@ -1,0 +1,36 @@
+<section data-ng-controller="HomeController">
+    <div>
+        <div class="row">
+            <p>&#160;</p>
+        </div>
+        <div class="jumbotron text-center">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+                    <img alt="MEAN.JS" class="img-responsive text-center" src="modules/core/img/brand/logo.png"/>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <h2>
+                    Swara Server
+                </h2>
+                <p>
+                    <small>A MEAN.js based server application that catalogs your music collection and streams it to the Swara client apps.</small>
+                </p>
+            </div>
+            <div class="row" data-ng-hide="authentication.user">
+                <p>
+                    <a class="btn btn-primary btn-lg" href="/#!/signin">Sign In</a>
+                </p>
+            </div>
+            <div class="row" data-ng-show="authentication.user">
+                <p class="lead">
+                    <strong>Welcome to Swara-Server, <span data-ng-bind="authentication.user.displayName"></span>!</strong>
+                </p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="/#!/folders">Go to Library</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
