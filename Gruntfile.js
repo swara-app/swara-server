@@ -143,9 +143,8 @@ module.exports = function (grunt) {
       }
     },
     hub      : {
-      all : {
-        src   : ['<%= config.app %>/Gruntfile.js'],
-        tasks : ['jshint', 'nodeunit'],
+      meanApp : {
+        src : ['<%= config.app %>/Gruntfile.js']
       },
     }
   });
@@ -216,6 +215,25 @@ module.exports = function (grunt) {
     });
   });
 
+  grunt.registerTask('dmg', 'Create dmg from previously created app folder in dist.', function () {
+    var done = this.async();
+    var createDmgCommand = 'resources/mac/package.sh "swaraServer"';
+    require('child_process').exec(createDmgCommand, function (error, stdout, stderr) {
+      var result = true;
+      if (stdout) {
+        grunt.log.write(stdout);
+      }
+      if (stderr) {
+        grunt.log.write(stderr);
+      }
+      if (error !== null) {
+        grunt.log.error(error);
+        result = false;
+      }
+      done(result);
+    });
+  });
+
   grunt.registerTask('setVersion', 'Set version to all needed files', function (version) {
     var config = grunt.config.get(['config']);
     var appPath = config.app;
@@ -246,6 +264,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-linux', [
     'jshint',
     'clean:dist',
+    'hub:meanApp:build',
     'copy:appLinux',
     'createLinuxApp:Linux64'
   ]);
@@ -253,6 +272,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-linux32', [
     'jshint',
     'clean:dist',
+    'hub:meanApp:build',
     'copy:appLinux',
     'createLinuxApp:Linux32'
   ]);
@@ -260,6 +280,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-win', [
     'jshint',
     'clean:dist',
+    'hub:meanApp:build',
     'copy:copyWinToTmp',
     'compress:appToTmp',
     'rename:zipToApp',
@@ -270,6 +291,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-mac', [
     'jshint',
     'clean:dist',
+    'hub:meanApp:build',
     'copy:webkit',
     'copy:appMacos',
     'rename:app',
@@ -277,26 +299,11 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('check', [
-    'jshint'
+    'jshint',
+    'hub:meanApp:lint'
   ]);
 
-  grunt.registerTask('dmg', 'Create dmg from previously created app folder in dist.', function () {
-    var done = this.async();
-    var createDmgCommand = 'resources/mac/package.sh "swaraServer"';
-    require('child_process').exec(createDmgCommand, function (error, stdout, stderr) {
-      var result = true;
-      if (stdout) {
-        grunt.log.write(stdout);
-      }
-      if (stderr) {
-        grunt.log.write(stderr);
-      }
-      if (error !== null) {
-        grunt.log.error(error);
-        result = false;
-      }
-      done(result);
-    });
-  });
+  // Default task(s).
+  grunt.registerTask('default', ['check']);
 
 };
