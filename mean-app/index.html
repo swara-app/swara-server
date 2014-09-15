@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Swara Server</title>
-    <link rel="stylesheet" href="public/modules/core/css/core.css" />
+    <link rel="stylesheet" href="public/modules/core/css/core.css"/>
     <style rel="stylesheet" type="text/css">
         .root {
             position : absolute;
@@ -25,6 +25,32 @@
     </style>
     <script>
         function bodyOnLoad() {
+            var nw = {
+                gui      : require("nw.gui"), // Load native UI library
+                win      : require("nw.gui").Window.get(), // Get the current window
+                platform : require("os").platform,
+                spawn    : require("child_process").spawn,
+                exec     : require("child_process").exec,
+                fs       : require("fs"),
+                path     : require("path")
+            };
+
+            // attach menu
+            var nativeMenuBar = new nw.gui.Menu({ type : "menubar" });
+            nativeMenuBar.createMacBuiltin("Swara Server", {
+                hideEdit   : true,
+                hideWindow : true
+            });
+            nw.win.menu = nativeMenuBar;
+
+            // open Dev Tools
+            nw.win.showDevTools();
+
+            debugger;
+
+            console.log(nw);
+
+            // open the meanjs app
             setTimeout(function () {
                 require('./server.js');
                 window.location.assign('http://localhost:3000/');
