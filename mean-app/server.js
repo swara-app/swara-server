@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-var debug = require('debug')('server'),
+var debug = require('debug')('swara:server'),
 init = require('./config/init')(),
 config = require('./config/config'),
 mongoose = require('mongoose');
@@ -28,9 +28,11 @@ require('./config/passport')();
 
 app.start = function () {
   // Start the app by listening on <port>
+  debug('app.start - about to call app.listen');
   app.listen(config.port);
   // Logging initialization
   console.log('MEAN.JS application started on port ' + config.port);
+  debug('app.start end');
 };
 
 // Expose app
