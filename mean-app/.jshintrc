@@ -1,6 +1,7 @@
 {
   "node"      : true, // Enable globals available when code is running inside of the NodeJS runtime environment.
   "browser"   : true, // Standard browser globals e.g. `window`, `document`.
+  "jquery"    : true,
   "esnext"    : true, // Allow ES.next specific features such as `const` and `let`.
   "bitwise"   : false, // Prohibit bitwise operators (&, |, ^, etc.).
   "camelcase" : false, // Permit only camelcase for `var` and `object indexes`.
