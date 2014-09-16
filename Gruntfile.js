@@ -16,8 +16,8 @@ module.exports = function (grunt) {
   };
 
   grunt.initConfig({
-    config   : config,
-    clean    : {
+    config     : config,
+    clean      : {
       dist : {
         files : [
           {
@@ -30,13 +30,13 @@ module.exports = function (grunt) {
         ]
       }
     },
-    jshint   : {
+    jshint     : {
       options : {
         jshintrc : '.jshintrc'
       },
       files   : '<%= config.app %>/js/*.js'
     },
-    copy     : {
+    copy       : {
       appLinux     : {
         files : [
           {
@@ -98,7 +98,7 @@ module.exports = function (grunt) {
         ]
       }
     },
-    compress : {
+    compress   : {
       appToTmp        : {
         options : {
           archive : '<%= config.tmp %>/app.zip'
@@ -124,7 +124,7 @@ module.exports = function (grunt) {
         ]
       }
     },
-    rename   : {
+    rename     : {
       app      : {
         files : [
           {
@@ -142,7 +142,7 @@ module.exports = function (grunt) {
         ]
       }
     },
-    hub      : {
+    hub        : {
       meanApp : {
         src : ['<%= config.app %>/Gruntfile.js']
       },
