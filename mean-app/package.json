@@ -7,6 +7,7 @@
     "node": "0.10.x",
     "npm": "1.4.x"
   },
+  "node-main": "startup/daemon.js",
   "main": "startup/index.html",
   "single-instance": true,
   "window": {
@@ -51,7 +52,8 @@
     "passport-google-oauth": "~0.1.5",
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.2",
-    "swig": "~1.4.1"
+    "swig": "~1.4.1",
+    "tree-kill": "0.0.6"
   },
   "devDependencies": {
     "supertest": "~0.13.0",
