@@ -24,7 +24,7 @@ var run = function () {
   // win.showDevTools();
 
   // set up the shutdown of the server
-  // TODO: Doesn't work now
+  // TODO: Doesn't work now on Mac
   debug('Setting up the eventhandler for server teardown');
   win.on('close', function () {
     debug('Entered the close event');
@@ -34,7 +34,6 @@ var run = function () {
     kill(pid);
     this.close(true);
   });
-
 
   // navigate to the meanjs app
   // start TODO
