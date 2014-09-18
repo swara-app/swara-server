@@ -68,7 +68,7 @@ module.exports = function (grunt) {
     },
     hub           : {
       meanApp : {
-        src : ['<%= config.app %>/Gruntfile.js']
+        src : ['<%= config.app %>/gruntfile.js']
       }
     }
   });
