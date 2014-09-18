@@ -40,6 +40,12 @@ html, body {
   margin-top     : -1.5em;
 }
 
+.jumbotron {
+    background-color: #fff;
+    border: solid 0.1em #ddd;
+    box-shadow: #ccc 0.2em 0.2em 1.6em 0.3em;
+}
+
 .content {
   margin-top : 50px;
 }
