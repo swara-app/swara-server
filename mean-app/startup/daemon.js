@@ -1,13 +1,33 @@
 'use strict';
 
-var debug = require('debug')('swara:daemon');
+var debug = require('debug')('swara:daemon'),
+    fs = require('fs'),
+    stdout,
+    serverReady = false,
+    serverReadyMarker = 'MEAN.JS application started on port ',
+    serverReadyPollerInterval,
+    serverReadyPoller = function (callback) {
+      return function () {
+        debug('Inside the serverReadyPoller');
+        if (stdout) {
+          debug('Inside the serverReadyPoller - we have an stdout');
+          fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
+            if (err) throw err;
+            if (data.indexOf(serverReadyMarker) > -1) {
+              debug('Inside the serverReadyPoller - we have server Ready');
+              clearInterval(serverReadyPollerInterval);
+              callback();
+            }
+          });
+        }
+      };
+    };
 
 debug('Declaring daemon:start function');
 var daemon = {
   start : function () {
     debug('Entered daemon:start function');
     var spawn = require('child_process').spawn,
-        fs = require('fs'),
         util = require('util'),
         mkdirp = require('mkdirp');
 
@@ -31,7 +51,15 @@ var daemon = {
         stdio : ['ignore', stdoutfile, stderrfile]
       });
 
+      stdout = outputDirectory + '/stdout.log';
     });
+  },
+  ready : function (callback) {
+    if (serverReady) {
+      callback();
+    } else {
+      serverReadyPollerInterval = setInterval(serverReadyPoller(callback), 10);
+    }
   }
 };
 

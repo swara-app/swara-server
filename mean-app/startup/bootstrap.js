@@ -7,7 +7,8 @@ var run = function () {
   var gui = require('nw.gui'), // Load native UI library
       win = require('nw.gui').Window.get(), // Get the current window
       platform = require('os').platform(),
-      kill = require('tree-kill');
+      kill = require('tree-kill'),
+      daemon = require('./daemon.js');
 
   // attach mac menu
   if (platform === 'darwin') {
@@ -36,13 +37,10 @@ var run = function () {
   });
 
   // navigate to the meanjs app
-  // start TODO
-  // put this in an infinite loop and keep checking the entry
-  // 'MEAN.JS application started on port 3000' to appear on stdout.log
-  // and then navigate to localhost
-  // end TODO
-  setTimeout(function () {
-    debug('Navigating to the meanjs app');
+  //setTimeout(function () {
+  debug('Setting the daemon.ready handler to navigate to the meanjs app');
+  daemon.ready(function () {
     window.location.assign('http://localhost:3000/');
-  }, 1000);
+  });
+  //}, 1000);
 };
