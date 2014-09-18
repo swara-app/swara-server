@@ -9,6 +9,7 @@
   },
   "node-main": "startup/daemon.js",
   "main": "startup/index.html",
+  "inject-js-end" : "startup/injectJs.js",
   "single-instance": true,
   "window": {
     "title": "swaraServer",

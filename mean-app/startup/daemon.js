@@ -8,13 +8,11 @@ var debug = require('debug')('swara:daemon'),
     serverReadyPollerInterval,
     serverReadyPoller = function (callback) {
       return function () {
-        debug('Inside the serverReadyPoller');
         if (stdout) {
-          debug('Inside the serverReadyPoller - we have an stdout');
           fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
             if (err) throw err;
             if (data.indexOf(serverReadyMarker) > -1) {
-              debug('Inside the serverReadyPoller - we have server Ready');
+              debug('Server is ready...');
               clearInterval(serverReadyPollerInterval);
               callback();
             }
@@ -58,7 +56,7 @@ var daemon = {
     if (serverReady) {
       callback();
     } else {
-      serverReadyPollerInterval = setInterval(serverReadyPoller(callback), 10);
+      serverReadyPollerInterval = setInterval(serverReadyPoller(callback), 100);
     }
   }
 };
