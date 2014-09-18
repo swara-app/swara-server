@@ -29,3 +29,9 @@ node_modules
 
 # Built files
 dist/
+
+# Temp Dir
+tmp/
+
+# Node-Webkit binaries
+cache/

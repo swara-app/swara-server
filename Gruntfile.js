@@ -7,6 +7,9 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
+  // load custom grunt task for npm install
+  require('./grunt-npm-install')(grunt);
+
   // configurable paths
   var config = {
     app       : 'mean-app',
@@ -16,8 +19,8 @@ module.exports = function (grunt) {
   };
 
   grunt.initConfig({
-    config     : config,
-    clean      : {
+    config        : config,
+    clean         : {
       dist : {
         files : [
           {
@@ -30,63 +33,53 @@ module.exports = function (grunt) {
         ]
       }
     },
-    jshint     : {
+    jshint        : {
       options : {
         jshintrc : '.jshintrc'
       },
-      files   : ['Gruntfile.js','<%= config.app %>/Gruntfile.js']
+      files   : ['Gruntfile.js', '<%= config.app %>/Gruntfile.js']
     },
-    nodewebkit : {
-      options : {
-        buildDir : '<%= config.dist %>',
-        files : ['./<%= config.app %>/**/**']
-      },
-      mac     : {
-        platforms : ['osx']
-      },
-      win     : {
-        platforms : ['win']
-      },
-      linux   : {
-        platforms : ['linux64']
-      },
-      linux32   : {
-        platforms : ['linux32']
+    copy          : {
+      app : {
+        files : [
+          {
+            expand : true,
+            dot    : true,
+            src    : ['<%= config.app %>/**', '!<%= config.app %>/node_modules/**', '!<%= config.app %>/public/lib/*/**'],
+            dest   : '<%= config.tmp %>/'
+          }
+        ]
       }
     },
-    hub        : {
+    'npm-install' : {
+      'dist' : {
+        'options' : {
+          'args' : '--production',
+          'cwd'  : '<%= config.tmp %>/<%= config.app %>'
+        }
+      }
+    },
+    nodewebkit    : {
+      options : {
+        buildDir  : '<%= config.dist %>',
+        platforms : ['win', 'osx', 'linux32', 'linux64']
+      },
+      src     : ['<%= config.tmp %>/<%= config.app %>/**/*']
+    },
+    hub           : {
       meanApp : {
         src : ['<%= config.app %>/Gruntfile.js']
-      },
+      }
     }
   });
 
-  grunt.registerTask('dist-linux', [
-    'jshint',
+  grunt.registerTask('build', [
+    'check',
     'clean:dist',
     'hub:meanApp:build',
-    'nodewebkit:linux'
-  ]);
-
-  grunt.registerTask('dist-linux32', [
-    'jshint',
-    'clean:dist',
-    'hub:meanApp:build',
-    'nodewebkit:linux32'
-  ]);
-
-  grunt.registerTask('dist-win', [
-    'jshint',
-    'clean:dist',
-    'hub:meanApp:build',
-    'nodewebkit:win'
-  ]);
-
-  grunt.registerTask('dist-mac', [
-    'jshint',
-    'clean:dist',
-    'hub:meanApp:build',
-    'nodewebkit:mac'
+    'copy:app',
+    'npm-install',
+    'nodewebkit'
   ]);
 
   grunt.registerTask('check', [
