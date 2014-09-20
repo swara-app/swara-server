@@ -2,7 +2,8 @@
 
 var debug = require('debug')('swara:daemon'),
     fs = require('fs'),
-    stdout,
+    stdout = null,
+    serverPid,
     serverReady = false,
     serverReadyMarker = 'MEAN.JS application started on port ',
     serverReadyPollerInterval,
@@ -23,7 +24,7 @@ var debug = require('debug')('swara:daemon'),
 
 debug('Declaring daemon:start function');
 var daemon = {
-  start : function () {
+  start        : function () {
     debug('Entered daemon:start function');
     var spawn = require('child_process').spawn,
         util = require('util'),
@@ -50,14 +51,19 @@ var daemon = {
       });
 
       stdout = outputDirectory + '/stdout.log';
+
+      serverPid = server.pid;
     });
   },
-  ready : function (callback) {
+  ready        : function (callback) {
     if (serverReady) {
       callback();
     } else {
       serverReadyPollerInterval = setInterval(serverReadyPoller(callback), 100);
     }
+  },
+  getServerPid : function () {
+    return serverPid;
   }
 };
 
