@@ -3,7 +3,7 @@
 module.exports = {
 	db: 'mongodb://localhost/swara-server-dev',
 	app: {
-		title: 'swara-server - Development Environment'
+		title: 'Swara Server - Development Environment'
 	},
 	twitter: {
 		clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',

@@ -4,7 +4,7 @@ module.exports = {
 	db: 'mongodb://localhost/swara-server-test',
 	port: 3001,
 	app: {
-		title: 'swara-server - Test Environment'
+		title: 'Swara Server - Test Environment'
 	},
 	twitter: {
 		clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',

@@ -1,8 +1,8 @@
 {
   "name": "swara-server",
   "version": "0.0.1",
-  "description": "",
-  "keywords": [],
+  "description": "A MEAN.js based node-webkit desktop/server application that catalogs your music collection and streams it to the Swara client apps.",
+  "keywords": ["swara", "swara-server", "mp3-streaming", "self-hosted", "nodejs", "meanjs", "node-webkit", "music-streaming", "music-library"],
   "homepage": "https://github.com/swara-app/swara-server",
   "bugs": "https://github.com/swara-app/swara-server/issues",
   "author": {

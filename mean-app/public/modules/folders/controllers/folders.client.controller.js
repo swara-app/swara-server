@@ -6,14 +6,12 @@ angular.module('folders').controller('FoldersController', ['$scope', '$statePara
 
     $scope.create = function() {
       var folder = new Folders({
-        title: this.title,
-        content: this.content
+        path: this.path
       });
       folder.$save(function(response) {
         $location.path('folders/' + response._id);
 
-        $scope.title = '';
-        $scope.content = '';
+        $scope.path = '';
       }, function(errorResponse) {
         $scope.error = errorResponse.data.message;
       });
