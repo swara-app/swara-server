@@ -9,14 +9,12 @@
             <div class="form-group" ng-class="{ 'has-error': articleForm.title.$dirty && articleForm.title.$invalid }">
                 <label class="control-label" for="path">Path</label>
                 <div class="controls">
-                    <input name="path" type="file" nwdirectory data-ng-model="path" id="path" class="form-control" placeholder="Path" required>
+                    <directory-picker ng-model="path" id="path" class="form-control"
+                                      placeholder="Path (for example: /Users/username/Music/)"></directory-picker>
                 </div>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-default">
-            </div>
-            <div>
-                <directoy-picker></directoy-picker>
             </div>
         </form>
     </div>
