@@ -1,21 +1,42 @@
 <section data-ng-controller="FoldersController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Library <small>All the folders that have been scanned into the database</small></h1>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-if="folders.$resolved && !folders.length">
-        No folders have been added into the library yet, why don't you <a href="/#!/folders/add">add one</a>?
-    </div>
-    <div data-ui-view></div>
-    <table class="table table-hover">
-        <thead>
-            <th>Path</th>
-            <th>Sub-Folders</th>
-            <th>Files</th>
-        </thead>
-        <tr data-ng-repeat="folder in folders">
-            <td>{{folder.path}}</td>
-            <td>{{folder.foldersCount}}</td>
-            <td>{{folder.filesCount}}</td>
-        </tr>
-    </table>
+  <div class="page-header">
+    <h1>Library
+      <small>All the folders that have been added in to the database</small>
+    </h1>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="folders.$resolved && !folders.length">
+    No folders have been added into the library yet, why don't you <a href="/#!/folders/add">add one</a>?
+  </div>
+  <div class="pull-right" data-ng-if="folders.length">
+    <a class="btn btn-success" href="/#!/folders/add" title="Add Folder">
+      <i class="glyphicon glyphicon-plus"></i>
+    </a>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <th>Path</th>
+      <th>Sub-Folders</th>
+      <th>Files</th>
+    </thead>
+    <tr data-ng-repeat="folder in folders">
+      <td><a data-ng-href="#!/folders/{{folder._id}}">{{folder.path}}</a></td>
+      <td>{{folder.foldersCount}}</td>
+      <td>{{folder.filesCount}}</td>
+      <td>
+        <div class="pull-right">
+          <a class="btn btn-default" data-ng-href="#!/folders/{{folder._id}}" title="View Folder Details">
+            <i class="glyphicon glyphicon-forward"></i>
+          </a>
+          <span data-ng-if="authentication.user._id == folder.user._id">
+            <a class="btn btn-primary" href="/#!/folders/{{folder._id}}/edit" title="Edit Folder">
+              <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            <a class="btn btn-primary" data-ng-click="remove(folder);" title="Delete Folder">
+              <i class="glyphicon glyphicon-trash"></i>
+            </a>
+          </span>
+        </div>
+      </td>
+    </tr>
+  </table>
 </section>

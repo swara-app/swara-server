@@ -1,21 +1,24 @@
 <section data-ng-controller="FoldersController">
-    <h2>Add Folder</h2>
+  <h2>Add Folder</h2>
 
-    <div class="col-md-12">
-        <form role="form" name="folderForm" class="form-horizontal" data-ng-submit="create()" novalidate>
-            <div data-ng-show="error" class="text-danger">
-                <strong data-ng-bind="error"></strong>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error': articleForm.title.$dirty && articleForm.title.$invalid }">
-                <label class="control-label" for="path">Path</label>
-                <div class="controls">
-                    <directory-picker ng-model="path" id="path" class="form-control"
-                                      placeholder="Path (for example: /Users/username/Music/)"></directory-picker>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-default">
-            </div>
-        </form>
-    </div>
+  <div class="col-md-12">
+    <form role="form" name="folderForm" class="form-horizontal" data-ng-submit="create()" novalidate>
+      <div data-ng-show="error" class="text-danger">
+        <strong data-ng-bind="error"></strong>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error': folderForm.path.$dirty && folderForm.path.$invalid }">
+        <label class="control-label" for="path">Path</label>
+        <div class="controls">
+          <directory-picker path="path" id="path" class="form-control"
+                            placeholder="Path (for example: /Users/username/Music/)"></directory-picker>
+        </div>
+      </div>
+      <div class="form-group">
+        <a class="btn btn-default" href="/#!/folders" title="Go Back">
+          Back
+        </a>
+        <input type="submit" class="btn btn-default">
+      </div>
+    </form>
+  </div>
 </section>

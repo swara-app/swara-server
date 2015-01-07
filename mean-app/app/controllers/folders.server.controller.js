@@ -40,6 +40,7 @@ exports.update = function(req, res) {
 	var folder = req.folder;
 
 	folder = _.extend(folder, req.body);
+	folder.modified = Date.now;
 
 	folder.save(function(err) {
 		if (err) {

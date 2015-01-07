@@ -4,13 +4,17 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-Schema = mongoose.Schema;
+Schema       = mongoose.Schema;
 
 /**
  * Folder Schema
  */
 var FolderSchema = new Schema({
   created      : {
+    type    : Date,
+    default : Date.now
+  },
+  modified     : {
     type    : Date,
     default : Date.now
   },

@@ -1,0 +1,39 @@
+<section data-ng-controller="FoldersController" data-ng-init="findOne()">
+  <div class="page-header">
+    <h3 data-ng-bind="folder.path"></h3>
+  </div>
+  <div class="pull-right" data-ng-show="authentication.user._id == folder.user._id">
+    <a class="btn btn-primary" href="/#!/folders/{{folder._id}}/edit" title="Edit Folder">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-click="remove();" title="Delete Folder">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <table>
+			<tr><td>Scanning: </td><td data-ng-bind="folder.scanning"></td></tr>
+			<tr><td>Scanned: </td><td data-ng-bind="folder.scanned"></td></tr>
+			<tr><td>Last Scanned: </td><td data-ng-bind="folder.lastScanned"></td></tr>
+			<tr><td>Folders: </td><td data-ng-bind="folder.foldersCount"></td></tr>
+			<tr><td>Files: </td><td data-ng-bind="folder.filesCount"></td></tr>
+		</table>
+  <small>
+    <em class="text-muted">
+      Added on
+      <span data-ng-bind="folder.created | date:'medium'"></span>
+      by
+      <span data-ng-bind="folder.user.displayName"></span>
+      (Last Modified:
+      <span data-ng-bind="folder.modified| date:'medium'"></span>
+      )
+    </em>
+  </small>
+  <br/>
+  <div>
+    <div class="pull-left">
+      <a class="btn btn-default" href="/#!/folders" title="Go Back">
+        Back
+      </a>
+    </div>
+  </div>
+</section>

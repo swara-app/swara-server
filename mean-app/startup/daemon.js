@@ -45,7 +45,7 @@ var daemon = {
       fs.writeSync(stderrfile, startMarker);
 
       debug('Starting the server...');
-      var server = spawn('node', ['startup/daemon'], {
+      var server = spawn('node', ['--debug=5858', 'startup/daemon'], {
         env   : process.env,
         stdio : ['ignore', stdoutfile, stderrfile]
       });
