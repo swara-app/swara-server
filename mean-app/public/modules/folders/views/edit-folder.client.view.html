@@ -8,7 +8,7 @@
 				<div class="form-group" ng-class="{ 'has-error' : submitted && folderForm.path.$invalid}">
 					<label class="control-label" for="path">Path</label>
 					<div class="controls">
-						<directory-picker path="folder.path" id="path" class="form-control"
+						<directory-picker ng-model="folder.path" id="path" class="form-control"
 															placeholder="Path (for example: /Users/username/Music/)" required></directory-picker>
 					</div>
 					<div ng-show="submitted && folderForm.path.$invalid" class="help-block">

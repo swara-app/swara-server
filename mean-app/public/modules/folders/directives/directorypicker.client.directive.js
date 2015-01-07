@@ -4,62 +4,31 @@ angular.module('folders').directive('directoryPicker', ['$compile',
   function ($compile) {
     return {
       restrict    : 'E',
+      replace     : true,
+      require     : '?ngModel',
       templateUrl : 'modules/folders/templates/directorypicker.client.template.html',
-      link        : function (scope, element, attrs, ctrl) {
+      link        : function (scope, element, attrs, controller) {
         var span = element.find('span'),
             button = element.find('button');
 
-        var getPropByString = function (obj, propString) {
-          if (!propString)
-            return obj;
-
-          var prop, props = propString.split('.');
-
-          for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
-            prop = props[i];
-
-            var candidate = obj[prop];
-            if (candidate !== undefined) {
-              obj = candidate;
-            } else {
-              break;
-            }
-          }
-          return obj[props[i]];
-        }, setPropByString = function (obj, propString) {
-          if (!propString)
-            return obj;
-
-          var prop, props = propString.split('.');
-
-          for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
-            prop = props[i];
-
-            var candidate = obj[prop];
-            if (candidate !== undefined) {
-              obj = candidate;
-            } else {
-              break;
-            }
-          }
-          return obj[props[i]];
-        }, setSpanValue = function (val) {
+        var setPath = function (val) {
           span.text(val || attrs.placeholder);
+          if (val) {
+            controller.$setViewValue(val);
+          }
         };
 
-        scope.$watch(attrs.path, function (newVal) {
-          setSpanValue(newVal);
+        scope.$watch(attrs.ngModel, function (newVal) {
+          setPath(newVal);
         }, true);
-
 
         button.on('click', function () {
           var input = document.createElement('input');
           input.setAttribute('type', 'file');
           input.setAttribute('nwdirectory', 'true');
-          input.setAttribute('nwworkingdir', getPropByString(scope, attrs.path) || '');
+          input.setAttribute('nwworkingdir', controller.$viewValue || '');
           input.onchange = function (event) {
-            scope[attrs.path] = this.value;
-            setSpanValue(this.value);
+            setPath(this.value);
           };
           input.click();
         });
