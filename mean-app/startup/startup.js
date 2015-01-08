@@ -15,7 +15,7 @@ var run = function () {
   // attach mac menu
   if (platform === 'darwin') {
     debug('Attaching the Mac menu');
-    var nativeMenuBar = new gui.Menu({ type : 'menubar' });
+    var nativeMenuBar = new gui.Menu({type : 'menubar'});
     nativeMenuBar.createMacBuiltin('Swara Server', {
       hideEdit   : true,
       hideWindow : true

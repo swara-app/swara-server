@@ -1,9 +1,9 @@
 'use strict';
 
-var debug = require('debug')('swara:injectJs'),
-    win = require('nw.gui').Window.get(),
+var debug  = require('debug')('swara:injectJs'),
+    win    = require('nw.gui').Window.get(),
     daemon = require('./daemon.js'),
-    kill = require('tree-kill');
+    kill   = require('tree-kill');
 
 function killProcessTree(pid) {
   debug('About to issue a tree-kill on the process id: ' + pid);

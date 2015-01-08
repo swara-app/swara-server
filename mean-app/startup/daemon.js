@@ -1,10 +1,10 @@
 'use strict';
 
-var debug = require('debug')('swara:daemon'),
-    fs = require('fs'),
-    stdout = null,
+var debug             = require('debug')('swara:daemon'),
+    fs                = require('fs'),
+    stdout            = null,
     serverPid,
-    serverReady = false,
+    serverReady       = false,
     serverReadyMarker = 'MEAN.JS application started on port ',
     serverReadyPollerInterval,
     serverReadyPoller = function (callback) {

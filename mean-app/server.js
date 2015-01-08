@@ -3,9 +3,10 @@
  * Module dependencies.
  */
 var debug = require('debug')('swara:server'),
-init = require('./config/init')(),
-config = require('./config/config'),
-mongoose = require('mongoose');
+init      = require('./config/init')(),
+config    = require('./config/config'),
+mongoose  = require('mongoose'),
+chalk     = require('chalk');
 
 /**
  * Main application entry file.
@@ -15,8 +16,8 @@ mongoose = require('mongoose');
 // Bootstrap db connection
 var db = mongoose.connect(config.db, function (err) {
   if (err) {
-    console.error('\x1b[31m', 'Could not connect to MongoDB!');
-    console.log(err);
+    console.error(chalk.red('Could not connect to MongoDB!'));
+    console.log(chalk.red(err));
   }
 });
 
@@ -27,7 +28,7 @@ var app = require('./config/express')(db);
 require('./config/passport')();
 
 app.start = function () {
-  // Start the app by listening on <port>
+// Start the app by listening on <port>
   debug('app.start - about to call app.listen');
   app.listen(config.port);
   // Logging initialization

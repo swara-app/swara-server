@@ -1,9 +1,9 @@
 'use strict';
 
 var MINUTE = 60000,
-    HOUR = 60 * MINUTE,
-    DAY = 24 * HOUR,
-    YEAR = 365 * DAY;
+    HOUR   = 60 * MINUTE,
+    DAY    = 24 * HOUR,
+    YEAR   = 365 * DAY;
 
 module.exports = {
   app               : {
