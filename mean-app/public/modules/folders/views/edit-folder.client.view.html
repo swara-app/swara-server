@@ -1,39 +1,58 @@
 <section data-ng-controller="FoldersController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1>Edit Folder</h1>
-	</div>
-	<div class="col-md-12">
-		<form name="folderForm" class="form-horizontal" data-ng-submit="update(folderForm.$valid)" novalidate>
-			<fieldset>
-				<div class="form-group" ng-class="{ 'has-error' : submitted && folderForm.path.$invalid}">
-					<label class="control-label" for="path">Path</label>
-					<div class="controls">
-						<directory-picker ng-model="folder.path" id="path" class="form-control"
-															placeholder="Path (for example: /Users/username/Music/)" required></directory-picker>
-					</div>
-					<div ng-show="submitted && folderForm.path.$invalid" class="help-block">
-						<p ng-show="folderForm.path.$error.required" class="text-danger">Path is required</p>
-					</div>
-				</div>
-				<div class="form-group">
-					<table>
-						<tr><td>Scanning: </td><td data-ng-bind="folder.scanning"></td></tr>
-						<tr><td>Scanned: </td><td data-ng-bind="folder.scanned"></td></tr>
-						<tr><td>Last Scanned: </td><td data-ng-bind="folder.lastScanned"></td></tr>
-						<tr><td>Folders: </td><td data-ng-bind="folder.foldersCount"></td></tr>
-						<tr><td>Files: </td><td data-ng-bind="folder.filesCount"></td></tr>
-					</table>
-				</div>
-				<div class="form-group">
-					<a class="btn btn-default" href="/#!/folders" title="Go Back">
-						Back
-					</a>
-					<input type="submit" value="Update" class="btn btn-default">
-				</div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-			</fieldset>
-		</form>
-	</div>
+  <div class="page-header">
+    <h1>Edit Folder</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="folderForm" class="form-horizontal" data-ng-submit="update()" novalidate>
+      <fieldset>
+        <div class="form-group" ng-class="{ 'has-error' : submitted && folderForm.path.$invalid}">
+          <label class="control-label" for="title">Title</label>
+          <div class="controls">
+            <input name="title" type="text" data-ng-model="folder.title" id="title" class="form-control" placeholder="Title" required>
+          </div>
+          <label class="control-label" for="path">Path</label>
+          <div class="controls">
+            <directory-picker ng-model="folder.path" id="path" class="form-control"
+                              placeholder="Path (for example: /Users/username/Music/)" required></directory-picker>
+          </div>
+          <div ng-show="submitted && folderForm.path.$invalid" class="help-block">
+            <p ng-show="folderForm.path.$error.required" class="text-danger">Path is required</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <table>
+            <tr>
+              <td>Scanning:</td>
+              <td data-ng-bind="folder.scanning"></td>
+            </tr>
+            <tr>
+              <td>Scanned:</td>
+              <td data-ng-bind="folder.scanned"></td>
+            </tr>
+            <tr>
+              <td>Last Scanned:</td>
+              <td data-ng-bind="folder.lastScanned"></td>
+            </tr>
+            <tr>
+              <td>Folders:</td>
+              <td data-ng-bind="folder.foldersCount"></td>
+            </tr>
+            <tr>
+              <td>Files:</td>
+              <td data-ng-bind="folder.filesCount"></td>
+            </tr>
+          </table>
+        </div>
+        <div class="form-group">
+          <a class="btn btn-default" href="/#!/folders" title="Go Back">
+            Back
+          </a>
+          <input type="submit" value="Update" class="btn btn-default" ng-disabled="!folderForm.$valid">
+        </div>
+        <div data-ng-show="error" class="text-danger">
+          <strong data-ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 </section>

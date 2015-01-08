@@ -18,12 +18,6 @@ var FolderSchema = new Schema({
     type    : Date,
     default : Date.now
   },
-  path         : {
-    type     : String,
-    default  : '',
-    trim     : true,
-    required : 'Path cannot be blank'
-  },
   scanning     : {
     type    : Boolean,
     default : false
@@ -36,6 +30,18 @@ var FolderSchema = new Schema({
   foldersCount : {
     type    : Number,
     default : 0,
+  },
+  path         : {
+    type     : String,
+    default  : '',
+    trim     : true,
+    required : 'Path cannot be blank'
+  },
+  title        : {
+    type     : String,
+    default  : '',
+    trim     : true,
+    required : 'Title cannot be blank'
   },
   filesCount   : {
     type    : Number,

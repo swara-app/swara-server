@@ -14,12 +14,16 @@
   </div>
   <table class="table table-hover">
     <thead>
+      <th>Title</th>
       <th>Path</th>
+      <th>Last Scanned On</th>
       <th>Sub-Folders</th>
       <th>Files</th>
     </thead>
     <tr data-ng-repeat="folder in folders">
-      <td><a data-ng-href="#!/folders/{{folder._id}}">{{folder.path}}</a></td>
+      <td><a data-ng-href="#!/folders/{{folder._id}}">{{folder.title}}</a></td>
+      <td>{{folder.path}}</td>
+      <td>{{folder.lastScanned | date:'mediumDate'}}</td>
       <td>{{folder.foldersCount}}</td>
       <td>{{folder.filesCount}}</td>
       <td>
@@ -28,9 +32,11 @@
             <i class="glyphicon glyphicon-forward"></i>
           </a>
           <span data-ng-if="authentication.user._id == folder.user._id">
+            <!--
             <a class="btn btn-primary" href="/#!/folders/{{folder._id}}/edit" title="Edit Folder">
               <i class="glyphicon glyphicon-edit"></i>
             </a>
+            -->
             <a class="btn btn-primary" data-ng-click="remove(folder);" title="Delete Folder">
               <i class="glyphicon glyphicon-trash"></i>
             </a>

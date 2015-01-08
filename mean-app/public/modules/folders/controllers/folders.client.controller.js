@@ -1,23 +1,33 @@
 'use strict';
 
 angular.module('folders').controller('FoldersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Folders',
-  function($scope, $stateParams, $location, Authentication, Folders) {
+  function ($scope, $stateParams, $location, Authentication, Folders) {
     $scope.authentication = Authentication;
 
-    $scope.create = function() {
+    var getTitleFromPath = function (path) {
+      if (!path) {
+        return null;
+      }
+      var sep = require('path').sep;
+      var title = path.substr(path.lastIndexOf(sep) + 1);
+      return title;
+    };
+
+    $scope.create = function () {
       var folder = new Folders({
-        path: this.path
+        path  : this.path,
+        title : getTitleFromPath(this.path)
       });
-      folder.$save(function(response) {
+      folder.$save(function (response) {
         $location.path('folders/' + response._id);
 
         $scope.path = '';
-      }, function(errorResponse) {
+      }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
     };
 
-    $scope.remove = function(folder) {
+    $scope.remove = function (folder) {
       if (folder) {
         folder.$remove();
 
@@ -27,29 +37,29 @@ angular.module('folders').controller('FoldersController', ['$scope', '$statePara
           }
         }
       } else {
-        $scope.folder.$remove(function() {
+        $scope.folder.$remove(function () {
           $location.path('folders');
         });
       }
     };
 
-    $scope.update = function() {
+    $scope.update = function () {
       var folder = $scope.folder;
 
-      folder.$update(function() {
+      folder.$update(function () {
         $location.path('folders/' + folder._id);
-      }, function(errorResponse) {
+      }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
     };
 
-    $scope.find = function() {
+    $scope.find = function () {
       $scope.folders = Folders.query();
     };
 
-    $scope.findOne = function() {
+    $scope.findOne = function () {
       $scope.folder = Folders.get({
-        folderId: $stateParams.folderId
+        folderId : $stateParams.folderId
       });
     };
   }
