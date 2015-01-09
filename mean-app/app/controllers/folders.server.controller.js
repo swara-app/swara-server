@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-errorHandler = require('./errors.server.controller'),
-Folder       = mongoose.model('Folder'),
-_            = require('lodash');
+  errorHandler = require('./errors.server.controller'),
+  Folder = mongoose.model('Folder'),
+  _ = require('lodash');
 
 /**
  * Create a folder

@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 var should = require('should'),
-mongoose   = require('mongoose'),
-User       = mongoose.model('User'),
-Folder     = mongoose.model('Folder');
+  mongoose = require('mongoose'),
+  User = mongoose.model('User'),
+  Folder = mongoose.model('Folder');
 
 /**
  * Globals

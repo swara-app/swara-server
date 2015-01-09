@@ -9,7 +9,7 @@ angular.module('folders').directive('directoryPicker', ['$compile',
       templateUrl : 'modules/folders/templates/directorypicker.client.template.html',
       link        : function (scope, element, attrs, controller) {
         var span = element.find('span'),
-            button = element.find('button');
+          button = element.find('button');
 
         var setPath = function (val) {
           span.text(val || attrs.placeholder);

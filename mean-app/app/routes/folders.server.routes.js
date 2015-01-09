@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var users = require('../../app/controllers/users.server.controller'),
-folders   = require('../../app/controllers/folders.server.controller');
+  folders = require('../../app/controllers/folders.server.controller');
 
 module.exports = function (app) {
   // Folder Routes

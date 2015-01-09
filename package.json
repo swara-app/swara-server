@@ -1,32 +1,42 @@
 {
-  "name": "swara-server",
-  "version": "0.0.1",
-  "description": "A MEAN.js based node-webkit desktop/server application that catalogs your music collection and streams it to the Swara client apps.",
-  "keywords": ["swara", "swara-server", "mp3-streaming", "self-hosted", "nodejs", "meanjs", "node-webkit", "music-streaming", "music-library"],
-  "homepage": "https://github.com/swara-app/swara-server",
-  "bugs": "https://github.com/swara-app/swara-server/issues",
-  "author": {
-    "name": "Floyd Pink",
+  "name"           : "swara-server",
+  "version"        : "0.0.1",
+  "description"    : "A MEAN.js based node-webkit desktop/server application that catalogs your music collection and streams it to the Swara client apps.",
+  "keywords"       : [
+    "swara",
+    "swara-server",
+    "mp3-streaming",
+    "self-hosted",
+    "nodejs",
+    "meanjs",
+    "node-webkit",
+    "music-streaming",
+    "music-library"
+  ],
+  "homepage"       : "https://github.com/swara-app/swara-server",
+  "bugs"           : "https://github.com/swara-app/swara-server/issues",
+  "author"         : {
+    "name" : "Floyd Pink",
     "email": "imbleedingme@googlemail.com",
-    "url": "https://github.com/floydpink"
+    "url"  : "https://github.com/floydpink"
   },
-  "repository": {
+  "repository"     : {
     "type": "git",
-    "url": "git://github.com/swara-app/swara-server.git"
+    "url" : "git://github.com/swara-app/swara-server.git"
   },
-  "dependencies": {},
+  "dependencies"   : {},
   "devDependencies": {
-    "concat-files": "~0.1.0",
-    "grunt": "~0.4.5",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-copy": "^0.7.0",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-hub": "^0.7.0",
+    "concat-files"             : "~0.1.0",
+    "grunt"                    : "~0.4.5",
+    "grunt-contrib-clean"      : "~0.6.0",
+    "grunt-contrib-copy"       : "^0.7.0",
+    "grunt-contrib-jshint"     : "~0.10.0",
+    "grunt-hub"                : "^0.7.0",
     "grunt-node-webkit-builder": "^1.0.0",
-    "load-grunt-tasks": "~2.0.0",
-    "time-grunt": "~1.0.0"
+    "load-grunt-tasks"         : "~2.0.0",
+    "time-grunt"               : "~1.0.0"
   },
-  "engines": {
+  "engines"        : {
     "node": ">=0.8.0"
   }
 }

@@ -1,34 +1,34 @@
 'use strict';
 
-var debug             = require('debug')('swara:daemon'),
-    fs                = require('fs'),
-    stdout            = null,
-    serverPid,
-    serverReady       = false,
-    serverReadyMarker = 'MEAN.JS application started on port ',
-    serverReadyPollerInterval,
-    serverReadyPoller = function (callback) {
-      return function () {
-        if (stdout) {
-          fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
-            if (err) throw err;
-            if (data.indexOf(serverReadyMarker) > -1) {
-              debug('Server is ready...');
-              clearInterval(serverReadyPollerInterval);
-              callback();
-            }
-          });
-        }
-      };
+var debug = require('debug')('swara:daemon'),
+  fs = require('fs'),
+  stdout = null,
+  serverPid,
+  serverReady = false,
+  serverReadyMarker = 'MEAN.JS application started on port ',
+  serverReadyPollerInterval,
+  serverReadyPoller = function (callback) {
+    return function () {
+      if (stdout) {
+        fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
+          if (err) throw err;
+          if (data.indexOf(serverReadyMarker) > -1) {
+            debug('Server is ready...');
+            clearInterval(serverReadyPollerInterval);
+            callback();
+          }
+        });
+      }
     };
+  };
 
 debug('Declaring daemon:start function');
 var daemon = {
   start        : function () {
     debug('Entered daemon:start function');
     var spawn = require('child_process').spawn,
-        util = require('util'),
-        mkdirp = require('mkdirp');
+      util = require('util'),
+      mkdirp = require('mkdirp');
 
     // start the server process
     debug('Starting the server');

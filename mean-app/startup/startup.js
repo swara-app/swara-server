@@ -7,9 +7,9 @@ var debug = require('debug')('swara:bootstrap');
 var run = function () {
   debug('Entered bootstrap function');
   var gui = require('nw.gui'), // Load native UI library
-      win = require('nw.gui').Window.get(), // Get the current window
-      platform = require('os').platform(),
-      daemon = require('./daemon.js');
+    win = require('nw.gui').Window.get(), // Get the current window
+    platform = require('os').platform(),
+    daemon = require('./daemon.js');
 
 
   // attach mac menu

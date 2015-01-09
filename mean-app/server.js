@@ -3,10 +3,10 @@
  * Module dependencies.
  */
 var debug = require('debug')('swara:server'),
-init      = require('./config/init')(),
-config    = require('./config/config'),
-mongoose  = require('mongoose'),
-chalk     = require('chalk');
+  init = require('./config/init')(),
+  config = require('./config/config'),
+  mongoose = require('mongoose'),
+  chalk = require('chalk');
 
 /**
  * Main application entry file.
@@ -37,5 +37,5 @@ app.start = function () {
 };
 
 // Expose app
-exports = module.exports = app;
+module.exports = app;
 

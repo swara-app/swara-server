@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var glob = require('glob'),
-chalk    = require('chalk');
+  chalk = require('chalk');
 
 /**
  * Module init function.
