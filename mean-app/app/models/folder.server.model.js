@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-Schema       = mongoose.Schema;
+  Schema = mongoose.Schema;
 
 /**
  * Folder Schema
@@ -29,19 +29,15 @@ var FolderSchema = new Schema({
   lastScanned     : Date,
   foldersCount    : {
     type    : Number,
-    default : 0,
+    default : 0
   },
   filesCount      : {
     type    : Number,
-    default : 0,
+    default : 0
   },
   musicFilesCount : {
     type    : Number,
-    default : 0,
-  },
-  shaSum          : {
-    type    : String,
-    default : '',
+    default : 0
   },
   path            : {
     type     : String,

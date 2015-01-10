@@ -9,16 +9,12 @@ var mongoose = require('mongoose'),
 /**
  * Track Schema
  */
-var SubfolderSchema = new Schema({
+var TrackSchema = new Schema({
   parentFolderId : {
     type     : String,
     required : 'Parent folder ID is mandatory'
   },
   lastScanned    : Date,
-  shaSum         : {
-    type    : String,
-    default : '',
-  },
   path           : {
     type     : String,
     default  : '',
@@ -27,4 +23,4 @@ var SubfolderSchema = new Schema({
   }
 });
 
-mongoose.model('Subfolder', SubfolderSchema);
+mongoose.model('Track', TrackSchema);

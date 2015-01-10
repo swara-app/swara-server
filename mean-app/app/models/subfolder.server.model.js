@@ -17,19 +17,15 @@ var SubfolderSchema = new Schema({
   lastScanned     : Date,
   foldersCount    : {
     type    : Number,
-    default : 0,
+    default : 0
   },
   filesCount      : {
     type    : Number,
-    default : 0,
+    default : 0
   },
   musicFilesCount : {
     type    : Number,
-    default : 0,
-  },
-  shaSum          : {
-    type    : String,
-    default : '',
+    default : 0
   },
   path            : {
     type     : String,
