@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
   Folder = mongoose.model('Folder'),
+  scanner = require('../workers/scanner'),
   _ = require('lodash');
 
 /**
@@ -14,6 +15,7 @@ var mongoose = require('mongoose'),
 exports.create = function (req, res) {
   var folder = new Folder(req.body);
   folder.user = req.user;
+  folder.scanning = true;
 
   folder.save(function (err) {
     if (err) {
@@ -21,6 +23,8 @@ exports.create = function (req, res) {
         message : errorHandler.getErrorMessage(err)
       });
     } else {
+      // initiate an asynchronous scan on this folder
+      _.defer(scanner.scanFolder, folder);
       res.json(folder);
     }
   });

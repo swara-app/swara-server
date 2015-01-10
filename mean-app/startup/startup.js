@@ -1,5 +1,4 @@
-/* global $:true */
-
+/*jshint unused:false */
 'use strict';
 
 var debug = require('debug')('swara:bootstrap');

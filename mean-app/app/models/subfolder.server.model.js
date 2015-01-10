@@ -10,15 +10,15 @@ var mongoose = require('mongoose'),
  * Subfolder Schema
  */
 var SubfolderSchema = new Schema({
+  created         : {
+    type    : Date,
+    default : Date.now
+  },
   parentFolderId  : {
     type     : String,
     required : 'Parent folder ID is mandatory'
   },
   lastScanned     : Date,
-  foldersCount    : {
-    type    : Number,
-    default : 0
-  },
   filesCount      : {
     type    : Number,
     default : 0

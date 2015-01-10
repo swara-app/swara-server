@@ -150,7 +150,8 @@ module.exports = function (grunt) {
 
   // A Task for loading the configuration object
   grunt.task.registerTask('loadConfig', 'Task that loads the config into a grunt option.', function () {
-    var init = require('./config/init')();
+    var init = require('./config/init');
+    init();
     var config = require('./config/config');
 
     grunt.config.set('applicationJavaScriptFiles', config.assets.js);

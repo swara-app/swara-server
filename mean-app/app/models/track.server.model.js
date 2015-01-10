@@ -10,6 +10,10 @@ var mongoose = require('mongoose'),
  * Track Schema
  */
 var TrackSchema = new Schema({
+  created        : {
+    type    : Date,
+    default : Date.now
+  },
   parentFolderId : {
     type     : String,
     required : 'Parent folder ID is mandatory'
@@ -20,6 +24,31 @@ var TrackSchema = new Schema({
     default  : '',
     trim     : true,
     required : 'Path cannot be blank'
+  },
+  title          : {
+    type    : String,
+    default : '',
+    trim    : true
+  },
+  year           : Number,
+  album          : {
+    type    : String,
+    default : '',
+    trim    : true
+  },
+  artist         : {
+    type    : String,
+    default : '',
+    trim    : true
+  },
+  genre          : {
+    type    : String,
+    default : '',
+    trim    : true
+  },
+  user           : {
+    type : Schema.ObjectId,
+    ref  : 'User'
   }
 });
 
