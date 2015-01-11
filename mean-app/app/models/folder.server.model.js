@@ -43,7 +43,8 @@ var FolderSchema = new Schema({
     type     : String,
     default  : '',
     trim     : true,
-    required : 'Path cannot be blank'
+    required : 'Path cannot be blank',
+    unique   : true
   },
   title           : {
     type     : String,
