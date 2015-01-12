@@ -1,6 +1,6 @@
 <section data-ng-controller="FoldersController" data-ng-init="findOne()">
   <div class="page-header">
-    <h1 data-ng-bind="folder.title"></h1>
+    <h1>{{folder.title}} <small class="text-muted">[ Folder Title ]</small></h1>
   </div>
   <div class="col-md-12">
     <div class="pull-right" data-ng-show="authentication.user._id == folder.user._id">
@@ -32,7 +32,7 @@
             </thead>
             <tbody>
               <tr data-ng-repeat="subfolder in folder.subfolders">
-                <td>{{subfolder.title}}</td>
+                <td><a data-ng-href="#!/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
                 <td>{{subfolder.path}}</td>
                 <td>{{subfolder.lastScanned | date:'mediumDate'}}</td>
                 <td>{{subfolder.musicFilesCount}}</td>
@@ -42,22 +42,12 @@
         </dd>
       </dl>
     </div>
-    <small class="text-muted pull-right">
-      Added on
-      <span class="text-primary" data-ng-bind="folder.created | date:'medium'"></span>
-      by
-      <span class="text-primary" data-ng-bind="folder.user.displayName"></span>
-      (Last Modified:
-      <span class="text-primary" data-ng-bind="folder.modified| date:'medium'"></span>
-      )
-    </small>
+    <audit-trail entity="folder"></audit-trail>
   </div>
   <br/>
   <div class="group">
     <div class="pull-left">
-      <a class="btn btn-default" href="/#!/folders" title="Go Back">
-        Back
-      </a>
+      <back-button></back-button>
     </div>
   </div>
 </section>

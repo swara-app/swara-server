@@ -20,20 +20,10 @@
           </div>
         </div>
         <div class="form-group">
-          <small class="text-muted pull-right">
-            Added on
-            <span class="text-primary" data-ng-bind="folder.created | date:'medium'"></span>
-            by
-            <span class="text-primary" data-ng-bind="folder.user.displayName"></span>
-            (Last Modified:
-            <span class="text-primary" data-ng-bind="folder.modified| date:'medium'"></span>
-            )
-          </small>
+          <audit-trail entity="folder"></audit-trail>
         </div>
         <div class="form-group">
-          <a class="btn btn-default" href="/#!/folders" title="Go Back">
-            Back
-          </a>
+          <back-button></back-button>
           <input type="submit" value="Update" class="btn btn-default" ng-disabled="!folderForm.$valid">
         </div>
         <div data-ng-show="error" class="text-danger">
