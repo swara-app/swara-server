@@ -6,6 +6,7 @@
  */
 
 var debug = require('debug')('scanner'),
+  async = require('async'),
   fs = require('fs'),
   path = require('path'),
   _ = require('lodash'),
@@ -59,8 +60,6 @@ var scanner = {
 
       if (fileStats.name.match(/\.mp3$/i)) {
 
-        musicFilesDictionary = incrementDictionaryItemCount(musicFilesDictionary, root);
-
         var musicFilepath = path.join(root, fileStats.name);
         var parser = mm(fs.createReadStream(musicFilepath));
         parser.on('metadata', function (metadata) {
@@ -95,7 +94,8 @@ var scanner = {
                 if (err) {
                   console.error(errorHandler.getErrorMessage(err));
                 } else {
-                  console.info('Successfully %s the track %s', action, musicFilepath);
+                  musicFilesDictionary = incrementDictionaryItemCount(musicFilesDictionary, root);
+                  console.info('(%s) Successfully %s the track %s', moment(), action, musicFilepath);
                 }
               });
             }
@@ -113,66 +113,72 @@ var scanner = {
 
     walker.on('end', function () {
       // save the in memory dictionaries as new sub-folders
+      var processed = 0;
+      var totalFilesCount = 0;
+      var musicFilesCount = 0;
       _.forEach(totalFilesDictionary, function (totalFiles, subfolderPath) {
-        if (subfolderPath !== folder.path) {
-          Subfolder.findOne({path : subfolderPath}, function (err, existingSubfolder) {
-            if (err) {
-              console.error(err);
+        Subfolder.findOne({path : subfolderPath}, function (err, existingSubfolder) {
+          if (err) {
+            console.error(err);
+          } else {
+            // increment the counter and collect the cumulatives
+            processed++;
+            totalFilesCount += totalFiles;
+            var m = musicFilesDictionary[subfolderPath];
+            if (m) {
+              musicFilesCount += m;
+            }
+
+            var action = "added";
+            var subfolder = {};
+            if (existingSubfolder) {
+              action = "updated";
+              subfolder = _.extend(existingSubfolder, subfolder);
             } else {
-              var action = "added";
-              var subfolder = {};
-              if (existingSubfolder) {
-                action = "updated";
-                subfolder = _.extend(existingSubfolder, subfolder);
+              subfolder = new Subfolder();
+            }
+            subfolder.parentFolder = folder;
+            subfolder.path = subfolderPath;
+            subfolder.filesCount = totalFiles;
+            subfolder.musicFilesCount = musicFilesDictionary[subfolderPath] || 0;
+            subfolder.modified = subfolder.lastScanned = Date.now();
+            subfolder.save(function (err) {
+              if (err) {
+                console.error(errorHandler.getErrorMessage(err));
               } else {
-                subfolder = new Subfolder();
+                console.info('(%s) Successfully %s the subfolder %s', moment(), action, subfolderPath);
               }
-              subfolder.parentFolder = folder;
-              subfolder.path = subfolderPath;
-              subfolder.filesCount = totalFiles;
-              subfolder.musicFilesCount = musicFilesDictionary[subfolderPath] || 0;
-              subfolder.modified = subfolder.lastScanned = Date.now();
-              subfolder.save(function (err) {
+            });
+            var totalFolders = Object.keys(totalFilesDictionary).length;
+            if (processed === totalFolders) {
+              // update the root folder entry
+              var foldersCount = totalFolders - 1;
+              folder.foldersCount = foldersCount;
+              folder.filesCount = totalFilesCount;
+              folder.musicFilesCount = musicFilesCount;
+              folder.scanning = false;
+              folder.scanned = true;
+              folder.lastScanned = folder.modified = Date.now();
+
+              folder.save(function (err) {
                 if (err) {
-                  console.error(errorHandler.getErrorMessage(err));
+                  console.error(err);
                 } else {
-                  console.info('Successfully %s the subfolder %s', action, subfolderPath);
+                  console.info('(%s) Successfully scanned the folder %s', moment(), folder.path);
+                  var ended = moment();
+                  var duration = moment.preciseDiff(started, ended);
+                  console.info('(%s) Done scanning the folder %s', ended, folder.path);
+                  console.log('Scanned %s music files (out of %s total files) from %s folders in %s', musicFilesCount,
+                    totalFilesCount, foldersCount, duration);
+                  console.info('*****');
                 }
               });
+
             }
-          });
-        }
+          }
+        });
       });
 
-      // update the root folder entry
-      var foldersCount = Object.keys(totalFilesDictionary).length - 1;
-      folder.foldersCount = foldersCount;
-      var totalFilesCount = _.values(totalFilesDictionary).reduce(function (prev, cur) {
-        return prev + cur;
-      });
-      folder.filesCount = totalFilesCount;
-      var musicFilesCount = _.values(musicFilesDictionary).reduce(function (prev, cur) {
-        return prev + cur;
-      });
-      folder.musicFilesCount = musicFilesCount;
-      folder.scanning = false;
-      folder.scanned = true;
-      folder.lastScanned = folder.modified = Date.now();
-
-      folder.save(function (err) {
-        if (err) {
-          console.error(err);
-        } else {
-          console.info('Successfully scanned the folder %s', folder.path);
-        }
-      });
-
-      var ended = moment();
-      var duration = moment.preciseDiff(started, ended);
-      console.info('(%s) Done scanning the folder %s', ended, folder.path);
-      console.log('Scanned %s music files (out of %s total files) from %s folders in %s', musicFilesCount,
-        totalFilesCount, foldersCount, duration);
-      console.info('*****');
 
     });
   }
