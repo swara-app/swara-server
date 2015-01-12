@@ -9,6 +9,7 @@ var debug = require('debug')('scanner'),
   fs = require('fs'),
   path = require('path'),
   _ = require('lodash'),
+  moment = require('moment'),
   mongoose = require('mongoose'),
   errorHandler = require('../../controllers/errors.server.controller'),
   Folder = mongoose.model('Folder'),
@@ -19,6 +20,11 @@ var debug = require('debug')('scanner'),
   Track = mongoose.model('Track'),
   mm = require('musicmetadata'),
   walk = require('walk');
+
+// Attach precise range plugin to moment
+require('../../../libs/moment-precise-range')(moment);
+
+var FOLDER_UPDATE_THRESHOLD = 25;
 
 var incrementDictionaryItemCount = function (dict, item) {
   if (!dict[item]) {
@@ -35,8 +41,9 @@ var scanner = {
     //    keep recording total files and music files counts for all subfolders to the SubFolders collection
     //    for the files, if it is a music file, capture metadata into the Tracks collection
 
+    var started = moment();
     console.info('*****');
-    console.info('Begin scanning the folder %s', folder.path);
+    console.info('(%s) Begin scanning the folder %s', started, folder.path);
 
     var totalFilesDictionary = {};
     var musicFilesDictionary = {};
@@ -60,24 +67,37 @@ var scanner = {
           // have the metadata here -> Save the Track
           //  check if the sub-folder for this track is already added into the sub-folder dictionary and add it if it is not
           //    increment the tracks count for the root-folder and sub-folder in the in-memory variables
-          var track = new Track();
-          track.parentFolderId = folder.id;
-          track.path = musicFilepath;
-          track.lastScanned = Date.now();
-          track.title = metadata.title || '';
-          var year = parseInt(metadata.year || '', 10);
-          if (!Number.isNaN(year)) {
-            track.year = year;
-          }
-          track.album = metadata.album || '';
-          track.artist = metadata.artist.join(', ');
-          track.genre = metadata.genre.join(', ');
-          track.user = folder.user;
-          track.save(function (err) {
+          Track.findOne({path : musicFilepath}, function (err, existingTrack) {
             if (err) {
               console.error(err);
             } else {
-              console.info('Successfully added %s', musicFilepath);
+              var action = "added";
+              var track = {};
+              if (existingTrack) {
+                action = "updated";
+                track = _.extend(existingTrack, track);
+              } else {
+                track = new Track();
+              }
+              track.modified = track.lastScanned = Date.now();
+              track.parentFolder = folder;
+              track.path = musicFilepath;
+              track.title = metadata.title || '';
+              var year = parseInt(metadata.year || '', 10);
+              if (!Number.isNaN(year)) {
+                track.year = year;
+              }
+              track.album = metadata.album || '';
+              track.artist = metadata.artist.join(', ');
+              track.genre = metadata.genre.join(', ');
+              track.user = folder.user;
+              track.save(function (err) {
+                if (err) {
+                  console.error(errorHandler.getErrorMessage(err));
+                } else {
+                  console.info('Successfully %s the track %s', action, musicFilepath);
+                }
+              });
             }
           });
         });
@@ -92,7 +112,6 @@ var scanner = {
     });
 
     walker.on('end', function () {
-
       // save the in memory dictionaries as new sub-folders
       _.forEach(totalFilesDictionary, function (totalFiles, subfolderPath) {
         if (subfolderPath !== folder.path) {
@@ -100,20 +119,24 @@ var scanner = {
             if (err) {
               console.error(err);
             } else {
-              var subfolder = new Subfolder();
-              subfolder.parentFolderId = folder.id;
+              var action = "added";
+              var subfolder = {};
+              if (existingSubfolder) {
+                action = "updated";
+                subfolder = _.extend(existingSubfolder, subfolder);
+              } else {
+                subfolder = new Subfolder();
+              }
+              subfolder.parentFolder = folder;
               subfolder.path = subfolderPath;
               subfolder.filesCount = totalFiles;
               subfolder.musicFilesCount = musicFilesDictionary[subfolderPath] || 0;
-              subfolder.lastScanned = Date.now();
-              if (existingSubfolder) {
-                subfolder = _.extend(existingSubfolder, subfolder);
-              }
+              subfolder.modified = subfolder.lastScanned = Date.now();
               subfolder.save(function (err) {
                 if (err) {
                   console.error(errorHandler.getErrorMessage(err));
                 } else {
-                  console.info('Successfully added the subfolder %s', subfolderPath);
+                  console.info('Successfully %s the subfolder %s', action, subfolderPath);
                 }
               });
             }
@@ -122,13 +145,16 @@ var scanner = {
       });
 
       // update the root folder entry
-      folder.foldersCount = Object.keys(totalFilesDictionary).length - 1;
-      folder.filesCount = _.values(totalFilesDictionary).reduce(function (prev, cur) {
+      var foldersCount = Object.keys(totalFilesDictionary).length - 1;
+      folder.foldersCount = foldersCount;
+      var totalFilesCount = _.values(totalFilesDictionary).reduce(function (prev, cur) {
         return prev + cur;
       });
-      folder.musicFilesCount = _.values(musicFilesDictionary).reduce(function (prev, cur) {
+      folder.filesCount = totalFilesCount;
+      var musicFilesCount = _.values(musicFilesDictionary).reduce(function (prev, cur) {
         return prev + cur;
       });
+      folder.musicFilesCount = musicFilesCount;
       folder.scanning = false;
       folder.scanned = true;
       folder.lastScanned = folder.modified = Date.now();
@@ -141,7 +167,11 @@ var scanner = {
         }
       });
 
-      console.info('Done scanning the folder %s', folder.path);
+      var ended = moment();
+      var duration = moment.preciseDiff(started, ended);
+      console.info('(%s) Done scanning the folder %s', ended, folder.path);
+      console.log('Scanned %s music files (out of %s total files) from %s folders in %s', musicFilesCount,
+        totalFilesCount, foldersCount, duration);
       console.info('*****');
 
     });

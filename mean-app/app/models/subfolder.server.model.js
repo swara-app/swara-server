@@ -14,9 +14,13 @@ var SubfolderSchema = new Schema({
     type    : Date,
     default : Date.now
   },
-  parentFolderId  : {
-    type     : String,
-    required : 'Parent folder ID is mandatory'
+  modified        : {
+    type    : Date,
+    default : Date.now
+  },
+  parentFolder    : {
+    type : Schema.ObjectId,
+    ref  : 'Folder'
   },
   lastScanned     : Date,
   filesCount      : {
@@ -31,7 +35,8 @@ var SubfolderSchema = new Schema({
     type     : String,
     default  : '',
     trim     : true,
-    required : 'Path cannot be blank'
+    required : 'Path cannot be blank',
+    unique   : true
   }
 });
 

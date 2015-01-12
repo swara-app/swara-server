@@ -52,6 +52,8 @@ exports.update = function (req, res) {
         message : errorHandler.getErrorMessage(err)
       });
     } else {
+      // initiate an asynchronous scan on this folder
+      _.defer(scanner.scanFolder, folder);
       res.json(folder);
     }
   });
