@@ -20,28 +20,15 @@
           </div>
         </div>
         <div class="form-group">
-          <table>
-            <tr>
-              <td>Scanning:</td>
-              <td data-ng-bind="folder.scanning"></td>
-            </tr>
-            <tr>
-              <td>Scanned:</td>
-              <td data-ng-bind="folder.scanned"></td>
-            </tr>
-            <tr>
-              <td>Last Scanned:</td>
-              <td data-ng-bind="folder.lastScanned"></td>
-            </tr>
-            <tr>
-              <td>Folders:</td>
-              <td data-ng-bind="folder.subfolders.length"></td>
-            </tr>
-            <tr>
-              <td>Files:</td>
-              <td data-ng-bind="folder.musicFilesCount"></td>
-            </tr>
-          </table>
+          <small class="text-muted pull-right">
+            Added on
+            <span class="text-primary" data-ng-bind="folder.created | date:'medium'"></span>
+            by
+            <span class="text-primary" data-ng-bind="folder.user.displayName"></span>
+            (Last Modified:
+            <span class="text-primary" data-ng-bind="folder.modified| date:'medium'"></span>
+            )
+          </small>
         </div>
         <div class="form-group">
           <a class="btn btn-default" href="/#!/folders" title="Go Back">

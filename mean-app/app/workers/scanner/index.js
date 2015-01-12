@@ -91,10 +91,10 @@ var scanner = {
               console.error(err);
               next();
             } else {
-              var action = "added";
+              var action = 'added';
               var track = {};
               if (existingTrack) {
-                action = "updated";
+                action = 'updated';
                 track = _.extend(existingTrack, track);
               } else {
                 track = new Track();
@@ -149,10 +149,10 @@ var scanner = {
                 processed++;
                 cumulativeMusicFilesCount += musicFilesCount;
 
-                var action = "added";
+                var action = 'added';
                 var subfolder = {};
                 if (existingSubfolder) {
-                  action = "updated";
+                  action = 'updated';
                   subfolder = _.extend(existingSubfolder, subfolder);
                 } else {
                   subfolder = new Subfolder();
