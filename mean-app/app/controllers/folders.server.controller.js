@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
   Folder = mongoose.model('Folder'),
+  cleaner = require('../workers/cleaner'),
   scanner = require('../workers/scanner'),
   _ = require('lodash');
 
@@ -65,6 +66,8 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   var folder = req.folder;
 
+  _.defer(cleaner.cleanFolder, folder);
+
   folder.remove(function (err) {
     if (err) {
       return res.status(400).send({
@@ -80,7 +83,7 @@ exports.delete = function (req, res) {
  * List of Folders
  */
 exports.list = function (req, res) {
-  Folder.find().sort('-created').populate({path : 'user', select : 'displayName'}).populate({path : 'subfolders'}).exec(function (err, folders) {
+  Folder.find().sort('-created').populate('user', 'displayName').populate('subfolders').exec(function (err, folders) {
     if (err) {
       return res.status(400).send({
         message : errorHandler.getErrorMessage(err)
@@ -95,7 +98,7 @@ exports.list = function (req, res) {
  * Folder middleware
  */
 exports.folderByID = function (req, res, next, id) {
-  Folder.findById(id).populate({path : 'user', select : 'displayName'}).populate({path : 'subfolders'}).exec(function (err, folder) {
+  Folder.findById(id).populate('user', 'displayName').populate('subfolders').exec(function (err, folder) {
     if (err) return next(err);
     if (!folder) return next(new Error('Failed to load folder ' + id));
     req.folder = folder;

@@ -5,7 +5,7 @@
  as well as when the folders are explicitly being rescanned from the UI
  */
 
-var debug = require('debug')('scanner'),
+var debug = require('debug')('swara:scanner'),
   async = require('async'),
   fs = require('fs'),
   path = require('path'),
@@ -13,19 +13,13 @@ var debug = require('debug')('scanner'),
   moment = require('moment'),
   mongoose = require('mongoose'),
   errorHandler = require('../../controllers/errors.server.controller'),
-  Folder = mongoose.model('Folder'),
   Subfolder = mongoose.model('Subfolder'),
-  Album = mongoose.model('Album'),
-  Artist = mongoose.model('Artist'),
-  Genre = mongoose.model('Genre'),
   Track = mongoose.model('Track'),
   mm = require('musicmetadata'),
   walk = require('walk');
 
 // Attach precise range plugin to moment
 require('../../../libs/moment-precise-range')(moment);
-
-var FOLDER_UPDATE_THRESHOLD = 25;
 
 var incrementDictionaryItemCount = function (dict, item) {
   if (!dict[item]) {
@@ -42,6 +36,7 @@ var scanner = {
     //    keep recording total files and music files counts for all subfolders to the SubFolders collection
     //    for the files, if it is a music file, capture metadata into the Tracks collection
 
+    debug('Entering the scanFolder function');
     var started = moment();
     console.info('*****');
     console.info('(%s) Begin scanning the folder %s', started, folder.path);
@@ -111,11 +106,15 @@ var scanner = {
               track.genre = metadata.genre.join(', ');
               track.modified = track.lastScanned = Date.now();
               track.user = folder.user;
-              track.save(function (err) {
+              track.save(function (err, track) {
                 if (err) {
                   console.error(errorHandler.getErrorMessage(err));
                 } else {
-                  musicFilesDictionary = incrementDictionaryItemCount(musicFilesDictionary, path.dirname(musicFilepath));
+                  var subfolderPath = path.dirname(musicFilepath);
+                  if (!musicFilesDictionary[subfolderPath]) {
+                    musicFilesDictionary[subfolderPath] = [];
+                  }
+                  musicFilesDictionary[subfolderPath].push(track);
                   console.info('(%s) Successfully %s the track %s', moment(), action, musicFilepath);
                 }
                 next();
@@ -140,7 +139,7 @@ var scanner = {
           var cumulativeMusicFilesCount = 0;
           var subfolderArray = [];
           async.each(Object.keys(musicFilesDictionary), function (subfolderPath, next) {
-            var musicFilesCount = musicFilesDictionary[subfolderPath];
+            var musicFilesCount = musicFilesDictionary[subfolderPath].length;
             Subfolder.findOne({path : subfolderPath}, function (err, existingSubfolder) {
               if (err) {
                 next(err);
@@ -162,6 +161,7 @@ var scanner = {
                 subfolder.title = subfolderPath.substr(subfolderPath.lastIndexOf(path.sep) + 1);
                 subfolder.filesCount = totalFilesDictionary[subfolderPath];
                 subfolder.musicFilesCount = musicFilesCount;
+                subfolder.tracks = musicFilesDictionary[subfolderPath];
                 subfolder.modified = subfolder.lastScanned = Date.now();
                 subfolder.user = folder.user;
                 subfolder.save(function (err, subfolder) {

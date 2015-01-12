@@ -1,3 +1,4 @@
+/*jshint unused: false */
 'use strict';
 
 angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', 'Users', 'Authentication',

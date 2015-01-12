@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 var debug = require('debug')('swara:server'),
-  init = require('./config/init')(),
+  init = require('./config/init'),
   config = require('./config/config'),
   mongoose = require('mongoose'),
   chalk = require('chalk');
@@ -12,6 +12,9 @@ var debug = require('debug')('swara:server'),
  * Main application entry file.
  * Please note that the order of loading is important.
  */
+
+// initialize the configuration
+init();
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db, function (err) {

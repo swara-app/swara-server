@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('folders').directive('directoryPicker', ['$compile',
-  function ($compile) {
+angular.module('folders').directive('directoryPicker', [
+  function () {
     return {
       restrict    : 'E',
       replace     : true,
@@ -27,7 +27,7 @@ angular.module('folders').directive('directoryPicker', ['$compile',
           input.setAttribute('type', 'file');
           input.setAttribute('nwdirectory', 'true');
           input.setAttribute('nwworkingdir', controller.$viewValue || '');
-          input.onchange = function (event) {
+          input.onchange = function () {
             setPath(this.value);
           };
           input.click();

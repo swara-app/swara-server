@@ -1,6 +1,8 @@
 <section data-ng-controller="SubfoldersController" data-ng-init="findOne()">
   <div class="page-header">
-    <h1>{{subfolder.title}} <small class="text-muted">[ Subolder Title ]</small></h1>
+    <h1>{{subfolder.title}}
+      <small class="text-muted">[ Subolder Title ]</small>
+    </h1>
   </div>
   <div class="col-md-12">
     <div class="group">
@@ -15,11 +17,19 @@
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Album</th>
+                <th>Genre</th>
+                <th>Artist</th>
+                <th>Path</th>
               </tr>
             </thead>
             <tbody>
               <tr data-ng-repeat="track in subfolder.tracks">
                 <td>{{track.title}}</td>
+                <td>{{track.album}}</td>
+                <td>{{track.genre}}</td>
+                <td>{{track.artist}}</td>
+                <td>{{track.path}}</td>
               </tr>
             </tbody>
           </table>

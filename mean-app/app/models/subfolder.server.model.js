@@ -31,6 +31,12 @@ var SubfolderSchema = new Schema({
     type    : Number,
     default : 0
   },
+  tracks          : [
+    {
+      type : Schema.Types.ObjectId,
+      ref  : 'Track'
+    }
+  ],
   path            : {
     type     : String,
     default  : '',

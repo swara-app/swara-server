@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('folders').controller('FoldersController', ['$scope', '$stateParams', '$location', 'Authentication', 'Folders',
-  function ($scope, $stateParams, $location, Authentication, Folders) {
+angular.module('folders').controller('FoldersController', ['$scope', '$stateParams', '$location', 'prompt', 'Authentication', 'Folders',
+  function ($scope, $stateParams, $location, prompt, Authentication, Folders) {
     $scope.authentication = Authentication;
 
     var getTitleFromPath = function (path) {
@@ -27,19 +27,25 @@ angular.module('folders').controller('FoldersController', ['$scope', '$statePara
     };
 
     $scope.remove = function (folder) {
-      if (folder) {
-        folder.$remove();
+      //simple confirmation
+      prompt({
+        title   : 'Delete this folder?',
+        message : 'Are you sure?\nAll the subfolders and tracks within this folder would be deleted.'
+      }).then(function () {
+        if (folder) {
+          folder.$remove();
 
-        for (var i in $scope.folders) {
-          if ($scope.folders[i] === folder) {
-            $scope.folders.splice(i, 1);
+          for (var i in $scope.folders) {
+            if ($scope.folders[i] === folder) {
+              $scope.folders.splice(i, 1);
+            }
           }
+        } else {
+          $scope.folder.$remove(function () {
+            $location.path('folders');
+          });
         }
-      } else {
-        $scope.folder.$remove(function () {
-          $location.path('folders');
-        });
-      }
+      });
     };
 
     $scope.update = function () {

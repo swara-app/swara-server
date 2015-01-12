@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').directive('auditTrail', ['$compile',
-  function ($compile) {
+angular.module('core').directive('auditTrail', [
+  function () {
     return {
       replace     : true,
       restrict    : 'E',

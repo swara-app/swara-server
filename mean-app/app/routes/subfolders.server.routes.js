@@ -3,8 +3,7 @@
 /**
  * Module dependencies.
  */
-var users = require('../../app/controllers/users.server.controller'),
-  subfolders = require('../../app/controllers/subfolders.server.controller');
+var subfolders = require('../../app/controllers/subfolders.server.controller');
 
 module.exports = function (app) {
   // Subfolder Routes
