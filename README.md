@@ -3,7 +3,7 @@ swara-server [![Dependency Status](https://gemnasium.com/swara-app/swara-server.
 
 ![swara](logo.png)
 
-A [MEAN.js](http://meanjs.org/) based server application that can catalog your music collection and stream to swara-app clients.
+A [node-webkit](https://github.com/rogerwang/node-webkit)/[MEAN.js](http://meanjs.org/) cross-platform server that catalogs music collections for streaming to the Swara client apps.
 
 ### License
 
