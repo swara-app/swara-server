@@ -2,8 +2,14 @@
   <div class="page-header">
     <h1>{{folder.title}} <small class="text-muted">[ Folder Title ]</small></h1>
   </div>
+  <div class="alert alert-success text-center" data-ng-if="folder.triggeredScan">
+    Successfully initiated rescan for this folder.
+  </div>
   <div class="col-md-12">
     <div class="pull-right" data-ng-show="authentication.user._id == folder.user._id">
+      <a class="btn btn-primary" data-ng-click="update(true);" title="Rescan Folder">
+        <i class="glyphicon glyphicon-refresh"></i>
+      </a>
       <a class="btn btn-primary" href="/#!/folders/{{folder._id}}/edit" title="Edit Folder">
         <i class="glyphicon glyphicon-edit"></i>
       </a>

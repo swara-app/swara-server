@@ -22,7 +22,11 @@ var FolderSchema = new Schema({
     type    : Boolean,
     default : false
   },
-  scanned           : {
+  triggerScan       : {
+    type    : Boolean,
+    default : false
+  },
+  triggeredScan     : {
     type    : Boolean,
     default : false
   },

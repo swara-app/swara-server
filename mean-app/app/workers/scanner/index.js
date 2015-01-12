@@ -190,7 +190,6 @@ var scanner = {
               folder.filesCount = totalFilesCount;
               folder.musicFilesCount = cumulativeMusicFilesCount;
               folder.scanning = false;
-              folder.scanned = true;
               folder.subfolders = subfolderArray;
               folder.lastScanned = folder.modified = Date.now();
 
@@ -198,7 +197,7 @@ var scanner = {
                 if (err) {
                   console.error(errorHandler.getErrorMessage(err));
                 } else {
-                  console.info('(%s) Successfully scanned the folder %s', moment(), folder.path);
+                  console.info('(%s) Successfully updated the folder %s', moment(), folder.path);
                   var ended = moment();
                   var duration = moment.preciseDiff(started, ended);
                   console.info('(%s) Done scanning the folder %s', ended, folder.path);
