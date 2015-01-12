@@ -45,11 +45,13 @@
 
 <body class="ng-cloak">
 	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-default"></header>
-	<section class="content">
+	<section id="wrap" class="content">
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
 	</section>
+
+	<footer class="group"><small class="text-muted">&copy; 2014-{{ Date.now()|date('Y') }} - The Swara App Team</small></footer>
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">
@@ -57,7 +59,7 @@
 	</script>
 
 	<!--Application JavaScript Files-->
-	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %} 
+	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
 
 	{% if process.env.NODE_ENV === 'development' %}
 	<!--Livereload script rendered -->
