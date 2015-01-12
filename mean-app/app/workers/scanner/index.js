@@ -138,6 +138,7 @@ var scanner = {
           // save the in memory dictionaries as new sub-folders
           var processed = 0;
           var cumulativeMusicFilesCount = 0;
+          var subfolderArray = [];
           async.each(Object.keys(musicFilesDictionary), function (subfolderPath, next) {
             var musicFilesCount = musicFilesDictionary[subfolderPath];
             Subfolder.findOne({path : subfolderPath}, function (err, existingSubfolder) {
@@ -158,14 +159,16 @@ var scanner = {
                 }
                 subfolder.parentFolder = folder;
                 subfolder.path = subfolderPath;
+                subfolder.title = subfolderPath.substr(subfolderPath.lastIndexOf(path.sep) + 1);
                 subfolder.filesCount = totalFilesDictionary[subfolderPath];
                 subfolder.musicFilesCount = musicFilesCount;
                 subfolder.modified = subfolder.lastScanned = Date.now();
                 subfolder.user = folder.user;
-                subfolder.save(function (err) {
+                subfolder.save(function (err, subfolder) {
                   if (err) {
                     next(errorHandler.getErrorMessage(err));
                   } else {
+                    subfolderArray.push(subfolder);
                     console.info('(%s) Successfully %s the subfolder %s', moment(), action, subfolderPath);
                     next();
                   }
@@ -188,6 +191,7 @@ var scanner = {
               folder.musicFilesCount = cumulativeMusicFilesCount;
               folder.scanning = false;
               folder.scanned = true;
+              folder.subfolders = subfolderArray;
               folder.lastScanned = folder.modified = Date.now();
 
               folder.save(function (err) {

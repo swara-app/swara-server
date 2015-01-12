@@ -9,8 +9,7 @@ angular.module('folders').controller('FoldersController', ['$scope', '$statePara
         return null;
       }
       var sep = require('path').sep;
-      var title = path.substr(path.lastIndexOf(sep) + 1);
-      return title;
+      return path.substr(path.lastIndexOf(sep) + 1);
     };
 
     $scope.create = function () {

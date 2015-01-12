@@ -43,6 +43,12 @@ var FolderSchema = new Schema({
     type    : Number,
     default : 0
   },
+  subfolders        : [
+    {
+      type : Schema.Types.ObjectId,
+      ref  : 'Subfolder'
+    }
+  ],
   path              : {
     type     : String,
     default  : '',
