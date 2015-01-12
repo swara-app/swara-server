@@ -10,49 +10,53 @@ var mongoose = require('mongoose'),
  * Folder Schema
  */
 var FolderSchema = new Schema({
-  created         : {
+  created           : {
     type    : Date,
     default : Date.now
   },
-  modified        : {
+  modified          : {
     type    : Date,
     default : Date.now
   },
-  scanning        : {
+  scanning          : {
     type    : Boolean,
     default : false
   },
-  scanned         : {
+  scanned           : {
     type    : Boolean,
     default : false
   },
-  lastScanned     : Date,
-  foldersCount    : {
+  lastScanned       : Date,
+  foldersCount      : {
     type    : Number,
     default : 0
   },
-  filesCount      : {
+  musicFoldersCount : {
     type    : Number,
     default : 0
   },
-  musicFilesCount : {
+  filesCount        : {
     type    : Number,
     default : 0
   },
-  path            : {
+  musicFilesCount   : {
+    type    : Number,
+    default : 0
+  },
+  path              : {
     type     : String,
     default  : '',
     trim     : true,
     required : 'Path cannot be blank',
     unique   : true
   },
-  title           : {
+  title             : {
     type     : String,
     default  : '',
     trim     : true,
     required : 'Title cannot be blank'
   },
-  user            : {
+  user              : {
     type : Schema.ObjectId,
     ref  : 'User'
   }

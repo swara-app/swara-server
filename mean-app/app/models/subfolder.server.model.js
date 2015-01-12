@@ -37,6 +37,10 @@ var SubfolderSchema = new Schema({
     trim     : true,
     required : 'Path cannot be blank',
     unique   : true
+  },
+  user            : {
+    type : Schema.ObjectId,
+    ref  : 'User'
   }
 });
 
