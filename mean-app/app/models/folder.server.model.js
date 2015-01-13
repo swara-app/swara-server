@@ -22,14 +22,6 @@ var FolderSchema = new Schema({
     type    : Boolean,
     default : false
   },
-  triggerScan       : {
-    type    : Boolean,
-    default : false
-  },
-  triggeredScan     : {
-    type    : Boolean,
-    default : false
-  },
   lastScanned       : Date,
   foldersCount      : {
     type    : Number,

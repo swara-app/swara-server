@@ -43,28 +43,22 @@ exports.read = function (req, res) {
  */
 exports.update = function (req, res) {
   var folder = req.folder;
-  folder.triggeredScan = false;
 
-  if (folder.triggerScan) {
-    // initiate a rescan on this folder
-    _.defer(scanner.scanFolder, folder);
-    folder.triggerScan = false;
-    folder.triggeredScan = true;
-    res.json(folder);
-  } else {
-    folder = _.extend(folder, req.body);
-    folder.modified = Date.now();
-
-    folder.save(function (err) {
-      if (err) {
-        return res.status(400).send({
-          message : errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.json(folder);
+  folder = _.extend(folder, req.body);
+  folder.modified = Date.now();
+  folder.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message : errorHandler.getErrorMessage(err)
+      });
+    } else {
+      if (folder.scanning) {
+        // initiate a rescan on this folder
+        _.defer(scanner.scanFolder, folder);
       }
-    });
-  }
+      res.json(folder);
+    }
+  });
 };
 
 /**

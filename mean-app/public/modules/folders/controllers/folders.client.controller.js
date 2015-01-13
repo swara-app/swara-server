@@ -50,7 +50,7 @@ angular.module('folders').controller('FoldersController', ['$scope', '$statePara
 
     $scope.update = function (triggerScan) {
       var folder = $scope.folder;
-      folder.triggerScan = triggerScan;
+      folder.scanning = triggerScan;
 
       folder.$update(function () {
         $location.path('folders/' + folder._id);
