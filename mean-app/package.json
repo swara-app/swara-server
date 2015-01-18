@@ -18,7 +18,8 @@
     "min_width": 1068,
     "min_height": 600,
     "position": "center",
-    "toolbar": true
+    "toolbar": true,
+    "icon": "public/modules/core/img/logo.png"
   },
   "chromium-args": "--child-clean-exit",
   "node-remote": "<local>",
