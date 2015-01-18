@@ -8,12 +8,25 @@ build:
     - script:
         name: build swara-server
         code: |
+          echo 'Contents of /etc/limits.conf:'
+          cat /etc/limits.conf
+          echo 'Contents of /etc/security/limits.conf:'
+          cat /etc/security/limits.conf
+          sudo echo '* hard nofile 30000' >> /etc/limits.conf
+          sudo echo '* hard nofile 30000' >> /etc/security/limits.conf
+          echo 'Contents of /etc/limits.conf:'
+          cat /etc/limits.conf
+          echo 'Contents of /etc/security/limits.conf:'
+          cat /etc/security/limits.conf
+          ulimit -n 30000
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
           sudo npm install -g grunt-cli
+          sudo npm install -g bower
+          sudo npm install
           cd mean-app
           sudo npm install
+          bower install
           cd ..
-          sudo npm install
           sudo npm test
           ls -al dist/swara-server
