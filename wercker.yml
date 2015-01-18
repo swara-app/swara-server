@@ -8,7 +8,7 @@ build:
     - script:
         name: build swara-server
         code: |
-          ulimit -n 24000
+          sudo ulimit -n 24000
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
           sudo npm install -g grunt-cli
