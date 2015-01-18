@@ -8,14 +8,9 @@ build:
     - script:
         name: build swara-server
         code: |
-          echo 'Contents of /etc/limits.conf:'
-          cat /etc/limits.conf
           echo 'Contents of /etc/security/limits.conf:'
           cat /etc/security/limits.conf
-          sudo echo '* hard nofile 30000' >> /etc/limits.conf
           sudo echo '* hard nofile 30000' >> /etc/security/limits.conf
-          echo 'Contents of /etc/limits.conf:'
-          cat /etc/limits.conf
           echo 'Contents of /etc/security/limits.conf:'
           cat /etc/security/limits.conf
           ulimit -n 30000
