@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-- '0.11'
 - '0.10'
 branches:
   only:
@@ -10,5 +9,8 @@ after_success:
   # - if [ "$TRAVIS_NODE_VERSION" = "0.10" ]; then grunt buildcontrol:pages; fi
 - if [ "$TRAVIS_NODE_VERSION" = "0.10" ]; then ls -al dist; fi
 install:
+- cd mean-app
+- npm install
+- cd ..
 - npm install -g grunt-cli
 - npm install

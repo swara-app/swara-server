@@ -62,7 +62,7 @@ module.exports = function (grunt) {
     nodewebkit    : {
       options : {
         buildDir  : '<%= config.dist %>',
-        platforms : ['win', 'osx', 'linux32', 'linux64']
+        platforms : ['osx64', 'win64']
       },
       src     : ['<%= config.tmp %>/<%= config.app %>/**/*']
     },
