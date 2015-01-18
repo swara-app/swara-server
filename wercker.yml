@@ -10,7 +10,7 @@ build:
         code: |
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
-          npm install -g grunt-cli
+          sudo npm install -g grunt-cli
           cd mean-app
           npm install
           cd ..
