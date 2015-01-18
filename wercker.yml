@@ -8,12 +8,7 @@ build:
     - script:
         name: build swara-server
         code: |
-          echo 'Contents of /etc/security/limits.conf:'
-          cat /etc/security/limits.conf
-          sudo echo '* hard nofile 30000' >> /etc/security/limits.conf
-          echo 'Contents of /etc/security/limits.conf:'
-          cat /etc/security/limits.conf
-          ulimit -n 30000
+          ulimit -n 24000
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
           sudo npm install -g grunt-cli
