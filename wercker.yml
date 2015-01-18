@@ -6,14 +6,14 @@ build:
     # A custom script step, name value is used in the UI
     # and the code value contains the command that get executed
     - script:
-        name: build installers
+        name: build swara-server
         code: |
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
           sudo npm install -g grunt-cli
           cd mean-app
-          npm install
+          sudo npm install
           cd ..
-          npm install
-          npm test
+          sudo npm install
+          sudo npm test
           ls -al dist/swara-server
