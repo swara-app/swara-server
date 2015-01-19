@@ -25,7 +25,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr data-ng-repeat="track in subfolder.tracks">
+              <tr data-ng-repeat="track in subfolder.tracks | orderBy: ['trackNumber', 'title']">
                 <td>{{track.trackNumber}}</td>
                 <td>{{track.title}}</td>
                 <td>{{track.album}}</td>

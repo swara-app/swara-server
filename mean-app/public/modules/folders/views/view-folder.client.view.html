@@ -37,7 +37,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr data-ng-repeat="subfolder in folder.subfolders">
+              <tr data-ng-repeat="subfolder in folder.subfolders | orderBy: 'path'">
                 <td><a data-ng-href="#!/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
                 <td>{{subfolder.path}}</td>
                 <td>{{subfolder.lastScanned | date:'mediumDate'}}</td>

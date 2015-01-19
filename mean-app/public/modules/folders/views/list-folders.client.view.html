@@ -24,7 +24,7 @@
         <th></th>
       </tr>
     </thead>
-    <tr data-ng-repeat="folder in folders">
+    <tr data-ng-repeat="folder in folders | orderBy: 'path'">
       <td>
         <i data-ng-if="folder.scanning" title="Scanning folder" class="glyphicon glyphicon-refresh gly-spin"></i>
         <i data-ng-if="!folder.scanning" data-ng-attr-title="Last scanned: {{folder.lastScanned | date:'medium'}}"
