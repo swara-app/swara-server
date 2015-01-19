@@ -14,7 +14,7 @@ var TrackSchema = new Schema({
     type    : Date,
     default : Date.now
   },
-  modified        : {
+  modified     : {
     type    : Date,
     default : Date.now
   },
@@ -36,6 +36,7 @@ var TrackSchema = new Schema({
     trim    : true
   },
   year         : Number,
+  trackNumber  : Number,
   album        : {
     type    : String,
     default : '',

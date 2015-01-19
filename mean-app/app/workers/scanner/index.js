@@ -21,6 +21,14 @@ var debug = require('debug')('swara:scanner'),
 // Attach precise range plugin to moment
 require('../../../libs/moment-precise-range')(moment);
 
+var getTitleFromPath = function (musicFilePath) {
+  if (!musicFilePath) {
+    return null;
+  }
+  var title = musicFilePath.substr(musicFilePath.lastIndexOf(path.sep) + 1);
+  return title.substr(0, title.lastIndexOf('.'));
+};
+
 var incrementDictionaryItemCount = function (dict, item) {
   if (!dict[item]) {
     dict[item] = 0;
@@ -70,7 +78,7 @@ var scanner = {
 
     walker.on('end', function () {
       // process all the music files from the musicfilepaths array
-      async.each(musicFilePaths, function (musicFilepath, next) {
+      async.eachLimit(musicFilePaths, 20, function (musicFilepath, next) {
         var musicFileStream = fs.createReadStream(musicFilepath);
         if (!musicFilepath) {
           console.log('(%s) Cannot open file %s', moment(), musicFilepath);
@@ -96,10 +104,13 @@ var scanner = {
               }
               track.parentFolder = folder;
               track.path = musicFilepath;
-              track.title = metadata.title || '';
+              track.title = metadata.title || getTitleFromPath(musicFilepath);
               var year = parseInt(metadata.year || '', 10);
               if (!Number.isNaN(year)) {
                 track.year = year;
+              }
+              if (metadata.track && metadata.track.no) {
+                track.trackNumber = metadata.track.no;
               }
               track.album = metadata.album || '';
               track.artist = metadata.artist.join(', ');
@@ -138,7 +149,7 @@ var scanner = {
           var processed = 0;
           var cumulativeMusicFilesCount = 0;
           var subfolderArray = [];
-          async.each(Object.keys(musicFilesDictionary), function (subfolderPath, next) {
+          async.eachLimit(Object.keys(musicFilesDictionary), 20, function (subfolderPath, next) {
             var musicFilesCount = musicFilesDictionary[subfolderPath].length;
             Subfolder.findOne({path : subfolderPath}, function (err, existingSubfolder) {
               if (err) {
