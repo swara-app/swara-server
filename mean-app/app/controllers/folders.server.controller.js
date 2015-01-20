@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
   Folder = mongoose.model('Folder'),
+  Subfolder = mongoose.model('Subfolder'),
   cleaner = require('../workers/cleaner'),
   scanner = require('../workers/scanner'),
   _ = require('lodash');
@@ -18,15 +19,29 @@ exports.create = function (req, res) {
   folder.user = req.user;
   folder.scanning = true;
 
-  folder.save(function (err) {
+  Subfolder.findOne({path : folder.path}, function (err, existingSubfolder) {
     if (err) {
       return res.status(400).send({
         message : errorHandler.getErrorMessage(err)
       });
     } else {
-      // initiate an asynchronous scan on this folder
-      _.defer(scanner.scanFolder, folder);
-      res.json(folder);
+      if (existingSubfolder) {
+        return res.status(400).send({
+          message : 'Folder is already in the library'
+        });
+      } else {
+        folder.save(function (err) {
+          if (err) {
+            return res.status(400).send({
+              message : errorHandler.getErrorMessage(err)
+            });
+          } else {
+            // initiate an asynchronous scan on this folder
+            _.defer(scanner.scanFolder, folder);
+            res.json(folder);
+          }
+        });
+      }
     }
   });
 };
