@@ -193,9 +193,12 @@ var scanner = {
             } else {
               var foldersCount = Object.keys(totalFilesDictionary).length;
               var musicFoldersCount = Object.keys(musicFilesDictionary).length;
-              var totalFilesCount = _.values(totalFilesDictionary).reduce(function (prev, curr) {
-                return prev + curr;
-              });
+              var totalFilesCount = 0;
+              if (foldersCount) {
+                totalFilesCount = _.values(totalFilesDictionary).reduce(function (prev, curr) {
+                  return prev + curr;
+                });
+              }
               folder.foldersCount = foldersCount;
               folder.musicFoldersCount = musicFoldersCount;
               folder.filesCount = totalFilesCount;

@@ -11,7 +11,7 @@
         <dd data-ng-bind="subfolder.path"></dd>
         <dt>Total Files:</dt>
         <dd data-ng-bind="subfolder.musicFilesCount"></dd>
-        <div data-ng-if="subfolder.tracks.length">
+        <div data-ng-if="subfolder.tracks.length" class="clearfix">
           <dt>Tracks:</dt>
           <dd>
             <div class="table-container">
@@ -27,7 +27,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr dir-paginate="track in subfolder.tracks | orderBy: ['trackNumber', 'title'] | itemsPerPage: 7">
+                  <tr dir-paginate="track in subfolder.tracks | orderBy: ['trackNumber', 'title'] | itemsPerPage: 8">
                     <td class="text-nowrap text-center">{{track.trackNumber}}</td>
                     <td class="text-nowrap">{{track.title}}</td>
                     <td class="text-nowrap">{{track.album}}</td>
@@ -37,9 +37,9 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="pull-right">
-                <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
-              </div>
+            </div>
+            <div class="pull-right">
+              <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
             </div>
           </dd>
         </div>

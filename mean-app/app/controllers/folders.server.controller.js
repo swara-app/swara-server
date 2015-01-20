@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+  escapeStringRegexp = require('escape-string-regexp'),
   errorHandler = require('./errors.server.controller'),
   Folder = mongoose.model('Folder'),
   Subfolder = mongoose.model('Subfolder'),
@@ -19,7 +20,7 @@ exports.create = function (req, res) {
   folder.user = req.user;
   folder.scanning = true;
 
-  Subfolder.findOne({path : new RegExp('^' + folder.path)}, function (err, existingSubfolder) {
+  Subfolder.findOne({path : new RegExp('^' + escapeStringRegexp(folder.path))}, function (err, existingSubfolder) {
     if (err) {
       return res.status(400).send({
         message : errorHandler.getErrorMessage(err)

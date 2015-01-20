@@ -30,10 +30,19 @@ html, body {
   border-color : #78FA89;
 }
 
+.page-header {
+  margin : 10px 0 5px;
+}
+
 .table-container {
   width      : 100%;
   max-width  : 100%;
-  overflow-x : scroll;
+  overflow-x : auto;
+  margin     : 5px 0;
+}
+
+.table-container .table {
+  margin-bottom : 0;
 }
 
 .pagination {
