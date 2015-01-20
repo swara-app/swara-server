@@ -78,7 +78,7 @@ var scanner = {
 
     walker.on('end', function () {
       // process all the music files from the musicfilepaths array
-      async.eachLimit(musicFilePaths, 20, function (musicFilepath, next) {
+      async.eachLimit(musicFilePaths, 100, function (musicFilepath, next) {
         var musicFileStream = fs.createReadStream(musicFilepath);
         if (!musicFilepath) {
           console.log('(%s) Cannot open file %s', moment(), musicFilepath);
