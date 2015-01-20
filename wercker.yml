@@ -8,15 +8,14 @@ build:
     - script:
         name: build swara-server
         code: |
-          # sudo ulimit -n 24000
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
-          # sudo npm install -g grunt-cli
-          # sudo npm install -g bower
-          # sudo npm install
-          # cd mean-app
-          # sudo npm install
-          # bower install
-          # cd ..
-          # sudo npm test
-          # ls -al dist/swara-server
+          sudo npm install -g grunt-cli
+          sudo npm install -g bower
+          sudo npm install
+          cd mean-app
+          sudo npm install
+          bower install
+          cd ..
+          sudo npm test
+          ls -al dist/swara-server
