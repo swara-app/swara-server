@@ -19,7 +19,7 @@ exports.create = function (req, res) {
   folder.user = req.user;
   folder.scanning = true;
 
-  Subfolder.findOne({path : folder.path}, function (err, existingSubfolder) {
+  Subfolder.findOne({path : new RegExp('^' + folder.path)}, function (err, existingSubfolder) {
     if (err) {
       return res.status(400).send({
         message : errorHandler.getErrorMessage(err)
