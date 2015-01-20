@@ -27,7 +27,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-ng-repeat="track in subfolder.tracks | orderBy: ['trackNumber', 'title']">
+                  <tr dir-paginate="track in subfolder.tracks | orderBy: ['trackNumber', 'title'] | itemsPerPage: 7">
                     <td class="text-nowrap text-center">{{track.trackNumber}}</td>
                     <td class="text-nowrap">{{track.title}}</td>
                     <td class="text-nowrap">{{track.album}}</td>
@@ -37,6 +37,9 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="pull-right">
+                <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
+              </div>
             </div>
           </dd>
         </div>

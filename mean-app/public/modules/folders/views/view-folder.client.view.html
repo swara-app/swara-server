@@ -40,13 +40,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-ng-repeat="subfolder in folder.subfolders | orderBy: 'path'">
+                  <tr dir-paginate="subfolder in folder.subfolders | orderBy: 'path' | itemsPerPage: 6">
                     <td class="text-nowrap"><a data-ng-href="#!/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
                     <td class="text-nowrap text-center">{{subfolder.musicFilesCount}}</td>
                     <td class="text-nowrap">{{subfolder.path}}</td>
                   </tr>
                 </tbody>
               </table>
+              <div class="pull-right">
+                <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
+              </div>
             </div>
           </dd>
         </div>
