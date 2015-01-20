@@ -1,6 +1,8 @@
 <section data-ng-controller="FoldersController" data-ng-init="findOne()">
   <div class="page-header">
-    <h1>{{folder.title}} <small class="text-muted">[ Folder Title ]</small></h1>
+    <h1>{{folder.title}}
+      <small class="text-muted">[ Folder Title ]</small>
+    </h1>
   </div>
   <div class="alert alert-info text-center" data-ng-if="folder.scanning">
     This folder is currently being scanned for music files.
@@ -25,35 +27,32 @@
         <dd data-ng-bind="folder.subfolders.length"></dd>
         <dt>Total Files:</dt>
         <dd data-ng-bind="folder.musicFilesCount"></dd>
-        <dt data-ng-if="folder.subfolders.length">Subfolders:</dt>
-        <dd data-ng-if="folder.subfolders.length && !folder.scanning">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Path</th>
-                <th>Last Scanned</th>
-                <th>Files</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr data-ng-repeat="subfolder in folder.subfolders | orderBy: 'path'">
-                <td><a data-ng-href="#!/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
-                <td>{{subfolder.path}}</td>
-                <td>{{subfolder.lastScanned | date:'mediumDate'}}</td>
-                <td>{{subfolder.musicFilesCount}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </dd>
+        <div data-ng-if="folder.subfolders.length && !folder.scanning">
+          <dt>Subfolders:</dt>
+          <dd>
+            <div class="table-container">
+              <table class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th class="text-center">Files</th>
+                    <th>Path</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-ng-repeat="subfolder in folder.subfolders | orderBy: 'path'">
+                    <td class="text-nowrap"><a data-ng-href="#!/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
+                    <td class="text-nowrap text-center">{{subfolder.musicFilesCount}}</td>
+                    <td class="text-nowrap">{{subfolder.path}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </dd>
+        </div>
       </dl>
     </div>
     <audit-trail entity="folder"></audit-trail>
-  </div>
-  <br/>
-  <div class="group">
-    <div class="pull-left">
-      <a href="#!/folders" class="btn btn-default" title="Go Back">Back</a>
-    </div>
+    <a href="#!/folders" class="btn btn-default" title="Go Back">Back</a>
   </div>
 </section>

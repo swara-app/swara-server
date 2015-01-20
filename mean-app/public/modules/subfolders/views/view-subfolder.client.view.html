@@ -11,39 +11,38 @@
         <dd data-ng-bind="subfolder.path"></dd>
         <dt>Total Files:</dt>
         <dd data-ng-bind="subfolder.musicFilesCount"></dd>
-        <dt data-ng-if="subfolder.tracks.length">Tracks:</dt>
-        <dd data-ng-if="subfolder.tracks.length">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Album</th>
-                <th>Genre</th>
-                <th>Artist</th>
-                <th>Path</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr data-ng-repeat="track in subfolder.tracks | orderBy: ['trackNumber', 'title']">
-                <td>{{track.trackNumber}}</td>
-                <td>{{track.title}}</td>
-                <td>{{track.album}}</td>
-                <td>{{track.genre}}</td>
-                <td>{{track.artist}}</td>
-                <td>{{track.path}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </dd>
+        <div data-ng-if="subfolder.tracks.length">
+          <dt>Tracks:</dt>
+          <dd>
+            <div class="table-container">
+              <table class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th>Title</th>
+                    <th>Album</th>
+                    <th>Genre</th>
+                    <th>Artist</th>
+                    <th>Path</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-ng-repeat="track in subfolder.tracks | orderBy: ['trackNumber', 'title']">
+                    <td class="text-nowrap text-center">{{track.trackNumber}}</td>
+                    <td class="text-nowrap">{{track.title}}</td>
+                    <td class="text-nowrap">{{track.album}}</td>
+                    <td class="text-nowrap">{{track.genre}}</td>
+                    <td class="text-nowrap">{{track.artist}}</td>
+                    <td class="text-nowrap">{{track.path}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </dd>
+        </div>
       </dl>
     </div>
     <audit-trail entity="subfolder"></audit-trail>
-  </div>
-  <br/>
-  <div class="group">
-    <div class="pull-left">
-      <back-button></back-button>
-    </div>
+    <back-button></back-button>
   </div>
 </section>
