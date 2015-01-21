@@ -2,6 +2,7 @@
 
 var debug = require('debug')('swara:daemon'),
   fs = require('fs'),
+  spawnhelper = require('../libs/spwanhelper'),
   stdout = null,
   serverPid,
   serverReady = false,
@@ -26,33 +27,20 @@ debug('Declaring daemon:start function');
 var daemon = {
   start        : function () {
     debug('Entered daemon:start function');
-    var spawn = require('child_process').spawn,
-      util = require('util'),
-      mkdirp = require('mkdirp');
 
     // start the server process
-    debug('Starting the server');
     var outputDirectory = 'logs';
-    mkdirp(outputDirectory, function (err) {
-      if (err) {
-        console.error(err);
+    spawnhelper.spawn({
+      name          : 'Mean.JS Server',
+      outputDir     : outputDirectory,
+      command       : 'startup/daemon',
+      onBeforeSpawn : function () {
+        debug('About to start the server');
+      },
+      onAfterSpawn  : function (server) {
+        serverPid = server.pid;
+        stdout = outputDirectory + '/stdout.log';
       }
-      var stdoutfile = fs.openSync(outputDirectory + '/stdout.log', 'w+');
-      var stderrfile = fs.openSync(outputDirectory + '/stderr.log', 'w+');
-
-      var startMarker = util.format('Session started at %s\n--------------\n', new Date().toUTCString());
-      fs.writeSync(stdoutfile, startMarker);
-      fs.writeSync(stderrfile, startMarker);
-
-      debug('Starting the server...');
-      var server = spawn('node', ['--debug=5858', 'startup/daemon'], {
-        env   : process.env,
-        stdio : ['ignore', stdoutfile, stderrfile]
-      });
-
-      stdout = outputDirectory + '/stdout.log';
-
-      serverPid = server.pid;
     });
   },
   ready        : function (callback) {
