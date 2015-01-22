@@ -56,7 +56,7 @@ var scanner = {
         var totalFilesDictionary = {};
         var musicFilesDictionary = {};
 
-        var musicFilePaths = [];
+        var musicFilepaths = [];
 
         var options = {
           followLinks : false, filters : ['Temp', '_Temp']
@@ -64,30 +64,31 @@ var scanner = {
 
         var walker = walk.walk(folder.path, options);
 
-        debug('Setting up onfile event handler for the walker');
+        debug('Setting up on file event handler for the walker');
         walker.on('file', function (root, fileStats, next) {
-          debug('Within the file event handler for walker for %s', fileStats.name);
+          var filepath = path.join(root, fileStats.name);
+          debug('Within the file event handler for walker for %s', filepath);
           totalFilesDictionary = incrementDictionaryItemCount(totalFilesDictionary, root);
 
           if (fileStats.name.match(/\.mp3$/i)) {
-            musicFilePaths.push(path.join(root, fileStats.name));
+            musicFilepaths.push(filepath);
           }
           next();
         });
 
-        debug('Setting up onerror event handler for the walker');
+        debug('Setting up on error event handler for the walker');
         walker.on('errors', function (root, nodeStatsArray, next) {
           console.error('Error within scanner - nodeStatsArray:');
           console.error(nodeStatsArray);
           next();
         });
 
-        debug('Setting up onend event handler for the walker');
+        debug('Setting up on end event handler for the walker');
         walker.on('end', function () {
           // process all the music files from the musicfilepaths array
-          debug('About to start parsing %s music filepaths', musicFilePaths.length);
+          debug('About to start parsing %s music filepaths', musicFilepaths.length);
           var counter = 0;
-          async.eachLimit(musicFilePaths, 100, function (musicFilepath, nextTrack) {
+          async.eachLimit(musicFilepaths, 100, function (musicFilepath, nextTrack) {
             var musicFileStream = fs.createReadStream(musicFilepath);
             if (!musicFilepath) {
               console.log('(%s) Cannot open file %s', moment(), musicFilepath);
