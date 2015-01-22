@@ -15,7 +15,7 @@ var cleaner = {
   cleanFolder : function (folder) {
     debug('Entering the cleanFolder function');
     async.each(folder.subfolders, function (subfolderObject, nextSubfolder) {
-      Subfolder.findById(subfolderObject.id).populate('tracks').exec(function (err, subfolder) {
+      Subfolder.findById(subfolderObject._id).populate('tracks').exec(function (err, subfolder) {
         async.each(subfolder.tracks, function (track, nextTrack) {
           track.remove(function (err) {
             if (err) {
