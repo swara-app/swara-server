@@ -96,10 +96,12 @@ var scanner = {
               nextTrack();
             }
             var parser = mm(musicFileStream);
+            var hasMetadata = {};
             parser.on('metadata', function (metadata) {
               // have the metadata here -> Save the Track
               //  check if the sub-folder for this track is already added into the sub-folder dictionary and add it if it is not
               //    increment the tracks count for the root-folder and sub-folder in the in-memory variables
+              hasMetadata[musicFilepath] = true;
               Track.findOne({path : musicFilepath}, function (err, existingTrack) {
                 if (err) {
                   console.error(err);
@@ -130,6 +132,7 @@ var scanner = {
                   track.modified = track.lastScanned = Date.now();
                   track.user = folder.user;
                   track.save(function (err, track) {
+                    counter++;
                     if (err) {
                       console.error(errorHandler.getErrorMessage(err));
                     } else {
@@ -140,7 +143,6 @@ var scanner = {
                       musicFilesDictionary[subfolderPath].push(track);
                       debug('%s - %s track - %s', counter, action, musicFilepath);
                     }
-                    counter++;
                     nextTrack();
                   });
                 }
@@ -151,7 +153,12 @@ var scanner = {
                 console.warn('Error in parsing the music file %s', musicFilepath);
                 console.warn('%j', err);
                 counter++;
-                nextTrack();
+                nextTrack(err);
+              } else {
+                if (!hasMetadata[musicFilepath]) {  // for some reason there is no metadata
+                  console.warn('Error obtaining metadata for %s', musicFilepath);
+                  nextTrack();
+                }
               }
             });
           }, function (err) { // done processing all files or there was an error
