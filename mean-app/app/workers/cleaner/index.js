@@ -11,9 +11,15 @@ var debug = require('debug')('swara:cleaner'),
   errorHandler = require('../../controllers/errors.server.controller'),
   Subfolder = mongoose.model('Subfolder');
 
+// Attach precise range plugin to moment
+require('../../../libs/moment-precise-range')(moment);
+
 var cleaner = {
   cleanFolder : function (folder) {
     debug('Entering the cleanFolder function');
+    var started = moment();
+    console.info('*****');
+    debug('Begin cleaning folder - %s - (%s)', folder.path, started);
     async.each(folder.subfolders, function (subfolderObject, nextSubfolder) {
       Subfolder.findById(subfolderObject._id).populate('tracks').exec(function (err, subfolder) {
         async.each(subfolder.tracks, function (track, nextTrack) {
@@ -22,7 +28,7 @@ var cleaner = {
               console.error(err);
               nextTrack(err);
             } else {
-              console.info('(%s) Successfully deleted track %s', moment(), track.path);
+              debug('Deleted track - %s', track.path);
               nextTrack();
             }
           });
@@ -37,7 +43,7 @@ var cleaner = {
                 console.error(errorHandler.getErrorMessage(err));
                 nextSubfolder(errorHandler.getErrorMessage(err));
               } else {
-                console.info('(%s) Successfully deleted subfolder %s', moment(), subfolder.path);
+                debug('Deleted subfolder - %s', subfolder.path);
                 nextSubfolder();
               }
             });
@@ -49,9 +55,13 @@ var cleaner = {
         console.error(err);
       } else {
         // deleted all subfolders
-        console.info('(%s) Successfully deleted all tracks and subfolders for %s', moment(), folder.path);
+        var ended = moment();
+        var duration = moment.preciseDiff(started, ended);
+        debug('Cleaned folder - %s - (%s)', folder.path, ended);
+        debug('Deleted tracks & subfolders in folder in %s', duration);
+        console.info('*****');
       }
-      console.log('Exiting...');
+      console.info('Exiting background process: %s (pid)', process.pid);
       process.exit(!!err);
     });
   }

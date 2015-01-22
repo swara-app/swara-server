@@ -31,6 +31,15 @@ var app = require('./config/express')(db);
 // Bootstrap passport config
 require('./config/passport')();
 
+global.debugPort = 5858;
+
+app.debugMode = !!process && !!process.env && !!process.env.DEBUG && process.env.DEBUG.indexOf('swara') > -1;
+
+app.getNextDebugPort = function () {
+  global.debugPort += 1;
+  return global.debugPort;
+};
+
 app.start = function () {
 // Start the app by listening on <port>
   debug('app.start - about to call app.listen');

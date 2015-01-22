@@ -51,7 +51,7 @@ var scanner = {
         debug('Entering the scanFolder function');
         var started = moment();
         console.info('*****');
-        console.info('(%s) Begin scanning the folder %s', started, folder.path);
+        debug('Begin scanning folder - %s - (%s)', folder.path, started);
 
         var totalFilesDictionary = {};
         var musicFilesDictionary = {};
@@ -67,7 +67,7 @@ var scanner = {
         debug('Setting up on file event handler for the walker');
         walker.on('file', function (root, fileStats, next) {
           var filepath = path.join(root, fileStats.name);
-          debug('Within the file event handler for walker for %s', filepath);
+          debug('Walking file - %s', filepath);
           totalFilesDictionary = incrementDictionaryItemCount(totalFilesDictionary, root);
 
           if (fileStats.name.match(/\.mp3$/i)) {
@@ -138,7 +138,7 @@ var scanner = {
                         musicFilesDictionary[subfolderPath] = [];
                       }
                       musicFilesDictionary[subfolderPath].push(track);
-                      console.info('(%s) - %s - Successfully %s the track %s', moment(), counter, action, musicFilepath);
+                      debug('%s - %s track - %s', counter, action, musicFilepath);
                     }
                     counter++;
                     nextTrack();
@@ -148,7 +148,7 @@ var scanner = {
             });
             parser.on('done', function (err) {
               if (err) {
-                console.warn('(%s) Error in parsing the music file %s', moment(), musicFilepath);
+                console.warn('Error in parsing the music file %s', musicFilepath);
                 console.warn('%j', err);
                 counter++;
                 nextTrack();
@@ -157,7 +157,7 @@ var scanner = {
           }, function (err) { // done processing all files or there was an error
             debug('Done processing all the musicFilepaths from array');
             if (err) {
-              console.error('(%s) Error processing one of the music files', moment());
+              console.error('Error processing one of the music files - (%s)', moment());
               console.error(err);
             } else {
               // save the in memory dictionaries as new sub-folders
@@ -196,7 +196,7 @@ var scanner = {
                         nextSubfolder(errorHandler.getErrorMessage(err));
                       } else {
                         subfolderArray.push(subfolder);
-                        console.info('(%s) Successfully %s the subfolder %s', moment(), action, subfolderPath);
+                        debug('%s subfolder %s', action, subfolderPath);
                         nextSubfolder();
                       }
                     });
@@ -228,15 +228,15 @@ var scanner = {
                     if (err) {
                       console.error(errorHandler.getErrorMessage(err));
                     } else {
-                      console.info('(%s) Successfully updated the folder %s', moment(), folder.path);
+                      debug('Updated folder - %s', folder.path);
                       var ended = moment();
                       var duration = moment.preciseDiff(started, ended);
-                      console.info('(%s) Done scanning the folder %s', ended, folder.path);
-                      console.log('Scanned %s music files (out of %s total files) from %s folders (out of %s total folders) in %s',
+                      debug('Scanned folder - %s - (%s)', folder.path, ended);
+                      debug('Scanned %s music files (out of %s total files) from %s folders (out of %s total folders) in %s',
                         cumulativeMusicFilesCount, totalFilesCount, musicFoldersCount, foldersCount, duration);
                       console.info('*****');
                     }
-                    console.log('Exiting...');
+                    console.info('Exiting background process: %s (pid)', process.pid);
                     process.exit(!!err);
                   });
                 }

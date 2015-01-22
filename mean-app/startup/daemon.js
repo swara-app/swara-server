@@ -2,6 +2,7 @@
 
 var debug = require('debug')('swara:daemon'),
   fs = require('fs'),
+  app = require('../server'),
   spawnhelper = require('../libs/spawnhelper'),
   stdout = null,
   serverPid,
@@ -11,14 +12,22 @@ var debug = require('debug')('swara:daemon'),
   serverReadyPoller = function (callback) {
     return function () {
       if (stdout) {
-        fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
-          if (err) throw err;
-          if (data.indexOf(serverReadyMarker) > -1) {
-            debug('Server is ready...');
-            clearInterval(serverReadyPollerInterval);
+        if (app.debugMode) {
+          debug('Server is being debugged and will be ready shortly...');
+          setTimeout(function () {
             callback();
-          }
-        });
+          }, 3000);
+          clearInterval(serverReadyPollerInterval);
+        } else {
+          fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
+            if (err) throw err;
+            if (data.indexOf(serverReadyMarker) > -1) {
+              debug('Server is ready...');
+              clearInterval(serverReadyPollerInterval);
+              callback();
+            }
+          });
+        }
       }
     };
   };
@@ -32,6 +41,7 @@ var daemon = {
     spawnhelper.spawn({
       name          : 'Mean.JS Server',
       command       : 'startup/daemon',
+      debugPort     : 5858,
       onBeforeSpawn : function () {
         debug('About to start the server');
       },

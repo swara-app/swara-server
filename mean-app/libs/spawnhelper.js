@@ -11,13 +11,14 @@ module.exports = {
       moment = require('moment'),
       spawn = require('child_process').spawn,
       util = require('util'),
-      mkdirp = require('mkdirp');
+      mkdirp = require('mkdirp'),
+      app = require('../server');
 
     var defaults = {
       name          : '',
       outputDir     : 'logs',
       command       : '',
-      debugPort     : 5858,
+      debugPort     : app.getNextDebugPort(),
       stdoutFile    : 'stdout.log',
       stderrFile    : 'stderr.log',
       onBeforeSpawn : function () {
@@ -45,6 +46,11 @@ module.exports = {
 
       if (typeof(settings.onBeforeSpawn) === 'function') {
         settings.onBeforeSpawn();
+      }
+
+      if (app.debugMode) {
+        stdoutfile = process.stdout;
+        stderrfile = process.stderr;
       }
 
       debug('Starting the spawnedProcess named %s...', settings.name);

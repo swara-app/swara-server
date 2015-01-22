@@ -22,7 +22,6 @@ var debug = require('debug')('swara:server-controller:folder'),
       name          : util.format('%s for %s', action, folder.path),
       outputDir     : util.format('logs/%s-Logs', name),
       command       : 'app/workers/background.js',
-      debugPort     : 5859,
       onBeforeSpawn : function () {
         debug('About to start %sing the folder at %s', action, folder.path);
         fs.writeFileSync(util.format('app/workers/%s.json', name), JSON.stringify(folder.toObject()));
