@@ -64,29 +64,35 @@ var scanner = {
 
         var walker = walk.walk(folder.path, options);
 
+        debug('Setting up onfile event handler for the walker');
         walker.on('file', function (root, fileStats, next) {
+          debug('Within the file event handler for walker for %s', fileStats.name);
           totalFilesDictionary = incrementDictionaryItemCount(totalFilesDictionary, root);
 
           if (fileStats.name.match(/\.mp3$/i)) {
-            // save the filepaths for music files into an array
             musicFilePaths.push(path.join(root, fileStats.name));
           }
           next();
         });
 
+        debug('Setting up onerror event handler for the walker');
         walker.on('errors', function (root, nodeStatsArray, next) {
           console.error('Error within scanner - nodeStatsArray:');
           console.error(nodeStatsArray);
           next();
         });
 
+        debug('Setting up onend event handler for the walker');
         walker.on('end', function () {
           // process all the music files from the musicfilepaths array
-          async.eachLimit(musicFilePaths, 100, function (musicFilepath, next) {
+          debug('About to start parsing %s music filepaths', musicFilePaths.length);
+          var counter = 0;
+          async.eachLimit(musicFilePaths, 100, function (musicFilepath, nextTrack) {
             var musicFileStream = fs.createReadStream(musicFilepath);
             if (!musicFilepath) {
               console.log('(%s) Cannot open file %s', moment(), musicFilepath);
-              next();
+              counter++;
+              nextTrack();
             }
             var parser = mm(musicFileStream);
             parser.on('metadata', function (metadata) {
@@ -96,7 +102,8 @@ var scanner = {
               Track.findOne({path : musicFilepath}, function (err, existingTrack) {
                 if (err) {
                   console.error(err);
-                  next();
+                  counter++;
+                  nextTrack();
                 } else {
                   var action = 'added';
                   var track = {};
@@ -130,9 +137,10 @@ var scanner = {
                         musicFilesDictionary[subfolderPath] = [];
                       }
                       musicFilesDictionary[subfolderPath].push(track);
-                      console.info('(%s) Successfully %s the track %s', moment(), action, musicFilepath);
+                      console.info('(%s) - %s - Successfully %s the track %s', moment(), counter, action, musicFilepath);
                     }
-                    next();
+                    counter++;
+                    nextTrack();
                   });
                 }
               });
@@ -141,10 +149,12 @@ var scanner = {
               if (err) {
                 console.warn('(%s) Error in parsing the music file %s', moment(), musicFilepath);
                 console.warn('%j', err);
-                next();
+                counter++;
+                nextTrack();
               }
             });
           }, function (err) { // done processing all files or there was an error
+            debug('Done processing all the musicFilepaths from array');
             if (err) {
               console.error('(%s) Error processing one of the music files', moment());
               console.error(err);
@@ -153,11 +163,12 @@ var scanner = {
               var processed = 0;
               var cumulativeMusicFilesCount = 0;
               var subfolderArray = [];
-              async.eachLimit(Object.keys(musicFilesDictionary), 20, function (subfolderPath, next) {
+              debug('About to iterate through the musicFilesDictionary which has %s items', Object.keys(musicFilesDictionary).length);
+              async.eachLimit(Object.keys(musicFilesDictionary), 20, function (subfolderPath, nextSubfolder) {
                 var musicFilesCount = musicFilesDictionary[subfolderPath].length;
                 Subfolder.findOne({path : subfolderPath}, function (err, existingSubfolder) {
                   if (err) {
-                    next(err);
+                    nextSubfolder(err);
                   } else {
                     // increment the counter and collect the cumulatives
                     processed++;
@@ -181,16 +192,17 @@ var scanner = {
                     subfolder.user = folder.user;
                     subfolder.save(function (err, subfolder) {
                       if (err) {
-                        next(errorHandler.getErrorMessage(err));
+                        nextSubfolder(errorHandler.getErrorMessage(err));
                       } else {
                         subfolderArray.push(subfolder);
                         console.info('(%s) Successfully %s the subfolder %s', moment(), action, subfolderPath);
-                        next();
+                        nextSubfolder();
                       }
                     });
                   }
                 });
               }, function (err) { // done saving all subfolders
+                debug('Done iterating and saving all subfolders');
                 // update the root folder entry
                 if (err) {
                   console.error(err);
