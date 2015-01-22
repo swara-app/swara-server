@@ -7,10 +7,11 @@ A [node-webkit](https://github.com/rogerwang/node-webkit)/[MEAN.js](http://meanj
 
 ### Getting Started
 
-1. [Download](https://www.mongodb.org/downloads) and install `MongoDB`
-2. Clone this repo
-3. Run `npm install` from the root as well as from within `./mean-app/`
-4. [Download](https://github.com/nwjs/nw.js/#downloads) and install `node-webkit` v0.11.5
+1. [Download](http://nodejs.org/download/) and install `node.js`
+2. [Download](https://www.mongodb.org/downloads) and install `MongoDB`
+3. [Download](https://github.com/nwjs/nw.js/#downloads) and install `node-webkit` v0.11.5
+3. Clone this repo
+4. Run `npm install` from the root of the clone
 5. Run the app using the command from the root of the clone - `/path/to/node-webkit ./mean-app`
 
 ### License
