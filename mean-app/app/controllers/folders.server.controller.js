@@ -3,14 +3,41 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+var debug = require('debug')('swara:server-controller:folder'),
+  fs = require('fs'),
+  util = require('util'),
+  mongoose = require('mongoose'),
   escapeStringRegexp = require('escape-string-regexp'),
   errorHandler = require('./errors.server.controller'),
+  spawnhelper = require('../../libs/spawnhelper'),
   Folder = mongoose.model('Folder'),
   Subfolder = mongoose.model('Subfolder'),
-  cleaner = require('../workers/cleaner'),
-  scanner = require('../workers/scanner'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  spawnProcess = function (action, folder) {
+    var name = action === 'scan' ? 'scanner' : (action === 'clean' ? 'cleaner' : '');
+    if (!name) {
+      throw new Error('Invalid action');
+    }
+    spawnhelper.spawn({
+      name          : util.format('%s for %s', action, folder.path),
+      outputDir     : util.format('logs/%s-Logs', name),
+      command       : 'app/workers/background.js',
+      debugPort     : 5859,
+      onBeforeSpawn : function () {
+        debug('About to start %sing the folder at %s', action, folder.path);
+        fs.writeFileSync(util.format('app/workers/%s.json', name), JSON.stringify(folder.toObject()));
+      },
+      onAfterSpawn  : function () {
+        debug('Successfully started %sing the folder at %s', action, folder.path);
+      }
+    });
+  },
+  cleanFolder = function (folder) {
+    spawnProcess('clean', folder);
+  },
+  scanFolder = function (folder) {
+    spawnProcess('scan', folder);
+  };
 
 /**
  * Create a folder
@@ -38,7 +65,7 @@ exports.create = function (req, res) {
             });
           } else {
             // initiate an asynchronous scan on this folder
-            _.defer(scanner.scanFolder, folder);
+            _.defer(scanFolder, folder);
             res.json(folder);
           }
         });
@@ -70,7 +97,7 @@ exports.update = function (req, res) {
     } else {
       if (folder.scanning) {
         // initiate a rescan on this folder
-        _.defer(scanner.scanFolder, folder);
+        _.defer(scanFolder, folder);
       }
       res.json(folder);
     }
@@ -83,7 +110,7 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   var folder = req.folder;
 
-  _.defer(cleaner.cleanFolder, folder);
+  _.defer(cleanFolder, folder);
 
   folder.remove(function (err) {
     if (err) {

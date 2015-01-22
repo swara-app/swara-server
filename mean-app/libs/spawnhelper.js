@@ -15,7 +15,7 @@ module.exports = {
 
     var defaults = {
       name          : '',
-      outputDir     : __dirname,
+      outputDir     : 'logs',
       command       : '',
       debugPort     : 5858,
       stdoutFile    : 'stdout.log',
@@ -50,7 +50,7 @@ module.exports = {
       debug('Starting the spawnedProcess named %s...', settings.name);
       var spawnedProcess = spawn('node', ['--debug=' + settings.debugPort, settings.command], {
         env   : process.env,
-        stdio : ['ignore', stdoutfile, stderrfile]
+        stdio : ['pipe', stdoutfile, stderrfile]
       });
 
       if (typeof(settings.onAfterSpawn) === 'function') {

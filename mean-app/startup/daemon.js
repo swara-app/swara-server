@@ -2,7 +2,7 @@
 
 var debug = require('debug')('swara:daemon'),
   fs = require('fs'),
-  spawnhelper = require('../libs/spwanhelper'),
+  spawnhelper = require('../libs/spawnhelper'),
   stdout = null,
   serverPid,
   serverReady = false,
@@ -29,17 +29,15 @@ var daemon = {
     debug('Entered daemon:start function');
 
     // start the server process
-    var outputDirectory = 'logs';
     spawnhelper.spawn({
       name          : 'Mean.JS Server',
-      outputDir     : outputDirectory,
       command       : 'startup/daemon',
       onBeforeSpawn : function () {
         debug('About to start the server');
       },
       onAfterSpawn  : function (server) {
         serverPid = server.pid;
-        stdout = outputDirectory + '/stdout.log';
+        stdout = 'logs/stdout.log';
       }
     });
   },
