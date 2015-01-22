@@ -8,8 +8,20 @@ angular.module('folders').controller('FoldersController', ['$scope', '$statePara
       if (!path) {
         return null;
       }
-      var sep = require('path').sep;
-      return path.substr(path.lastIndexOf(sep) + 1);
+      var sep;
+      if (typeof process === 'object') {  // node-wekit
+        sep = require('path').sep;
+        return path.substr(path.lastIndexOf(sep) + 1);
+      } else {  // web app
+        // FIXME: This below else is only for trying out the app from without the node-webkit container
+        sep = '';
+        if (path.indexOf('/') > -1) {
+          sep = '/';
+        } else if (path.indexOf('\\') > -1) {
+          sep = '\\';
+        }
+        return path.substr(path.lastIndexOf(sep) + 1);
+      }
     };
 
     $scope.create = function () {

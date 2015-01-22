@@ -9,13 +9,13 @@
       <div class="form-group" ng-class="{ 'has-error': folderForm.path.$dirty && folderForm.path.$invalid }">
         <label class="control-label" for="path">Path</label>
         <div class="controls">
-          <directory-picker ng-model="path" id="path" class="form-control"
+          <directory-picker ng-model="path" id="path" class="form-control" required
                             placeholder="Path (for example: /Users/username/Music/)"></directory-picker>
         </div>
       </div>
       <div class="form-group">
         <back-button></back-button>
-        <input type="submit" class="btn btn-default">
+        <input type="submit" class="btn btn-default" ng-disabled="!path">
       </div>
     </form>
   </div>
