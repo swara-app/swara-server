@@ -7,44 +7,49 @@
   <div ncy-breadcrumb></div>
   <div class="col-md-12">
     <div class="group">
-      <dl>
-        <dt>Path:</dt>
-        <dd data-ng-bind="subfolder.path"></dd>
-        <dt>Total Files:</dt>
-        <dd data-ng-bind="subfolder.musicFilesCount"></dd>
-        <div data-ng-if="subfolder.tracks.length" class="clearfix">
-          <dt>Tracks:</dt>
-          <dd>
-            <div class="table-container">
-              <table class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center">#</th>
-                    <th>Title</th>
-                    <th>Album</th>
-                    <th>Genre</th>
-                    <th>Artist</th>
-                    <th>Path</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr dir-paginate="track in subfolder.tracks | orderBy: ['trackNumber', 'title'] | itemsPerPage: 8">
-                    <td class="text-nowrap text-center">{{track.trackNumber}}</td>
-                    <td class="text-nowrap">{{track.title}}</td>
-                    <td class="text-nowrap">{{track.album}}</td>
-                    <td class="text-nowrap">{{track.genre}}</td>
-                    <td class="text-nowrap">{{track.artist}}</td>
-                    <td class="text-nowrap">{{track.path}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="pull-right">
-              <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
-            </div>
-          </dd>
+      <div class="folder-metadata table-container">
+        <table class="table table-hover table-condensed">
+          <tr class="text-muted">
+            <td>Total Files:</td>
+            <td class="text-primary text-right"><strong data-ng-bind="subfolder.musicFilesCount"></strong></td>
+          </tr>
+        </table>
+        <table class="table table-hover table-condensed">
+          <tr class="text-muted">
+            <td>Path:</td>
+            <td class="text-primary text-right"><strong data-ng-bind="subfolder.path"></strong></td>
+          </tr>
+        </table>
+      </div>
+      <div data-ng-if="subfolder.tracks.length" class="clearfix">
+        <div class="table-container">
+          <table class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th class="text-center">#</th>
+                <th>Title</th>
+                <th>Album</th>
+                <th>Genre</th>
+                <th>Artist</th>
+                <th>Path</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="track in subfolder.tracks | orderBy: ['trackNumber', 'title'] | itemsPerPage: 8">
+                <td class="text-nowrap text-center">{{track.trackNumber}}</td>
+                <td class="text-nowrap">{{track.title}}</td>
+                <td class="text-nowrap">{{track.album}}</td>
+                <td class="text-nowrap">{{track.genre}}</td>
+                <td class="text-nowrap">{{track.artist}}</td>
+                <td class="text-nowrap">{{track.path}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </dl>
+        <div class="pull-right">
+          <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
+        </div>
+      </div>
     </div>
     <audit-trail entity="subfolder"></audit-trail>
     <back-button></back-button>

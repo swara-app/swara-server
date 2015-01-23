@@ -22,40 +22,46 @@
       </a>
     </div>
     <div class="group">
-      <dl>
-        <dt>Path:</dt>
-        <dd data-ng-bind="folder.path"></dd>
-        <dt>Total Folders:</dt>
-        <dd data-ng-bind="folder.subfolders.length"></dd>
-        <dt>Total Files:</dt>
-        <dd data-ng-bind="folder.musicFilesCount"></dd>
-        <div data-ng-if="folder.subfolders.length && !folder.scanning" class="clearfix">
-          <dt>Subfolders:</dt>
-          <dd>
-            <div class="table-container">
-              <table class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th class="text-center">Files</th>
-                    <th>Path</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr dir-paginate="subfolder in folder.subfolders | orderBy: 'path' | itemsPerPage: 7">
-                    <td class="text-nowrap"><a data-ng-href="#!/folders/{{subfolder.parentFolder}}/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
-                    <td class="text-nowrap text-center">{{subfolder.musicFilesCount}}</td>
-                    <td class="text-nowrap">{{subfolder.path}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="pull-right">
-              <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
-            </div>
-          </dd>
+      <div class="folder-metadata table-container">
+        <table class="table table-hover table-condensed">
+          <tr class="text-muted">
+            <td>Total Folders:</td>
+            <td class="text-primary text-right"><strong data-ng-bind="folder.subfolders.length"></strong></td>
+            <td>Total Files:</td>
+            <td class="text-primary text-right"><strong data-ng-bind="folder.musicFilesCount"></strong></td>
+          </tr>
+        </table>
+        <table class="table table-hover table-condensed">
+          <tr class="text-muted">
+            <td>Path:</td>
+            <td class="text-primary text-right"><strong data-ng-bind="folder.path"></strong></td>
+          </tr>
+        </table>
+      </div>
+      <div data-ng-if="folder.subfolders.length && !folder.scanning" class="clearfix">
+        <p class="text-muted">Subfolders:</p>
+        <div class="table-container">
+          <table class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th class="text-center">Files</th>
+                <th>Path</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="subfolder in folder.subfolders | orderBy: 'path' | itemsPerPage: 7">
+                <td class="text-nowrap"><a data-ng-href="#!/folders/{{subfolder.parentFolder}}/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
+                <td class="text-nowrap text-center">{{subfolder.musicFilesCount}}</td>
+                <td class="text-nowrap">{{subfolder.path}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </dl>
+        <div class="pull-right">
+          <dir-pagination-controls template-url="lib/angular-utils-pagination/dirPagination.tpl.html"></dir-pagination-controls>
+        </div>
+      </div>
     </div>
     <audit-trail entity="folder"></audit-trail>
     <a href="#!/folders" class="btn btn-default" title="Go Back">Back</a>
