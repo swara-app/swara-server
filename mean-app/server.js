@@ -33,7 +33,7 @@ require('./config/passport')();
 
 global.debugPort = 5858;
 
-app.debugMode = !!process && !!process.env && !!process.env.DEBUG && process.env.DEBUG.indexOf('swara') > -1;
+app.debugMode = !!process && !!process.env && !!process.env.DEBUG && process.env.DEBUG.indexOf('swara') > -1 && process.platform !== 'win32';
 
 app.getNextDebugPort = function () {
   global.debugPort += 1;
