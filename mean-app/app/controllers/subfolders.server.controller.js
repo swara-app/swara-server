@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+var _ = require('lodash'),
+  mongoose = require('mongoose'),
   errorHandler = require('./errors.server.controller'),
   Subfolder = mongoose.model('Subfolder');
 
@@ -15,12 +16,14 @@ exports.read = function (req, res) {
 };
 
 /**
- * Delete an subfolder
+ * Update a subfolder
  */
-exports.delete = function (req, res) {
+exports.update = function (req, res) {
   var subfolder = req.subfolder;
 
-  subfolder.remove(function (err) {
+  subfolder = _.extend(subfolder, req.body);
+  subfolder.modified = Date.now();
+  subfolder.save(function (err) {
     if (err) {
       return res.status(400).send({
         message : errorHandler.getErrorMessage(err)

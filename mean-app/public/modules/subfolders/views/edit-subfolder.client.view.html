@@ -1,0 +1,32 @@
+<section data-ng-controller="SubfoldersController" data-ng-init="findOne()">
+  <div class="page-header">
+    <h1>Edit Subfolder</h1>
+  </div>
+  <div ncy-breadcrumb></div>
+  <div class="col-md-12">
+    <form name="subfolderForm" class="form-horizontal" data-ng-submit="update()" novalidate>
+      <fieldset>
+        <div class="form-group" ng-class="{ 'has-error' : submitted && subfolderForm.path.$invalid}">
+          <label class="control-label" for="title">Title</label>
+          <div class="controls">
+            <input name="title" type="text" data-ng-model="subfolder.title" id="title" class="form-control" placeholder="Title" required>
+          </div>
+          <label class="control-label" for="path">Path</label>
+          <div class="controls">
+            <input class="form-control" type="text" data-ng-model="subfolder.path" id="path" readonly />
+          </div>
+        </div>
+        <div class="form-group">
+          <audit-trail entity="subfolder"></audit-trail>
+        </div>
+        <div class="form-group">
+          <a href="#!/subfolders" class="btn btn-default" title="Go Back">Back</a>
+          <input type="submit" value="Update" class="btn btn-default" ng-disabled="!subfolderForm.$valid">
+        </div>
+        <div data-ng-show="error" class="text-danger">
+          <strong data-ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

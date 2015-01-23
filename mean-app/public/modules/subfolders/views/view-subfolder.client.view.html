@@ -6,6 +6,11 @@
   </div>
   <div ncy-breadcrumb></div>
   <div class="col-md-12">
+    <div class="pull-right" data-ng-show="authentication.user._id == subfolder.user._id">
+      <a class="btn btn-primary" href="/#!/folders/{{subfolder.parentFolder}}/subfolders/{{subfolder._id}}/edit" title="Edit Subfolder">
+        <i class="glyphicon glyphicon-edit"></i>
+      </a>
+    </div>
     <div class="group">
       <div class="folder-metadata table-container">
         <table class="table table-hover table-condensed">

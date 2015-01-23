@@ -20,6 +20,16 @@ angular.module('subfolders').controller('SubfoldersController', ['$scope', '$sta
       }
     };
 
+    $scope.update = function () {
+      var subfolder = $scope.subfolder;
+
+      subfolder.$update(function () {
+        $location.path('folders/' + subfolder.parentFolder + '/subfolders/' + subfolder._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
     $scope.findOne = function () {
       $scope.subfolder = Subfolders.get({
         subfolderId : $stateParams.subfolderId
