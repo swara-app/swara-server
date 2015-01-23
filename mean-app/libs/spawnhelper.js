@@ -19,8 +19,8 @@ module.exports = {
       outputDir     : 'logs',
       command       : '',
       debugPort     : app.getNextDebugPort(),
-      stdoutFile    : 'stdout.log',
-      stderrFile    : 'stderr.log',
+      logFile       : '',
+      logFileMode   : 'w+',
       onBeforeSpawn : function () {
       },
       onAfterSpawn  : function (/* spawnedProcess */) {
@@ -29,34 +29,38 @@ module.exports = {
 
     var settings = _.defaults(options, defaults);
 
-    if (!settings.name || !settings.command) {
-      throw new Error('name or command is empty');
+    if (!settings.name || !settings.command || !settings.logFile) {
+      throw new Error('name, command and logFile cannot be empty');
     }
 
     mkdirp(settings.outputDir, function (err) {
       if (err) {
         console.error(err);
       }
-      var stdoutfile = fs.openSync(settings.outputDir + '/' + settings.stdoutFile, 'w+');
-      var stderrfile = fs.openSync(settings.outputDir + '/' + settings.stderrFile, 'w+');
 
-      var startMarker = util.format('started the process named %s at %s\n--------------\n', settings.name, moment());
-      fs.writeSync(stdoutfile, startMarker);
-      fs.writeSync(stderrfile, startMarker);
+      var stdout, stderr;
+
+      console.log('DEBUG Mode: %s', app.debugMode);
+      if (app.debugMode) {
+        stdout = process.stdout;
+        stderr = process.stderr;
+      } else {
+        stderr = stdout = fs.openSync(settings.outputDir + '/' + settings.logFile, settings.logFileMode);
+
+        var startMarker = util.format('%sspawning process named `%s` - (%s)\n--------------\n',
+          settings.logFileMode === 'w+' ? '' : '\n\n**** SEPARATOR ****\n\n\n',
+          settings.name, moment());
+        fs.writeSync(stdout, startMarker);
+      }
 
       if (typeof(settings.onBeforeSpawn) === 'function') {
         settings.onBeforeSpawn();
       }
 
-      if (app.debugMode) {
-        stdoutfile = process.stdout;
-        stderrfile = process.stderr;
-      }
-
       debug('Starting the spawnedProcess named %s...', settings.name);
       var spawnedProcess = spawn('node', ['--debug=' + settings.debugPort, settings.command], {
         env   : process.env,
-        stdio : ['pipe', stdoutfile, stderrfile]
+        stdio : ['pipe', stdout, stderr]
       });
 
       if (typeof(settings.onAfterSpawn) === 'function') {

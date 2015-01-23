@@ -37,17 +37,19 @@ var daemon = {
   start        : function () {
     debug('Entered daemon:start function');
 
+    var serverLogFile = 'swara-server.log';
     // start the server process
     spawnhelper.spawn({
       name          : 'Mean.JS Server',
       command       : 'startup/daemon',
       debugPort     : 5858,
+      logFile       : serverLogFile,
       onBeforeSpawn : function () {
         debug('About to start the server');
       },
       onAfterSpawn  : function (server) {
         serverPid = server.pid;
-        stdout = 'logs/stdout.log';
+        stdout = 'logs/' + serverLogFile;
       }
     });
   },

@@ -1,9 +1,8 @@
 /*jshint unused:false */
 'use strict';
 
-var debug = require('debug')('swara:bootstrap');
-
 var run = function () {
+  var debug = require('debug')('swara:bootstrap');
   debug('Entered bootstrap function');
   var gui = require('nw.gui'), // Load native UI library
     win = require('nw.gui').Window.get(), // Get the current window

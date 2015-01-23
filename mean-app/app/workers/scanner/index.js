@@ -7,8 +7,10 @@
 
 var debug = require('debug')('swara:scanner'),
   async = require('async'),
+  chalk = require('chalk'),
   fs = require('fs'),
   path = require('path'),
+  util = require('util'),
   _ = require('lodash'),
   moment = require('moment'),
   mongoose = require('mongoose'),
@@ -21,6 +23,7 @@ var debug = require('debug')('swara:scanner'),
 
 // Attach precise range plugin to moment
 require('../../../libs/moment-precise-range')(moment);
+chalk.enabled = true;
 
 var getTitleFromPath = function (musicFilePath) {
   if (!musicFilePath) {
@@ -50,8 +53,8 @@ var scanner = {
       } else {
         debug('Entering the scanFolder function');
         var started = moment();
-        console.info('*****');
-        debug('Begin scanning folder - %s - (%s)', folder.path, started);
+        console.info(chalk.green('*****'));
+        console.log(util.format('Begin scanning folder - ' + chalk.red('%s') + ' - (%s)', folder.path, started));
 
         var totalFilesDictionary = {};
         var musicFilesDictionary = {};
@@ -78,7 +81,7 @@ var scanner = {
 
         debug('Setting up on error event handler for the walker');
         walker.on('errors', function (root, nodeStatsArray, next) {
-          console.error('Error within scanner - nodeStatsArray:');
+          console.error(chalk.red('Error within scanner - nodeStatsArray:'));
           console.error(nodeStatsArray);
           next();
         });
@@ -141,7 +144,8 @@ var scanner = {
                         musicFilesDictionary[subfolderPath] = [];
                       }
                       musicFilesDictionary[subfolderPath].push(track);
-                      debug('%s - %s track - %s', counter, action, musicFilepath);
+                      console.log(util.format(chalk.gray('%s') + ' - %s track - ' + chalk.blue('%s'),
+                        counter, action, musicFilepath));
                     }
                     nextTrack();
                   });
@@ -151,9 +155,9 @@ var scanner = {
             parser.on('done', function (err) {
               if (err) {
                 console.warn('Error in parsing the music file %s', musicFilepath);
-                console.warn('%j', err);
+                console.warn(err);
                 counter++;
-                nextTrack(err);
+                nextTrack();
               } else {
                 if (!hasMetadata[musicFilepath]) {  // for some reason there is no metadata
                   console.warn('Error obtaining metadata for %s', musicFilepath);
@@ -164,7 +168,7 @@ var scanner = {
           }, function (err) { // done processing all files or there was an error
             debug('Done processing all the musicFilepaths from array');
             if (err) {
-              console.error('Error processing one of the music files - (%s)', moment());
+              console.error(util.format(chalk.red('Error processing one of the music files - (%s)'), moment()));
               console.error(err);
             } else {
               // save the in memory dictionaries as new sub-folders
@@ -203,7 +207,7 @@ var scanner = {
                         nextSubfolder(errorHandler.getErrorMessage(err));
                       } else {
                         subfolderArray.push(subfolder);
-                        debug('%s subfolder %s', action, subfolderPath);
+                        console.log(util.format('%s subfolder ' + chalk.green('%s'), action, subfolderPath));
                         nextSubfolder();
                       }
                     });
@@ -239,9 +243,10 @@ var scanner = {
                       var ended = moment();
                       var duration = moment.preciseDiff(started, ended);
                       debug('Scanned folder - %s - (%s)', folder.path, ended);
-                      debug('Scanned %s music files (out of %s total files) from %s folders (out of %s total folders) in %s',
-                        cumulativeMusicFilesCount, totalFilesCount, musicFoldersCount, foldersCount, duration);
-                      console.info('*****');
+                      console.log(util.format('Scanned ' + chalk.red('%s') + ' music files (out of ' + chalk.red('%s') +
+                      ' total files) from ' + chalk.red('%s') + ' folders (out of ' + chalk.red('%s') + ' total folders) in ' +
+                      chalk.green('%s'), cumulativeMusicFilesCount, totalFilesCount, musicFoldersCount, foldersCount, duration || 'a jiffy'));
+                      console.info(chalk.green('*****'));
                     }
                     console.info('Exiting background process: %s (pid)', process.pid);
                     process.exit(!!err);

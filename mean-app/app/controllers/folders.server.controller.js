@@ -20,8 +20,9 @@ var debug = require('debug')('swara:server-controller:folder'),
     }
     spawnhelper.spawn({
       name          : util.format('%s for %s', action, folder.path),
-      outputDir     : util.format('logs/%s-Logs', name),
       command       : 'app/workers/background.js',
+      logFile       : 'swara-server-library.log',
+      logFileMode   : 'a+',
       onBeforeSpawn : function () {
         debug('About to start %sing the folder at %s', action, folder.path);
         fs.writeFileSync(util.format('app/workers/%s.json', name), JSON.stringify(folder.toObject()));
