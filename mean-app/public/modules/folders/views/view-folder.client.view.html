@@ -4,6 +4,7 @@
       <small class="text-muted">[ Folder Title ]</small>
     </h1>
   </div>
+  <div ncy-breadcrumb></div>
   <div class="alert alert-info text-center" data-ng-if="folder.scanning">
     <i data-ng-if="folder.scanning" title="Scanning folder" class="glyphicon glyphicon-refresh gly-spin"></i>
     This folder is currently being scanned for music files.
@@ -42,7 +43,7 @@
                 </thead>
                 <tbody>
                   <tr dir-paginate="subfolder in folder.subfolders | orderBy: 'path' | itemsPerPage: 7">
-                    <td class="text-nowrap"><a data-ng-href="#!/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
+                    <td class="text-nowrap"><a data-ng-href="#!/folders/{{subfolder.parentFolder}}/subfolders/{{subfolder._id}}">{{subfolder.title}}</a></td>
                     <td class="text-nowrap text-center">{{subfolder.musicFilesCount}}</td>
                     <td class="text-nowrap">{{subfolder.path}}</td>
                   </tr>

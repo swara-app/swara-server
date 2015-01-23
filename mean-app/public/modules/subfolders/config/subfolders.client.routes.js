@@ -6,8 +6,12 @@ angular.module('subfolders').config(['$stateProvider',
     // Subfolders state routing
     $stateProvider.
       state('viewSubfolder', {
-        url         : '/subfolders/:subfolderId',
-        templateUrl : 'modules/subfolders/views/view-subfolder.client.view.html'
+        url           : '/folders/:folderId/subfolders/:subfolderId',
+        templateUrl   : 'modules/subfolders/views/view-subfolder.client.view.html',
+        ncyBreadcrumb : {
+          label  : 'Subfolder',
+          parent : 'viewFolder'
+        }
       });
   }
 ]);

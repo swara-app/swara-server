@@ -33,7 +33,8 @@ module.exports = {
         'public/lib/angular-ui-utils/ui-utils.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-prompt/dist/angular-prompt.js',
-        'public/lib/angular-utils-pagination/dirPagination.js'
+        'public/lib/angular-utils-pagination/dirPagination.js',
+        'public/lib/angular-breadcrumb/release/angular-breadcrumb.js'
       ]
     },
     css   : [
