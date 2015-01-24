@@ -17,7 +17,7 @@ angular.module('subfolders').config(['$stateProvider',
         url         : '/folders/:folderId/subfolders/:subfolderId/edit',
         templateUrl : 'modules/subfolders/views/edit-subfolder.client.view.html',
         ncyBreadcrumb : {
-          label : 'Subfolder',
+          label : 'Edit',
           parent: 'viewSubfolder'
         }
       });

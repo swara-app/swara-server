@@ -33,7 +33,7 @@ angular.module('folders').config(['$stateProvider',
         url         : '/folders/:folderId/edit',
         templateUrl : 'modules/folders/views/edit-folder.client.view.html',
         ncyBreadcrumb : {
-          label : 'Folder',
+          label : 'Edit',
           parent: 'viewFolder'
         }
       });

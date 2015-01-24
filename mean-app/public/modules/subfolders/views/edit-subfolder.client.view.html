@@ -20,7 +20,7 @@
           <audit-trail entity="subfolder"></audit-trail>
         </div>
         <div class="form-group">
-          <a href="#!/subfolders" class="btn btn-default" title="Go Back">Back</a>
+          <a data-ng-href="#!/folders/{{subfolder.parentFolder}}/subfolders/{{subfolder._id}}" class="btn btn-default" title="Go Back">Back</a>
           <input type="submit" value="Update" class="btn btn-default" ng-disabled="!subfolderForm.$valid">
         </div>
         <div data-ng-show="error" class="text-danger">
