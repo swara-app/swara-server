@@ -40,17 +40,17 @@ module.exports = {
 
       var stdout, stderr;
 
-      if (app.debugMode) {
-        stdout = process.stdout;
-        stderr = process.stderr;
-      } else {
-        stderr = stdout = fs.openSync(settings.outputDir + '/' + settings.logFile, settings.logFileMode);
+      //if (app.debugMode) {
+      //  stdout = process.stdout;
+      //  stderr = process.stderr;
+      //} else {
+      stderr = stdout = fs.openSync(settings.outputDir + '/' + settings.logFile, settings.logFileMode);
 
-        var startMarker = util.format('%sspawning process named `%s` - (%s)\n--------------\n',
-          settings.logFileMode === 'w+' ? '' : '\n\n**** SEPARATOR ****\n\n\n',
-          settings.name, moment());
-        fs.writeSync(stdout, startMarker);
-      }
+      var startMarker = util.format('%sspawning process named `%s` - (%s)\n--------------\n',
+        settings.logFileMode === 'w+' ? '' : app.libraryLogSeparator,
+        settings.name, moment());
+      fs.writeSync(stdout, startMarker);
+      //}
 
       if (typeof(settings.onBeforeSpawn) === 'function') {
         settings.onBeforeSpawn();

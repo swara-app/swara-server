@@ -63,16 +63,23 @@ html, body {
 }
 
 .log-container {
-  padding       : 10px 5px;
-  font-family   : monospace;
-  font-size     : small;
-  border        : solid 1px #d6d6d6;
-  border-radius : 5px;
-  max-height    : 300px;
-  overflow      : auto;
+  padding     : 10px 5px;
+  font-family : monospace;
+  font-size   : small;
+  max-height  : 300px;
+  overflow    : auto;
 }
 
 .log-container pre {
+  padding          : 0;
+  margin           : 0;
+  border           : 0;
+  border-radius    : 0;
+  background-color : transparent;
+  white-space      : nowrap;
+}
+
+.logLine {
   padding          : 0 2px;
   margin           : 0;
   line-height      : 1.5;
@@ -82,6 +89,22 @@ html, body {
   background-color : transparent;
 }
 
-.log-container pre:hover {
+.logLine:hover {
   background-color : #eeeeee;
+}
+
+.library-log .panel-body {
+  padding : 0;
+}
+
+.library-logs-container .panel-group {
+  margin-bottom : 0;
+}
+
+.library-logs-container .panel-title {
+  font-size : 13px;
+}
+
+.library-logs-container .log-container {
+  max-height : 230px;
 }

@@ -41,6 +41,8 @@ app.getNextDebugPort = function () {
 };
 
 app.appLogFile = config.appLogFile;
+app.libraryLogFile = config.libraryLogFile;
+app.libraryLogSeparator = config.libraryLogSeparator;
 
 app.start = function () {
   // Start the app by listening on <port> for the socket.io enriched `server` instance

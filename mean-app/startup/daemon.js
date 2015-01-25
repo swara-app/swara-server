@@ -12,22 +12,22 @@ var debug = require('debug')('swara:daemon'),
   serverReadyPoller = function (callback) {
     return function () {
       if (stdout) {
-        if (app.debugMode) {
-          debug('Server is being debugged and will be ready shortly...');
-          setTimeout(function () {
+        //if (app.debugMode) {
+        //  debug('Server is being debugged and will be ready shortly...');
+        //  setTimeout(function () {
+        //    callback();
+        //  }, 3000);
+        //  clearInterval(serverReadyPollerInterval);
+        //} else {
+        fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
+          if (err) throw err;
+          if (data.indexOf(serverReadyMarker) > -1) {
+            debug('Server is ready...');
+            clearInterval(serverReadyPollerInterval);
             callback();
-          }, 3000);
-          clearInterval(serverReadyPollerInterval);
-        } else {
-          fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
-            if (err) throw err;
-            if (data.indexOf(serverReadyMarker) > -1) {
-              debug('Server is ready...');
-              clearInterval(serverReadyPollerInterval);
-              callback();
-            }
-          });
-        }
+          }
+        });
+        //}
       }
     };
   };
@@ -37,19 +37,26 @@ var daemon = {
   start        : function () {
     debug('Entered daemon:start function');
 
-    var serverLogFile = app.appLogFile;
+    var logDir = 'logs/';
+
+    // initialize the library log if it does not exist
+    var libraryLogFile = logDir + app.libraryLogFile;
+    if (!fs.existsSync(libraryLogFile)) {
+      fs.writeFileSync(libraryLogFile, '\n');
+    }
+
     // start the server process
     spawnhelper.spawn({
       name          : 'Mean.JS Server',
       command       : 'startup/daemon',
       debugPort     : 5858,
-      logFile       : serverLogFile,
+      logFile       : app.appLogFile,
       onBeforeSpawn : function () {
         debug('About to start the server');
       },
       onAfterSpawn  : function (server) {
         serverPid = server.pid;
-        stdout = 'logs/' + serverLogFile;
+        stdout = logDir + app.appLogFile;
       }
     });
   },

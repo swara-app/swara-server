@@ -6,19 +6,20 @@ var MINUTE = 60000,
   YEAR = 365 * DAY;
 
 module.exports = {
-  app               : {
+  app                 : {
     title       : 'Swara Server',
     description : 'A MEAN.js based node-webkit desktop/server application that catalogs your music collection and streams it to the Swara client apps.',
     keywords    : 'swara, swara-server, mp3-streaming, self-hosted, nodejs, meanjs, node-webkit, music-streaming, music-library'
   },
-  appLogFile        : 'swara-server.log',
-  libraryLogFile    : 'swara-server-library.log',
-  port              : process.env.PORT || 3000,
-  templateEngine    : 'swig',
-  cookieMaxAge      : YEAR,
-  sessionSecret     : 'swara-asdkjadsknasd-server',
-  sessionCollection : 'sessions',
-  assets            : {
+  appLogFile          : 'swara-server.log',
+  libraryLogFile      : 'swara-server-library.log',
+  libraryLogSeparator : '\n\n**** SEPARATOR ****\n\n\n',
+  port                : process.env.PORT || 3000,
+  templateEngine      : 'swig',
+  cookieMaxAge        : YEAR,
+  sessionSecret       : 'swara-asdkjadsknasd-server',
+  sessionCollection   : 'sessions',
+  assets              : {
     lib   : {
       css : [
         'public/lib/bootstrap/dist/css/bootstrap.css',

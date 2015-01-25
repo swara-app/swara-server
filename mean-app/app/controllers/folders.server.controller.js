@@ -15,29 +15,29 @@ var debug = require('debug')('swara:server-controller:folder'),
   config = require('../../config/config'),
   _ = require('lodash'),
   spawnProcess = function (action, folder) {
-    var name = action === 'scan' ? 'scanner' : (action === 'clean' ? 'cleaner' : '');
+    var name = action === 'Add' ? 'scanner' : (action === 'Remove' ? 'cleaner' : '');
     if (!name) {
       throw new Error('Invalid action');
     }
     spawnhelper.spawn({
-      name          : util.format('%s for %s', action, folder.path),
+      name          : util.format('%s `%s`', action, folder.path),
       command       : 'app/workers/background.js',
       logFile       : config.libraryLogFile,
       logFileMode   : 'a+',
       onBeforeSpawn : function () {
-        debug('About to start %sing the folder at %s', action, folder.path);
+        debug('About to start `%s` on the folder at %s', action, folder.path);
         fs.writeFileSync(util.format('app/workers/%s.json', name), JSON.stringify(folder.toObject()));
       },
       onAfterSpawn  : function () {
-        debug('Successfully started %sing the folder at %s', action, folder.path);
+        debug('Successfully started `%s` on the folder at %s', action, folder.path);
       }
     });
   },
   cleanFolder = function (folder) {
-    spawnProcess('clean', folder);
+    spawnProcess('Remove', folder);
   },
   scanFolder = function (folder) {
-    spawnProcess('scan', folder);
+    spawnProcess('Add', folder);
   };
 
 /**

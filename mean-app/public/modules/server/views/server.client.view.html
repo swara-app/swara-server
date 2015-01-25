@@ -25,20 +25,37 @@
       </tr>
     </table>
   </div>
-  <accordion>
-    <accordion-group heading="Library Log" ng-init="status.open = true" is-open="status.open">
-      <div class="log-container">
-        <div data-ng-repeat="line in server.libraryLog track by $index">
-          <pre><span data-ng-bind-html="renderHtml(line)"></span></pre>
+  <p class="text-muted">Logs:</p>
+  <div class="logs-accordion-container">
+    <accordion>
+      <accordion-group heading="Library Log" data-ng-if="libraryLogVisible" class="library-log"
+                       ng-init="libraryLog.open = true" is-open="libraryLog.open">
+        <div class="library-logs-container">
+          <accordion>
+            <accordion-group ng-init="status.open = $first" is-open="status.open" ng-show="!$last"
+                             data-ng-repeat="libraryLogChunk in server.libraryLog.slice().reverse()">
+              <accordion-heading>{{getLogHeader(libraryLogChunk[0])}}</accordion-heading>
+              <div class="log-container">
+            <pre>
+              <div data-ng-repeat="line in libraryLogChunk track by $index">
+                <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
+              </div>
+            </pre>
+              </div>
+            </accordion-group>
+          </accordion>
         </div>
-      </div>
-    </accordion-group>
-    <accordion-group heading="Application Log">
-      <div class="log-container">
-        <div data-ng-repeat="line in server.appLog">
-          <pre><span data-ng-bind-html="renderHtml(line)"></span></pre>
+      </accordion-group>
+      <accordion-group heading="Application Log" ng-init="appLog.open = !libraryLogVisible"
+                       is-open="appLog.open">
+        <div class="log-container">
+        <pre>
+          <div data-ng-repeat="line in server.appLog track by $index">
+            <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
+          </div>
+        </pre>
         </div>
-      </div>
-    </accordion-group>
-  </accordion>
+      </accordion-group>
+    </accordion>
+  </div>
 </section>

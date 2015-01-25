@@ -6,7 +6,6 @@
 var debug = require('debug')('swara:server-controller:server'),
   fs = require('fs'),
   async = require('async'),
-  errorHandler = require('./errors.server.controller'),
   config = require('../../config/config'),
   Convert = require('ansi-to-html'),
   convert = new Convert({fg : '#000', bg : 'transparent'});
@@ -39,12 +38,13 @@ exports.view = function (req, res) {
     logsDirectory + '/' + config.libraryLogFile
   ], readAsync, function (err, results) {
     if (err) {
-      return res.status(400).send({
-        message : errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send(err);
     } else {
       server.appLog = results[0].split('\n').map(colorize);
-      server.libraryLog = results[1].split('\n').map(colorize);
+      var libraryLogs = results[1].split(config.libraryLogSeparator);
+      server.libraryLog = libraryLogs.map(function (chunk) {
+        return chunk.split('\n').map(colorize);
+      });
       res.json(server);
     }
   });
