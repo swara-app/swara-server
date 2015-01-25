@@ -49,15 +49,39 @@ html, body {
   margin-bottom : 0;
 }
 
-.folder-metadata {
+.metadata {
   margin-bottom : 10px;
 }
 
-.folder-metadata .table td, .folder-metadata .table th {
+.metadata .table td, .metadata .table th {
   border        : none;
   border-bottom : 1px solid #eeeeee;
 }
 
 .pagination {
   margin : 0;
+}
+
+.log-container {
+  padding       : 10px 5px;
+  font-family   : monospace;
+  font-size     : small;
+  border        : solid 1px #d6d6d6;
+  border-radius : 5px;
+  max-height    : 300px;
+  overflow      : auto;
+}
+
+.log-container pre {
+  padding          : 0 2px;
+  margin           : 0;
+  line-height      : 1.5;
+  border           : 0;
+  border-radius    : 0;
+  min-height       : 18px;
+  background-color : transparent;
+}
+
+.log-container pre:hover {
+  background-color : #eeeeee;
 }

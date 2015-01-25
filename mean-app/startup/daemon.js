@@ -37,7 +37,7 @@ var daemon = {
   start        : function () {
     debug('Entered daemon:start function');
 
-    var serverLogFile = 'swara-server.log';
+    var serverLogFile = app.appLogFile;
     // start the server process
     spawnhelper.spawn({
       name          : 'Mean.JS Server',

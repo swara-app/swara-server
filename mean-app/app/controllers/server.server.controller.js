@@ -4,7 +4,20 @@
  * Module dependencies.
  */
 var debug = require('debug')('swara:server-controller:server'),
-  config = require('../../config/config');
+  fs = require('fs'),
+  async = require('async'),
+  errorHandler = require('./errors.server.controller'),
+  config = require('../../config/config'),
+  Convert = require('ansi-to-html'),
+  convert = new Convert({fg : '#000', bg : 'transparent'});
+
+var readAsync = function (file, callback) {
+  fs.readFile(file, 'utf8', callback);
+};
+
+var colorize = function (line) {
+  return convert.toHtml(line);
+};
 
 /**
  * Show the server information
@@ -12,6 +25,7 @@ var debug = require('debug')('swara:server-controller:server'),
 exports.view = function (req, res) {
   debug('Inside server.server-controller.view ');
   var app = req.app;
+  var logsDirectory = 'logs';
   var server = {
     title     : app.locals.title,
     env       : app.get('env'),
@@ -20,6 +34,19 @@ exports.view = function (req, res) {
     db        : config.db,
     debugPort : app.debugPort
   };
-  res.json(server);
+  async.map([
+    logsDirectory + '/' + config.appLogFile,
+    logsDirectory + '/' + config.libraryLogFile
+  ], readAsync, function (err, results) {
+    if (err) {
+      return res.status(400).send({
+        message : errorHandler.getErrorMessage(err)
+      });
+    } else {
+      server.appLog = results[0].split('\n').map(colorize);
+      server.libraryLog = results[1].split('\n').map(colorize);
+      res.json(server);
+    }
+  });
 };
 

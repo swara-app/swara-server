@@ -40,6 +40,8 @@ app.getNextDebugPort = function () {
   return global.debugPort;
 };
 
+app.appLogFile = config.appLogFile;
+
 app.start = function () {
   // Start the app by listening on <port> for the socket.io enriched `server` instance
   debug('app.start - about to call app.get(\'server\').listen');

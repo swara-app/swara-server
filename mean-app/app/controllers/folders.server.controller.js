@@ -12,6 +12,7 @@ var debug = require('debug')('swara:server-controller:folder'),
   spawnhelper = require('../../libs/spawnhelper'),
   Folder = mongoose.model('Folder'),
   Subfolder = mongoose.model('Subfolder'),
+  config = require('../../config/config'),
   _ = require('lodash'),
   spawnProcess = function (action, folder) {
     var name = action === 'scan' ? 'scanner' : (action === 'clean' ? 'cleaner' : '');
@@ -21,7 +22,7 @@ var debug = require('debug')('swara:server-controller:folder'),
     spawnhelper.spawn({
       name          : util.format('%s for %s', action, folder.path),
       command       : 'app/workers/background.js',
-      logFile       : 'swara-server-library.log',
+      logFile       : config.libraryLogFile,
       logFileMode   : 'a+',
       onBeforeSpawn : function () {
         debug('About to start %sing the folder at %s', action, folder.path);

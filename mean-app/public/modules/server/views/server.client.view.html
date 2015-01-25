@@ -5,5 +5,40 @@
     </h1>
   </div>
   <div ncy-breadcrumb></div>
-  <pre>{{server | json}}</pre>
+  <div class="metadata table-container">
+    <table class="table table-hover table-condensed">
+      <tr class="text-muted">
+        <td colspan="2">Title:</td>
+        <td colspan="2" class="text-primary"><strong data-ng-bind="server.title"></strong></td>
+        <td>Database:</td>
+        <td class="text-primary"><strong data-ng-bind="server.db"></strong></td>
+      </tr>
+    </table>
+    <table class="table table-hover table-condensed">
+      <tr class="text-muted">
+        <td>Environment:</td>
+        <td class="text-primary"><strong data-ng-bind="server.env"></strong></td>
+        <td>Port:</td>
+        <td class="text-primary"><strong data-ng-bind="server.port"></strong></td>
+        <td>Process ID:</td>
+        <td class="text-primary"><strong data-ng-bind="server.pid"></strong></td>
+      </tr>
+    </table>
+  </div>
+  <accordion>
+    <accordion-group heading="Library Log" ng-init="status.open = true" is-open="status.open">
+      <div class="log-container">
+        <div data-ng-repeat="line in server.libraryLog track by $index">
+          <pre><span data-ng-bind-html="renderHtml(line)"></span></pre>
+        </div>
+      </div>
+    </accordion-group>
+    <accordion-group heading="Application Log">
+      <div class="log-container">
+        <div data-ng-repeat="line in server.appLog">
+          <pre><span data-ng-bind-html="renderHtml(line)"></span></pre>
+        </div>
+      </div>
+    </accordion-group>
+  </accordion>
 </section>
