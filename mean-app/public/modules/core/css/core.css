@@ -89,12 +89,12 @@ html, body {
   background-color : transparent;
 }
 
-.logLine:hover {
+.logLine:hover, .logLine span:hover {
   background-color : #eeeeee;
 }
 
 .library-log .panel-body {
-  padding : 0;
+  padding : 5px;
 }
 
 .library-logs-container .panel-group {
