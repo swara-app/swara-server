@@ -17,7 +17,10 @@ module.exports = {
         'public/lib/angular-sanitize/angular-sanitize.js',
         'public/lib/angular-ui-router/release/angular-ui-router.min.js',
         'public/lib/angular-ui-utils/ui-utils.min.js',
-        'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js'
+        'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
+        'public/lib/angular-prompt/dist/angular-prompt.min.js',
+        'public/lib/angular-utils-pagination/dirPagination.js',
+        'public/lib/angular-breadcrumb/release/angular-breadcrumb.min.js'
       ]
     },
     css : 'public/dist/application.min.css',

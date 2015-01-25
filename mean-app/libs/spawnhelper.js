@@ -40,7 +40,6 @@ module.exports = {
 
       var stdout, stderr;
 
-      console.log('DEBUG Mode: %s', app.debugMode);
       if (app.debugMode) {
         stdout = process.stdout;
         stderr = process.stderr;

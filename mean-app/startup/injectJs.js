@@ -18,23 +18,25 @@ win.on('close', function () {
   // First hide the window
   this.hide();
 
+  var serverPid = daemon.getServerPid();
+  var nwPid = process.pid;
   if (isWindows) {  // use the tree-kill package on windows
 
     // kill the server child process
-    killProcessTree(daemon.getServerPid());
+    killProcessTree(serverPid);
 
     // kill the main process
-    killProcessTree(process.pid);
+    killProcessTree(nwPid);
 
   } else {  // on non-windows os-es use process.kill and process.exit
 
     // kill express server and its child processes
-    debug('Killing the server process..');
-    process.kill(daemon.getServerPid(), 'SIGKILL');
+    debug('Killing the server process: %s', serverPid);
+    process.kill(serverPid, 'SIGKILL');
 
     // exit the main nw process
+    debug('Exiting main process: %s', nwPid);
     setTimeout(function () {
-      debug('Exiting main process..');
       process.exit(0);
     }, 100);
 
