@@ -1,8 +1,8 @@
 /*jshint unused: false */
 'use strict';
 
-angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Socket', 'Authentication', 'Articles',
-  function ($scope, $stateParams, $location, Socket, Authentication, Articles) {
+angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles',
+  function ($scope, $stateParams, $location, Authentication, Articles) {
     $scope.authentication = Authentication;
 
     $scope.create = function () {
@@ -55,10 +55,5 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
         articleId : $stateParams.articleId
       });
     };
-
-    // set up socket when we are in the articles controller
-    Socket.on('article.created', function (article) {
-      console.log(article);
-    });
   }
 ]);

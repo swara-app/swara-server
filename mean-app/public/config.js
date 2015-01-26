@@ -6,7 +6,7 @@ var ApplicationConfiguration = (function () {
   var applicationModuleName = 'swara-server';
   var applicationModuleVendorDependencies = [
     'ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils',
-    'cgPrompt', 'angularUtils.directives.dirPagination', 'ncy-angular-breadcrumb', 'btford.socket-io', 'luegg.directives'
+    'cgPrompt', 'angularUtils.directives.dirPagination', 'ncy-angular-breadcrumb', 'luegg.directives'
   ];
 
   // Add a new vertical module
