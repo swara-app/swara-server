@@ -28,7 +28,7 @@ var cleaner = {
         async.each(subfolder.tracks, function (track, nextTrack) {
           track.remove(function (err) {
             if (err) {
-              console.error(err);
+              console.error(chalk.red(err));
               nextTrack(err);
             } else {
               console.log(util.format('Deleted track - ' + chalk.blue('%s'), track.path));
@@ -38,12 +38,12 @@ var cleaner = {
         }, function (err) {
           // deleted all tracks in this subfolder - move to next
           if (err) {
-            console.error(err);
+            console.error(chalk.red(err));
             nextSubfolder(err);
           } else {
             subfolder.remove(function (err) {
               if (err) {
-                console.error(errorHandler.getErrorMessage(err));
+                console.error(chalk.red(errorHandler.getErrorMessage(err)));
                 nextSubfolder(errorHandler.getErrorMessage(err));
               } else {
                 console.log(util.format('Deleted subfolder - ' + chalk.green('%s'), subfolder.path));
@@ -55,7 +55,7 @@ var cleaner = {
       });
     }, function (err) {
       if (err) {
-        console.error(err);
+        console.error(chalk.red(err));
       } else {
         // deleted all subfolders
         var ended = moment();

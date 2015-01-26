@@ -49,7 +49,7 @@ var scanner = {
     //    for the files, if it is a music file, capture metadata into the Tracks collection
     Folder.findOne({path : folderObject.path}, function (err, folder) {
       if (err) {
-        console.error(err);
+        console.error(chalk.red(err));
       } else {
         debug('Entering the scanFolder function');
         var started = moment();
@@ -107,7 +107,7 @@ var scanner = {
               hasMetadata[musicFilepath] = true;
               Track.findOne({path : musicFilepath}, function (err, existingTrack) {
                 if (err) {
-                  console.error(err);
+                  console.error(chalk.red(err));
                   counter++;
                   nextTrack();
                 } else {
@@ -137,7 +137,7 @@ var scanner = {
                   track.save(function (err, track) {
                     counter++;
                     if (err) {
-                      console.error(errorHandler.getErrorMessage(err));
+                      console.error(chalk.red(errorHandler.getErrorMessage(err)));
                     } else {
                       var subfolderPath = path.dirname(musicFilepath);
                       if (!musicFilesDictionary[subfolderPath]) {
@@ -154,13 +154,13 @@ var scanner = {
             });
             parser.on('done', function (err) {
               if (err) {
-                console.warn('Error in parsing the music file %s', musicFilepath);
+                console.warn(util.format(chalk.red('Error in parsing the music file %s'), musicFilepath));
                 console.warn(err);
                 counter++;
                 nextTrack();
               } else {
                 if (!hasMetadata[musicFilepath]) {  // for some reason there is no metadata
-                  console.warn('Error obtaining metadata for %s', musicFilepath);
+                  console.warn(util.format(chalk.red('Error obtaining metadata for %s'), musicFilepath));
                   nextTrack();
                 }
               }
@@ -169,7 +169,7 @@ var scanner = {
             debug('Done processing all the musicFilepaths from array');
             if (err) {
               console.error(util.format(chalk.red('Error processing one of the music files - (%s)'), moment()));
-              console.error(err);
+              console.error(chalk.red(err));
             } else {
               // save the in memory dictionaries as new sub-folders
               var processed = 0;
@@ -217,7 +217,7 @@ var scanner = {
                 debug('Done iterating and saving all subfolders');
                 // update the root folder entry
                 if (err) {
-                  console.error(err);
+                  console.error(chalk.red(err));
                 } else {
                   var foldersCount = Object.keys(totalFilesDictionary).length;
                   var musicFoldersCount = Object.keys(musicFilesDictionary).length;
@@ -237,7 +237,7 @@ var scanner = {
 
                   folder.save(function (err) {
                     if (err) {
-                      console.error(errorHandler.getErrorMessage(err));
+                      console.error(chalk.red(errorHandler.getErrorMessage(err)));
                     } else {
                       debug('Updated folder - %s', folder.path);
                       var ended = moment();
