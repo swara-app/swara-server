@@ -17,6 +17,7 @@
     "angular-prompt": "~1.1.0",
     "angular-utils-pagination": "~0.5.0",
     "angular-breadcrumb": "~0.3.3",
-    "angular-socket-io": "~0.7.0"
+    "angular-socket-io": "~0.7.0",
+    "angular-scroll-glue": "~2.0.3"
   }
 }

@@ -12,14 +12,14 @@ var debug = require('debug')('swara:scanner'),
   path = require('path'),
   util = require('util'),
   _ = require('lodash'),
+  mm = require('musicmetadata'),
+  walk = require('walk'),
   moment = require('moment'),
   mongoose = require('mongoose'),
   errorHandler = require('../../controllers/errors.server.controller'),
   Folder = mongoose.model('Folder'),
   Subfolder = mongoose.model('Subfolder'),
-  Track = mongoose.model('Track'),
-  mm = require('musicmetadata'),
-  walk = require('walk');
+  Track = mongoose.model('Track');
 
 // Attach precise range plugin to moment
 require('../../../libs/moment-precise-range')(moment);

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('server').controller('ServerController', ['$scope', '$sce', '$stateParams', '$location', 'prompt', 'Server',
-  function ($scope, $sce, $stateParams, $location, prompt, Server) {
+angular.module('server').controller('ServerController', ['$scope', '$sce', '$stateParams', '$location', 'Server',
+  function ($scope, $sce, $stateParams, $location, Server) {
 
     $scope.libraryLogVisible = false;
 
@@ -26,7 +26,10 @@ angular.module('server').controller('ServerController', ['$scope', '$sce', '$sta
     };
 
     $scope.init = function () {
-      $scope.server = Server.get();
+      $scope.server = Server.get(function () {
+      }, function (error) {
+        $scope.error = error;
+      });
     };
   }
 ]);

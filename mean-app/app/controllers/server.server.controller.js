@@ -37,6 +37,7 @@ exports.view = function (req, res) {
     logsDirectory + '/' + config.appLogFile,
     logsDirectory + '/' + config.libraryLogFile
   ], readAsync, function (err, results) {
+    debug('Read both log files asynchronously');
     if (err) {
       return res.status(400).send(err);
     } else {

@@ -5,57 +5,63 @@
     </h1>
   </div>
   <div ncy-breadcrumb></div>
-  <div class="metadata table-container">
-    <table class="table table-hover table-condensed">
-      <tr class="text-muted">
-        <td colspan="2">Title:</td>
-        <td colspan="2" class="text-primary"><strong data-ng-bind="server.title"></strong></td>
-        <td>Database:</td>
-        <td class="text-primary"><strong data-ng-bind="server.db"></strong></td>
-      </tr>
-    </table>
-    <table class="table table-hover table-condensed">
-      <tr class="text-muted">
-        <td>Environment:</td>
-        <td class="text-primary"><strong data-ng-bind="server.env"></strong></td>
-        <td>Port:</td>
-        <td class="text-primary"><strong data-ng-bind="server.port"></strong></td>
-        <td>Process ID:</td>
-        <td class="text-primary"><strong data-ng-bind="server.pid"></strong></td>
-      </tr>
-    </table>
+  <div data-ng-show="error" class="alert alert-danger">
+    <strong>Error:</strong>
+    <pre>{{error | json}}</pre>
   </div>
-  <p class="text-muted">Logs:</p>
-  <div class="logs-accordion-container">
-    <accordion>
-      <accordion-group heading="Library Log" data-ng-if="libraryLogVisible" class="library-log"
-                       ng-init="libraryLog.open = true" is-open="libraryLog.open">
-        <div class="library-logs-container">
-          <accordion>
-            <accordion-group ng-init="status.open = $first" is-open="status.open" ng-show="!$last"
-                             data-ng-repeat="libraryLogChunk in server.libraryLog.slice().reverse()">
-              <accordion-heading>{{getLogHeader(libraryLogChunk[0])}}</accordion-heading>
-              <div class="log-container">
-            <pre>
-              <div data-ng-repeat="line in libraryLogChunk track by $index">
-                <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
-              </div>
-            </pre>
-              </div>
-            </accordion-group>
-          </accordion>
-        </div>
-      </accordion-group>
-      <accordion-group heading="Application Log" ng-init="appLog.open = !libraryLogVisible"
-                       is-open="appLog.open">
-        <div class="log-container">
-        <pre>
-          <div data-ng-repeat="line in server.appLog track by $index">
-            <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
+  <div data-ng-if="!error">
+    <div class="metadata table-container">
+      <table class="table table-hover table-condensed">
+        <tr class="text-muted">
+          <td colspan="2">Title:</td>
+          <td colspan="2" class="text-primary"><strong data-ng-bind="server.title"></strong></td>
+          <td>Database:</td>
+          <td class="text-primary"><strong data-ng-bind="server.db"></strong></td>
+        </tr>
+      </table>
+      <table class="table table-hover table-condensed">
+        <tr class="text-muted">
+          <td>Environment:</td>
+          <td class="text-primary"><strong data-ng-bind="server.env"></strong></td>
+          <td>Port:</td>
+          <td class="text-primary"><strong data-ng-bind="server.port"></strong></td>
+          <td>Process ID:</td>
+          <td class="text-primary"><strong data-ng-bind="server.pid"></strong></td>
+        </tr>
+      </table>
+    </div>
+    <p class="text-muted">Logs:</p>
+    <div class="logs-accordion-container">
+      <accordion>
+        <accordion-group heading="Library Log" data-ng-if="libraryLogVisible" class="library-log"
+                         ng-init="libraryLog.open = true" is-open="libraryLog.open">
+          <div class="library-logs-container">
+            <accordion>
+              <accordion-group ng-init="status.open = $first" is-open="status.open" ng-show="!$last"
+                               data-ng-repeat="libraryLogChunk in server.libraryLog.slice().reverse()">
+                <accordion-heading>{{getLogHeader(libraryLogChunk[0])}}</accordion-heading>
+                <div class="log-container" scroll-glue>
+              <pre>
+                <div data-ng-repeat="line in libraryLogChunk track by $index">
+                  <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
+                </div>
+              </pre>
+                </div>
+              </accordion-group>
+            </accordion>
           </div>
-        </pre>
-        </div>
-      </accordion-group>
-    </accordion>
+        </accordion-group>
+        <accordion-group heading="Application Log" ng-init="appLog.open = !libraryLogVisible"
+                         is-open="appLog.open">
+          <div class="log-container" scroll-glue>
+          <pre>
+            <div data-ng-repeat="line in server.appLog track by $index">
+              <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
+            </div>
+          </pre>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
   </div>
 </section>
