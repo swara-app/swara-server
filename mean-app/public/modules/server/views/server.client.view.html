@@ -33,22 +33,15 @@
     <p class="text-muted">Logs:</p>
     <div class="logs-accordion-container">
       <accordion>
-        <accordion-group heading="Library Log" data-ng-if="libraryLogVisible" class="library-log"
-                         ng-init="libraryLog.open = true" is-open="libraryLog.open">
-          <div class="library-logs-container">
-            <accordion>
-              <accordion-group ng-init="status.open = $first" is-open="status.open" ng-show="!$last"
-                               data-ng-repeat="libraryLogChunk in server.libraryLog.slice().reverse()">
-                <accordion-heading>{{getLogHeader(libraryLogChunk[0])}}</accordion-heading>
-                <div class="log-container" scroll-glue>
-              <pre>
-                <div data-ng-repeat="line in libraryLogChunk track by $index">
-                  <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
-                </div>
-              </pre>
-                </div>
-              </accordion-group>
-            </accordion>
+        <accordion-group heading="Last Library Operation Log" data-ng-if="libraryLogVisible"
+                         ng-init="libraryLog.open = libraryLogVisible"
+                         is-open="libraryLog.open">
+          <div class="log-container" scroll-glue>
+          <pre>
+            <div data-ng-repeat="line in server.libraryLog track by $index">
+              <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
+            </div>
+          </pre>
           </div>
         </accordion-group>
         <accordion-group heading="Application Log" ng-init="appLog.open = !libraryLogVisible"

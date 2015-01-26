@@ -62,8 +62,12 @@ html, body {
   margin : 0;
 }
 
+.logs-accordion-container .panel-body {
+  color            : #333;
+  background-color : #fff;
+}
+
 .log-container {
-  padding     : 10px 5px;
   font-family : monospace;
   font-size   : small;
   max-height  : 300px;
@@ -75,6 +79,7 @@ html, body {
   margin           : 0;
   border           : 0;
   border-radius    : 0;
+  color            : inherit;
   background-color : transparent;
   white-space      : nowrap;
 }
@@ -90,21 +95,6 @@ html, body {
 }
 
 .logLine:hover, .logLine span:hover {
-  background-color : #eeeeee;
-}
-
-.library-log .panel-body {
-  padding : 5px;
-}
-
-.library-logs-container .panel-group {
-  margin-bottom : 0;
-}
-
-.library-logs-container .panel-title {
-  font-size : 13px;
-}
-
-.library-logs-container .log-container {
-  max-height : 230px;
+  color            : #000;
+  background-color : #bbbbbb;
 }

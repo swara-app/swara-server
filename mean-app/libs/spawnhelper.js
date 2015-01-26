@@ -20,7 +20,6 @@ module.exports = {
       command       : '',
       debugPort     : app.getNextDebugPort(),
       logFile       : '',
-      logFileMode   : 'w+',
       onBeforeSpawn : function () {
       },
       onAfterSpawn  : function (/* spawnedProcess */) {
@@ -44,10 +43,9 @@ module.exports = {
       //  stdout = process.stdout;
       //  stderr = process.stderr;
       //} else {
-      stderr = stdout = fs.openSync(settings.outputDir + '/' + settings.logFile, settings.logFileMode);
+      stderr = stdout = fs.openSync(settings.outputDir + '/' + settings.logFile, 'w+');
 
-      var startMarker = util.format('%sspawning process named `%s` - (%s)\n--------------\n',
-        settings.logFileMode === 'w+' ? '' : app.libraryLogSeparator,
+      var startMarker = util.format('Beginning process <strong>%s</strong> - (%s)\n--------------\n',
         settings.name, moment());
       fs.writeSync(stdout, startMarker);
       //}

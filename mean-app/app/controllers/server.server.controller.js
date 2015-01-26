@@ -8,7 +8,7 @@ var debug = require('debug')('swara:server-controller:server'),
   async = require('async'),
   config = require('../../config/config'),
   Convert = require('ansi-to-html'),
-  convert = new Convert({fg : '#000', bg : 'transparent'});
+  convert = new Convert({fg : '#333', bg : 'transparent'});
 
 var readAsync = function (file, callback) {
   fs.readFile(file, 'utf8', callback);
@@ -41,10 +41,7 @@ exports.view = function (req, res) {
       return res.status(400).send(err);
     } else {
       server.appLog = results[0].split('\n').map(colorize);
-      var libraryLogs = results[1].split(config.libraryLogSeparator);
-      server.libraryLog = libraryLogs.map(function (chunk) {
-        return chunk.split('\n').map(colorize);
-      });
+      server.libraryLog = results[1].split('\n').map(colorize);
       res.json(server);
     }
   });
