@@ -26,12 +26,11 @@ exports.view = function (req, res) {
   var app = req.app;
   var logsDirectory = 'logs';
   var server = {
-    title     : app.locals.title,
-    env       : app.get('env'),
-    port      : app.get('server').address().port,
-    pid       : process.pid,
-    db        : config.db,
-    debugPort : app.debugPort
+    title : app.locals.title,
+    env   : app.get('env'),
+    port  : config.port,
+    pid   : process.pid,
+    db    : config.db
   };
   async.map([
     logsDirectory + '/' + config.appLogFile,
