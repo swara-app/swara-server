@@ -25,18 +25,18 @@
     "url": "git://github.com/swara-app/swara-server.git"
   },
   "dependencies": {
-    "split": "^0.3.2"
+    "split": "^0.3.3"
   },
   "devDependencies": {
     "concat-files": "~0.1.0",
     "grunt": "~0.4.5",
     "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-copy": "^0.7.0",
-    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-jshint": "~0.11.1",
     "grunt-hub": "^0.7.0",
-    "grunt-node-webkit-builder": "^1.0.0",
-    "load-grunt-tasks": "~2.0.0",
-    "time-grunt": "~1.0.0"
+    "grunt-node-webkit-builder": "^1.0.2",
+    "load-grunt-tasks": "~3.1.0",
+    "time-grunt": "~1.1.0"
   },
   "scripts": {
     "test": "grunt build",

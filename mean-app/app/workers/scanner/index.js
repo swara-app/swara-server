@@ -98,71 +98,62 @@ var scanner = {
               counter++;
               nextTrack();
             }
-            var parser = mm(musicFileStream);
-            var hasMetadata = {};
-            parser.on('metadata', function (metadata) {
-              // have the metadata here -> Save the Track
-              //  check if the sub-folder for this track is already added into the sub-folder dictionary and add it if it is not
-              //    increment the tracks count for the root-folder and sub-folder in the in-memory variables
-              hasMetadata[musicFilepath] = true;
-              Track.findOne({path : musicFilepath}, function (err, existingTrack) {
-                if (err) {
-                  console.error(chalk.red(err));
-                  counter++;
-                  nextTrack();
-                } else {
-                  var action = 'added';
-                  var track = {};
-                  if (existingTrack) {
-                    action = 'updated';
-                    track = _.extend(existingTrack, track);
-                  } else {
-                    track = new Track();
-                  }
-                  track.parentFolder = folder;
-                  track.path = musicFilepath;
-                  track.title = metadata.title || getTitleFromPath(musicFilepath);
-                  var year = parseInt(metadata.year || '', 10);
-                  if (!Number.isNaN(year)) {
-                    track.year = year;
-                  }
-                  if (metadata.track && metadata.track.no) {
-                    track.trackNumber = metadata.track.no;
-                  }
-                  track.album = metadata.album || '';
-                  track.artist = metadata.artist.join(', ');
-                  track.genre = metadata.genre.join(', ');
-                  track.modified = track.lastScanned = Date.now();
-                  track.user = folder.user;
-                  track.save(function (err, track) {
-                    counter++;
-                    if (err) {
-                      console.error(chalk.red(errorHandler.getErrorMessage(err)));
-                    } else {
-                      var subfolderPath = path.dirname(musicFilepath);
-                      if (!musicFilesDictionary[subfolderPath]) {
-                        musicFilesDictionary[subfolderPath] = [];
-                      }
-                      musicFilesDictionary[subfolderPath].push(track);
-                      console.log(util.format(chalk.gray('%s') + ' - %s track - ' + chalk.blue('%s'),
-                        counter, action, musicFilepath));
-                    }
-                    nextTrack();
-                  });
-                }
-              });
-            });
-            parser.on('done', function (err) {
+            mm(musicFileStream, function (err, metadata) {
               if (err) {
                 console.warn(util.format(chalk.red('Error in parsing the music file %s'), musicFilepath));
                 console.warn(err);
                 counter++;
                 nextTrack();
               } else {
-                if (!hasMetadata[musicFilepath]) {  // for some reason there is no metadata
-                  console.warn(util.format(chalk.red('Error obtaining metadata for %s'), musicFilepath));
-                  nextTrack();
-                }
+                // have the metadata here -> Save the Track
+                //  check if the sub-folder for this track is already added into the sub-folder dictionary and add it if it is not
+                //    increment the tracks count for the root-folder and sub-folder in the in-memory variables
+                Track.findOne({path : musicFilepath}, function (err, existingTrack) {
+                  if (err) {
+                    console.error(chalk.red(err));
+                    counter++;
+                    nextTrack();
+                  } else {
+                    var action = 'added';
+                    var track = {};
+                    if (existingTrack) {
+                      action = 'updated';
+                      track = _.extend(existingTrack, track);
+                    } else {
+                      track = new Track();
+                    }
+                    track.parentFolder = folder;
+                    track.path = musicFilepath;
+                    track.title = metadata.title || getTitleFromPath(musicFilepath);
+                    var year = parseInt(metadata.year || '', 10);
+                    if (!Number.isNaN(year)) {
+                      track.year = year;
+                    }
+                    if (metadata.track && metadata.track.no) {
+                      track.trackNumber = metadata.track.no;
+                    }
+                    track.album = metadata.album || '';
+                    track.artist = metadata.artist.join(', ');
+                    track.genre = metadata.genre.join(', ');
+                    track.modified = track.lastScanned = Date.now();
+                    track.user = folder.user;
+                    track.save(function (err, track) {
+                      counter++;
+                      if (err) {
+                        console.error(chalk.red(errorHandler.getErrorMessage(err)));
+                      } else {
+                        var subfolderPath = path.dirname(musicFilepath);
+                        if (!musicFilesDictionary[subfolderPath]) {
+                          musicFilesDictionary[subfolderPath] = [];
+                        }
+                        musicFilesDictionary[subfolderPath].push(track);
+                        console.log(util.format(chalk.gray('%s') + ' - %s track - ' + chalk.blue('%s'),
+                          counter, action, musicFilepath));
+                      }
+                      nextTrack();
+                    });
+                  }
+                });
               }
             });
           }, function (err) { // done processing all files or there was an error
