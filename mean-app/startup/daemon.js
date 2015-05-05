@@ -2,6 +2,7 @@
 
 var debug = require('debug')('swara:daemon'),
   fs = require('fs'),
+  mkdirp = require('mkdirp'),
   app = require('../server'),
   spawnhelper = require('../libs/spawnhelper'),
   stdout = null,
@@ -42,6 +43,7 @@ var daemon = {
     // initialize the library log if it does not exist
     var libraryLogFile = logDir + app.libraryLogFile;
     if (!fs.existsSync(libraryLogFile)) {
+      mkdirp.sync(logDir);
       fs.writeFileSync(libraryLogFile, '\n');
     }
 
@@ -71,7 +73,5 @@ var daemon = {
     return serverPid;
   }
 };
-
-daemon.start();
 
 module.exports = daemon;

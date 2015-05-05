@@ -29,4 +29,7 @@ var run = function () {
   daemon.ready(function () {
     window.location.assign('http://localhost:3000/');
   });
+
+  // Start the server
+  daemon.start();
 };

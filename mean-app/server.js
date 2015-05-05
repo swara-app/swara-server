@@ -36,7 +36,10 @@ global.debugPort = 5858;
 app.debugMode = !!process && !!process.env && !!process.env.DEBUG && process.env.DEBUG.indexOf('swara') > -1 && process.platform !== 'win32';
 
 app.getNextDebugPort = function () {
+  debug('In getNextDebugPort to get the next available debug port');
+  debug('Current debugPort: %d', global.debugPort);
   global.debugPort += 1;
+  debug('New debugPort    : %d', global.debugPort);
   return global.debugPort;
 };
 
