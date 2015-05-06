@@ -2,7 +2,7 @@
 
 // Configuring the Articles module
 angular.module('articles').run(['Menus',
-  function (Menus) {
+  function () {
     // Set top bar menu items
     //Menus.addMenuItem('topbar', 'Articles', 'articles', 'dropdown', '/articles(/create)?');
     //Menus.addSubMenuItem('topbar', 'articles', 'List Articles', 'articles');
