@@ -44,7 +44,7 @@ var daemon = {
     var libraryLogFile = logDir + app.libraryLogFile;
     if (!fs.existsSync(libraryLogFile)) {
       mkdirp.sync(logDir);
-      fs.writeFileSync(libraryLogFile, '\n');
+      fs.writeFileSync(libraryLogFile, '');
     }
 
     // start the server process
