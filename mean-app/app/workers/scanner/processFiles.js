@@ -42,7 +42,7 @@ var createProcessFileIterator = function (folder, files) {
   var counter = 0;
   return function (musicFilepath, nextTrack) {
     var musicFileStream = fs.createReadStream(musicFilepath);
-    if (!musicFilepath) {
+    if (!musicFileStream) {
       console.log('(%s) Cannot open file %s', moment(), musicFilepath);
       counter++;
       nextTrack();
@@ -52,6 +52,7 @@ var createProcessFileIterator = function (folder, files) {
         console.warn(util.format(chalk.red('Error in parsing the music file %s'), musicFilepath));
         console.warn(err);
         counter++;
+        musicFileStream.destroy();
         nextTrack();
       } else {
         // have the metadata here -> Save the Track
@@ -61,6 +62,7 @@ var createProcessFileIterator = function (folder, files) {
           if (err) {
             console.error(chalk.red(err));
             counter++;
+            musicFileStream.destroy();
             nextTrack();
           } else {
             var action = 'added';
@@ -86,6 +88,7 @@ var createProcessFileIterator = function (folder, files) {
             track.genre = metadata.genre.join(', ');
             track.modified = track.lastScanned = Date.now();
             track.user = folder.user;
+
             track.save(function (err, track) {
               counter++;
               if (err) {
@@ -99,8 +102,10 @@ var createProcessFileIterator = function (folder, files) {
                 console.log(util.format(chalk.gray('%s') + ' - %s track - ' + chalk.blue('%s'),
                   counter, action, musicFilepath));
               }
+              musicFileStream.destroy();
               nextTrack();
             });
+
           }
         });
       }
@@ -149,6 +154,7 @@ var processFiles = {
           var cumulativeMusicFilesCount = 0;
           var subfolders = [];
           var subfolderPaths = Object.keys(files.tracksBySubfolder);
+
           debug('About to iterate through the subfolderPaths which has %s items', subfolderPaths.length);
           async.eachLimit(subfolderPaths, 20, function (subfolderPath, nextSubfolder) {
             var subfolderTracks = files.tracksBySubfolder[subfolderPath];
@@ -168,15 +174,16 @@ var processFiles = {
                   subfolder = _.extend(existingSubfolder, subfolder);
                 } else {
                   subfolder = new Subfolder();
+                  subfolder.parentFolder = folder;
+                  subfolder.path = subfolderPath;
+                  subfolder.title = subfolderPath.substr(subfolderPath.lastIndexOf(path.sep) + 1);
                 }
-                subfolder.parentFolder = folder;
-                subfolder.path = subfolderPath;
-                subfolder.title = subfolderPath.substr(subfolderPath.lastIndexOf(path.sep) + 1);
                 subfolder.filesCount = files.fileCountBySubfolder[subfolderPath];
                 subfolder.musicFilesCount = musicFilesCount;
                 subfolder.tracks = subfolderTracks;
                 subfolder.modified = subfolder.lastScanned = Date.now();
                 subfolder.user = folder.user;
+
                 subfolder.save(function (err, subfolder) {
                   if (err) {
                     nextSubfolder(errorHandler.getErrorMessage(err));
@@ -186,6 +193,7 @@ var processFiles = {
                     nextSubfolder();
                   }
                 });
+
               }
             });
           }, function (err) { // done saving all subfolders
@@ -219,6 +227,7 @@ var processFiles = {
                 console.info('Exiting background process: %s (pid)', process.pid);
                 process.exit(!!err);
               });
+
             }
           });
         }
