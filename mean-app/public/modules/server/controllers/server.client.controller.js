@@ -1,18 +1,27 @@
 'use strict';
 
+var tweakHeaderForMaxLogSize = function (header, log, maxLogSize) {
+  if (log.length === maxLogSize) {
+    header += ' (showing last ' + maxLogSize + ' lines)';
+  }
+  return header;
+};
+
 angular.module('server').controller('ServerController', ['$scope', '$sce', '$stateParams', '$location', 'Server',
   function ($scope, $sce, $stateParams, $location, Server) {
 
     $scope.libraryLogVisible = false;
 
     $scope.$watch('server.libraryLog', function (libraryLog) {
-      $scope.libraryLogVisible = libraryLog && libraryLog.length > 1;
-
-      // TODO: Apply the same suffix for the application log header too
       $scope.libraryLogHeader = 'Last Library Operation Log';
-      if (libraryLog.length === $scope.server.maxLogSize) {
-        $scope.libraryLogHeader += ' (showing last ' + $scope.server.maxLogSize + ' lines)';
-      }
+      $scope.libraryLogHeader = tweakHeaderForMaxLogSize($scope.libraryLogHeader, libraryLog, $scope.server.maxLogSize);
+
+      $scope.libraryLogVisible = libraryLog && libraryLog.length > 1;
+    }, true);
+
+    $scope.$watch('server.appLog', function (appLog) {
+      $scope.appLogHeader = 'Application Log';
+      $scope.appLogHeader = tweakHeaderForMaxLogSize($scope.appLogHeader, appLog, $scope.server.maxLogSize);
     }, true);
 
     $scope.renderHtml = function (html) {

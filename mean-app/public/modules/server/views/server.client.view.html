@@ -36,7 +36,7 @@
         <accordion-group heading="{{libraryLogHeader}}" data-ng-if="libraryLogVisible"
                          ng-init="libraryLog.open = libraryLogVisible"
                          is-open="libraryLog.open">
-          <div class="log-container" scroll-glue>
+          <div class="log-container" data-scroll-glue>
           <pre>
             <div data-ng-repeat="line in server.libraryLog track by $index">
               <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
@@ -44,9 +44,9 @@
           </pre>
           </div>
         </accordion-group>
-        <accordion-group heading="Application Log" ng-init="appLog.open = !libraryLogVisible"
+        <accordion-group heading="{{appLogHeader}}" ng-init="appLog.open = !libraryLogVisible"
                          is-open="appLog.open">
-          <div class="log-container" scroll-glue>
+          <div class="log-container" data-scroll-glue>
           <pre>
             <div data-ng-repeat="line in server.appLog track by $index">
               <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
