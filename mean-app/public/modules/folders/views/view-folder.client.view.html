@@ -21,6 +21,11 @@
         <i class="glyphicon glyphicon-trash"></i>
       </a>
     </div>
+    <div class="pull-right" data-ng-show="authentication.user._id == folder.user._id && folder.scanning">
+      <a class="btn btn-primary" data-ng-click="remove();" title="Delete Folder">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
+    </div>
     <div class="group">
       <div class="metadata table-container">
         <table class="table table-hover table-condensed">

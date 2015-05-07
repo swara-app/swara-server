@@ -7,6 +7,12 @@ angular.module('server').controller('ServerController', ['$scope', '$sce', '$sta
 
     $scope.$watch('server.libraryLog', function (libraryLog) {
       $scope.libraryLogVisible = libraryLog && libraryLog.length > 1;
+
+      // TODO: Apply the same suffix for the application log header too
+      $scope.libraryLogHeader = 'Last Library Operation Log';
+      if (libraryLog.length === $scope.server.maxLogSize) {
+        $scope.libraryLogHeader += ' (showing last ' + $scope.server.maxLogSize + ' lines)';
+      }
     }, true);
 
     $scope.renderHtml = function (html) {

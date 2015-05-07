@@ -41,75 +41,75 @@ var incrementDictionaryItemCount = function (dict, item) {
 var createProcessFileIterator = function (folder, files) {
   var counter = 0;
   return function (musicFilepath, nextTrack) {
-    var musicFileStream = fs.createReadStream(musicFilepath);
-    if (!musicFileStream) {
-      console.log('(%s) Cannot open file %s', moment(), musicFilepath);
-      counter++;
-      nextTrack();
-    }
-    mm(musicFileStream, function (err, metadata) {
-      if (err) {
-        console.warn(util.format(chalk.red('Error in parsing the music file %s'), musicFilepath));
-        console.warn(err);
+      var musicFileStream = fs.createReadStream(musicFilepath);
+      if (!musicFileStream) {
+        console.log('(%s) Cannot open file %s', moment(), musicFilepath);
         counter++;
-        musicFileStream.destroy();
         nextTrack();
-      } else {
-        // have the metadata here -> Save the Track
-        //  check if the sub-folder for this track is already added into the sub-folder dictionary and add it if it is not
-        //    increment the tracks count for the root-folder and sub-folder in the in-memory variables
-        Track.findOne({path : musicFilepath}, function (err, existingTrack) {
-          if (err) {
-            console.error(chalk.red(err));
-            counter++;
-            musicFileStream.destroy();
-            nextTrack();
-          } else {
-            var action = 'added';
-            var track = {};
-            if (existingTrack) {
-              action = 'updated';
-              track = _.extend(existingTrack, track);
-            } else {
-              track = new Track();
-            }
-            track.parentFolder = folder;
-            track.path = musicFilepath;
-            track.title = metadata.title || getTitleFromPath(musicFilepath);
-            var year = parseInt(metadata.year || '', 10);
-            if (!Number.isNaN(year)) {
-              track.year = year;
-            }
-            if (metadata.track && metadata.track.no) {
-              track.trackNumber = metadata.track.no;
-            }
-            track.album = metadata.album || '';
-            track.artist = metadata.artist.join(', ');
-            track.genre = metadata.genre.join(', ');
-            track.modified = track.lastScanned = Date.now();
-            track.user = folder.user;
-
-            track.save(function (err, track) {
+      }
+      mm(musicFileStream, function (err, metadata) {
+        if (err) {
+          console.warn(util.format(chalk.red('Error in parsing the music file %s'), musicFilepath));
+          console.warn(err);
+          counter++;
+          musicFileStream.destroy();
+          nextTrack();
+        } else {
+          // have the metadata here -> Save the Track
+          //  check if the sub-folder for this track is already added into the sub-folder dictionary and add it if it is not
+          //    increment the tracks count for the root-folder and sub-folder in the in-memory variables
+          Track.findOne({path : musicFilepath}, function (err, existingTrack) {
+            if (err) {
+              console.error(chalk.red(err));
               counter++;
-              if (err) {
-                console.error(chalk.red(errorHandler.getErrorMessage(err)));
-              } else {
-                var subfolderPath = path.dirname(musicFilepath);
-                if (!files.tracksBySubfolder[subfolderPath]) {
-                  files.tracksBySubfolder[subfolderPath] = [];
-                }
-                files.tracksBySubfolder[subfolderPath].push(track);
-                console.log(util.format(chalk.gray('%s') + ' - %s track - ' + chalk.blue('%s'),
-                  counter, action, musicFilepath));
-              }
               musicFileStream.destroy();
               nextTrack();
-            });
+            } else {
+              var action = 'added';
+              var track = {};
+              if (existingTrack) {
+                action = 'updated';
+                track = _.extend(existingTrack, track);
+              } else {
+                track = new Track();
+              }
+              track.parentFolder = folder;
+              track.path = musicFilepath;
+              track.title = metadata.title || getTitleFromPath(musicFilepath);
+              var year = parseInt(metadata.year || '', 10);
+              if (!Number.isNaN(year)) {
+                track.year = year;
+              }
+              if (metadata.track && metadata.track.no) {
+                track.trackNumber = metadata.track.no;
+              }
+              track.album = metadata.album || '';
+              track.artist = metadata.artist.join(', ');
+              track.genre = metadata.genre.join(', ');
+              track.modified = track.lastScanned = Date.now();
+              track.user = folder.user;
 
-          }
-        });
-      }
-    });
+              track.save(function (err, track) {
+                counter++;
+                if (err) {
+                  console.error(chalk.red(errorHandler.getErrorMessage(err)));
+                } else {
+                  var subfolderPath = path.dirname(musicFilepath);
+                  if (!files.tracksBySubfolder[subfolderPath]) {
+                    files.tracksBySubfolder[subfolderPath] = [];
+                  }
+                  files.tracksBySubfolder[subfolderPath].push(track);
+                  console.log(util.format(chalk.gray('%s') + ' - %s track - ' + chalk.blue('%s'),
+                    counter, action, musicFilepath));
+                }
+                musicFileStream.destroy();
+                nextTrack();
+              });
+
+            }
+          });
+        }
+      });
   };
 };
 
@@ -143,7 +143,7 @@ var processFiles = {
     return function () {
       // process all the music files from the musicfilepaths array
       debug('About to start parsing %s music filepaths', files.musicFilepaths.length);
-      async.eachLimit(files.musicFilepaths, 100, createProcessFileIterator(folder, files), function (err) { // done processing all files or there was an error
+      async.eachSeries(files.musicFilepaths, createProcessFileIterator(folder, files), function (err) { // done processing all files or there was an error
         debug('Done processing all the musicFilepaths from array');
         if (err) {
           console.error(util.format(chalk.red('Error processing one of the music files - (%s)'), moment()));
@@ -156,7 +156,7 @@ var processFiles = {
           var subfolderPaths = Object.keys(files.tracksBySubfolder);
 
           debug('About to iterate through the subfolderPaths which has %s items', subfolderPaths.length);
-          async.eachLimit(subfolderPaths, 20, function (subfolderPath, nextSubfolder) {
+          async.eachSeries(subfolderPaths, function (subfolderPath, nextSubfolder) {
             var subfolderTracks = files.tracksBySubfolder[subfolderPath];
             var musicFilesCount = subfolderTracks.length;
             Subfolder.findOne({path : subfolderPath}, function (err, existingSubfolder) {

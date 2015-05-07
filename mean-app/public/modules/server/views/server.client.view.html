@@ -33,7 +33,7 @@
     <p class="text-muted">Logs:</p>
     <div class="logs-accordion-container">
       <accordion>
-        <accordion-group heading="Last Library Operation Log" data-ng-if="libraryLogVisible"
+        <accordion-group heading="{{libraryLogHeader}}" data-ng-if="libraryLogVisible"
                          ng-init="libraryLog.open = libraryLogVisible"
                          is-open="libraryLog.open">
           <div class="log-container" scroll-glue>

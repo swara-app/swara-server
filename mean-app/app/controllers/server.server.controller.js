@@ -10,6 +10,8 @@ var debug = require('debug')('swara:server-controller:server'),
   Convert = require('ansi-to-html'),
   convert = new Convert({fg : '#333', bg : 'transparent'});
 
+var MAX_LOG_SIZE = 10000;
+
 var readAsync = function (file, callback) {
   fs.readFile(file, 'utf8', callback);
 };
@@ -18,6 +20,13 @@ var colorize = function (line) {
   return convert.toHtml(line);
 };
 
+var limitToMaximumSize = function (logLines) {
+  var size = logLines.length;
+  if (size > MAX_LOG_SIZE) {
+    logLines.splice(0, size - MAX_LOG_SIZE);
+  }
+  return logLines;
+};
 /**
  * Show the server information
  */
@@ -26,11 +35,12 @@ exports.view = function (req, res) {
   var app = req.app;
   var logsDirectory = 'logs';
   var server = {
-    title : app.locals.title,
-    env   : app.get('env'),
-    port  : config.port,
-    pid   : process.pid,
-    db    : config.db
+    title      : app.locals.title,
+    env        : app.get('env'),
+    port       : config.port,
+    pid        : process.pid,
+    db         : config.db,
+    maxLogSize : MAX_LOG_SIZE
   };
   async.map([
     logsDirectory + '/' + config.appLogFile,
@@ -40,8 +50,8 @@ exports.view = function (req, res) {
     if (err) {
       return res.status(400).send(err);
     } else {
-      server.appLog = results[0].split('\n').map(colorize);
-      server.libraryLog = results[1].split('\n').map(colorize);
+      server.appLog = limitToMaximumSize(results[0].split('\n').map(colorize));
+      server.libraryLog = limitToMaximumSize(results[1].split('\n').map(colorize));
       res.json(server);
     }
   });
