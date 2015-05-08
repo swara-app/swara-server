@@ -47,9 +47,9 @@ app.appLogFile = config.appLogFile;
 app.libraryLogFile = config.libraryLogFile;
 
 app.start = function () {
-// Start the app by listening on <port>
-  debug('app.start - about to call app.listen');
-  app.listen(config.port);
+  // Start the app by listening on <port> for the socket.io enriched `server` instance
+  debug('app.start - about to call app.get(\'server\').listen');
+  app.get('server').listen(config.port);
   // Logging initialization
   console.log('MEAN.JS application started on port ' + config.port);
   debug('app.start end');

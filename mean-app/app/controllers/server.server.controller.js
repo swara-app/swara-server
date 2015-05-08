@@ -5,55 +5,63 @@
  */
 var debug = require('debug')('swara:server-controller:server'),
   fs = require('fs'),
-  async = require('async'),
-  config = require('../../config/config'),
+  es = require('event-stream'),
   Convert = require('ansi-to-html'),
+  config = require('../../config/config'),
   convert = new Convert({fg : '#333', bg : 'transparent'});
 
-var MAX_LOG_SIZE = 10000;
-
-var readAsync = function (file, callback) {
-  fs.readFile(file, 'utf8', callback);
-};
-
+var logsDirectory = 'logs';
 var colorize = function (line) {
   return convert.toHtml(line);
 };
 
-var limitToMaximumSize = function (logLines) {
-  var size = logLines.length;
-  if (size > MAX_LOG_SIZE) {
-    logLines.splice(0, size - MAX_LOG_SIZE);
-  }
-  return logLines;
+var setupLibraryLogTail = function (socketio, logFileName) {
+  debug('Inside server.server-controller.setupLibraryLogTail');
+
+  var logStream = fs.createReadStream(logsDirectory + '/' + config[logFileName])
+    .pipe(es.split())
+    .pipe(es.map(function (line) {
+      // pause the readstream
+      logStream.pause();
+
+      (function () {
+        // process line here and call logStream.resume() when rdy
+        socketio.sockets.emit(logFileName + '.tail.line', colorize(line));
+        // resume the readstream
+        logStream.resume();
+      })();
+    })
+      .on('error', function (error) {
+        console.log('Error while reading file.');
+        socketio.sockets.emit(logFileName + '.tail.error', error);
+      })
+      .on('end', function () {
+        console.log('Read entirefile.');
+        socketio.sockets.emit(logFileName + '.tail.ended', {});
+      })
+  );
+
 };
+
 /**
  * Show the server information
  */
 exports.view = function (req, res) {
   debug('Inside server.server-controller.view ');
   var app = req.app;
-  var logsDirectory = 'logs';
   var server = {
-    title      : app.locals.title,
-    env        : app.get('env'),
-    port       : config.port,
-    pid        : process.pid,
-    db         : config.db,
-    maxLogSize : MAX_LOG_SIZE
+    title : app.locals.title,
+    env   : app.get('env'),
+    port  : config.port,
+    pid   : process.pid,
+    db    : config.db
   };
-  async.map([
-    logsDirectory + '/' + config.appLogFile,
-    logsDirectory + '/' + config.libraryLogFile
-  ], readAsync, function (err, results) {
-    debug('Read both log files asynchronously');
-    if (err) {
-      return res.status(400).send(err);
-    } else {
-      server.appLog = limitToMaximumSize(results[0].split('\n').map(colorize));
-      server.libraryLog = limitToMaximumSize(results[1].split('\n').map(colorize));
-      res.json(server);
-    }
-  });
+
+  var socketio = req.app.get('socketio');
+
+  setupLibraryLogTail(socketio, 'appLogFile');
+  setupLibraryLogTail(socketio, 'libraryLogFile');
+
+  res.json(server);
 };
 

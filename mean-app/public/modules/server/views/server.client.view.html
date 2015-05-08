@@ -4,12 +4,15 @@
       <small>Information about the running instance of the server</small>
     </h1>
   </div>
+
   <div ncy-breadcrumb></div>
+
   <div data-ng-show="error" class="alert alert-danger">
     <strong>Error:</strong>
     <pre>{{error | json}}</pre>
   </div>
   <div data-ng-if="!error">
+
     <div class="metadata table-container">
       <table class="table table-hover table-condensed">
         <tr class="text-muted">
@@ -30,31 +33,35 @@
         </tr>
       </table>
     </div>
+
     <p class="text-muted">Logs:</p>
+
     <div class="logs-accordion-container">
       <accordion>
-        <accordion-group heading="{{libraryLogHeader}}" data-ng-if="libraryLogVisible"
+        <accordion-group heading="Last Library Operation Log" data-ng-if="libraryLogVisible"
                          ng-init="libraryLog.open = libraryLogVisible"
                          is-open="libraryLog.open">
           <div class="log-container" data-scroll-glue>
           <pre>
-            <div data-ng-repeat="line in server.libraryLog track by $index">
+            <div data-ng-repeat="line in server.libraryLogFile track by $index">
               <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
             </div>
           </pre>
           </div>
         </accordion-group>
-        <accordion-group heading="{{appLogHeader}}" ng-init="appLog.open = !libraryLogVisible"
+        <accordion-group heading="Application Log" ng-init="appLog.open = !libraryLogVisible"
                          is-open="appLog.open">
           <div class="log-container" data-scroll-glue>
           <pre>
-            <div data-ng-repeat="line in server.appLog track by $index">
+            <div data-ng-repeat="line in server.appLogFile track by $index">
               <p class="logLine"><span data-ng-bind-html="renderHtml(line)"></span></p>
             </div>
           </pre>
           </div>
         </accordion-group>
+
       </accordion>
     </div>
+
   </div>
 </section>
