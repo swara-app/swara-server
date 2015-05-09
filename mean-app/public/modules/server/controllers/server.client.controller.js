@@ -4,6 +4,8 @@ angular.module('server').controller('ServerController', ['$scope', '$sce', '$sta
   function ($scope, $sce, $stateParams, $location, $http, Socket, Server) {
 
     var setupSocketsListenersForLogFile = function (logFileName) {
+      Socket.connect();
+
       Socket.on(logFileName + '.tail.error', function (error) {
         $scope.server[logFileName].push(logFileName + '.tail.error');
         console.log(logFileName + '.tail.error');
@@ -34,8 +36,8 @@ angular.module('server').controller('ServerController', ['$scope', '$sce', '$sta
       return $sce.trustAsHtml(html);
     };
 
-    setupSocketsListenersForLogFile('appLogFile');
     setupSocketsListenersForLogFile('libraryLogFile');
+    setupSocketsListenersForLogFile('appLogFile');
 
     $scope.init = function () {
       $scope.server = Server.get(function () {
@@ -43,6 +45,10 @@ angular.module('server').controller('ServerController', ['$scope', '$sce', '$sta
         $scope.error = error;
       });
     };
+
+    $scope.$on('$destroy', function () {
+       Socket.disconnect(true);
+    });
 
   }
 ]);

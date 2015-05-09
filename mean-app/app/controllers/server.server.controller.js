@@ -16,7 +16,7 @@ var colorize = function (line) {
 };
 
 var setupLibraryLogTail = function (socketio, logFileName) {
-  debug('Inside server.server-controller.setupLibraryLogTail');
+  debug('Inside server.server-controller.setupLibraryLogTail:' + logFileName);
 
   var logStream = fs.createReadStream(logsDirectory + '/' + config[logFileName])
     .pipe(es.split())
