@@ -38,7 +38,7 @@
 
     <div class="logs-accordion-container">
       <accordion>
-        <accordion-group heading="Last Library Operation Log" data-ng-if="libraryLogVisible"
+        <accordion-group heading="{{libraryLogFileHeader}}" data-ng-if="libraryLogVisible"
                          ng-init="libraryLog.open = libraryLogVisible"
                          is-open="libraryLog.open">
           <div class="log-container" data-scroll-glue>
@@ -49,7 +49,7 @@
           </pre>
           </div>
         </accordion-group>
-        <accordion-group heading="Application Log" ng-init="appLog.open = !libraryLogVisible"
+        <accordion-group heading="{{appLogFileHeader}}" ng-init="appLog.open = !libraryLogVisible"
                          is-open="appLog.open">
           <div class="log-container" data-scroll-glue>
           <pre>

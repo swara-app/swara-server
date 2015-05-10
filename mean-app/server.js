@@ -50,11 +50,10 @@ app.start = function () {
   // Set up some connect/disconnect logging for the socket.io clients
   var io = app.get('socketio');
   io.on('connection', function (socket) {
-    var socketIdentifier = Math.random() * 10000;
     debug('A new websocket client has connected (identifier: %s)', socket.id);
     socket.on('disconnect', function () {
       debug('Websocket client disconnected (identifier: %s)', socket.id);
-    })
+    });
   });
   // Start the app by listening on <port> for the socket.io enriched `server` instance
   debug('app.start - about to call app.get(\'server\').listen');
