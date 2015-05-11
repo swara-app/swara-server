@@ -115,7 +115,7 @@ exports.logs = function (req, res) {
   setupLibraryLogTail(socketio, 'appLogFile', availableLines.appLogFile);
   setupLibraryLogTail(socketio, 'libraryLogFile', availableLines.libraryLogFile);
 
-  res.json({message : 'WebSockets set up successfully'});
+  res.send('WebSockets set up successfully');
 };
 
 

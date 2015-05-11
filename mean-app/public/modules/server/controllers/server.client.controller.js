@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('server').controller('ServerController', ['$scope', '$sce', '$stateParams', '$location', '$http', '$timeout', 'Socket', 'Server',
-  function ($scope, $sce, $stateParams, $location, $http, $timeout, Socket, Server) {
+angular.module('server').controller('ServerController', ['$scope', '$sce', '$stateParams', '$location', '$http', '$timeout', 'Socket', 'Spinner', 'Server',
+  function ($scope, $sce, $stateParams, $location, $http, $timeout, Socket, Spinner, Server) {
+
+    Spinner.show();
 
     var LIMIT_LOG_AT = 100;
     var MAX_LOG_SIZE = 10000;
@@ -81,6 +83,8 @@ angular.module('server').controller('ServerController', ['$scope', '$sce', '$sta
             });
 
             $http.post('server/logs', availableLines);
+
+            Spinner.hide();
 
           });
         },
