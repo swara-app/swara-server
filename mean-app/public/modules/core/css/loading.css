@@ -1,3 +1,11 @@
+.loading-spinner .cg-busy-default-wrapper {
+  position         : fixed !important;
+  z-index          : 9999;
+  overflow         : hidden;
+  background-color : rgb(200, 200, 200);
+  background-color : rgba(200, 200, 200, 0.2);
+}
+
 .loading {
   font-size : 24px;
 }

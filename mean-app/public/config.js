@@ -7,7 +7,7 @@ var ApplicationConfiguration = (function () {
   var applicationModuleVendorDependencies = [
     'ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils',
     'cgPrompt', 'angularUtils.directives.dirPagination', 'ncy-angular-breadcrumb', 'luegg.directives',
-    'btford.socket-io'
+    'btford.socket-io', 'cgBusy'
   ];
 
   // Add a new vertical module

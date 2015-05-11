@@ -4,7 +4,12 @@
 angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
 // Setting HTML5 Location Mode
-angular.module(ApplicationConfiguration.applicationModuleName).config(['$locationProvider',
+angular.module(ApplicationConfiguration.applicationModuleName).value('cgBusyDefaults', {
+  message      : 'Loading...',
+  backdrop     : false,
+  minDuration  : 500,
+  wrapperClass : 'loading-spinner'
+}).config(['$locationProvider',
   function ($locationProvider) {
     $locationProvider.hashPrefix('!');
   }

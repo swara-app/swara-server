@@ -24,6 +24,7 @@ module.exports = {
       css : [
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+        'public/lib/angular-busy/dist/angular-busy.css'
       ],
       js  : [
         'public/lib/angular/angular.js',
@@ -38,7 +39,8 @@ module.exports = {
         'public/lib/angular-prompt/dist/angular-prompt.js',
         'public/lib/angular-utils-pagination/dirPagination.js',
         'public/lib/angular-breadcrumb/release/angular-breadcrumb.js',
-        'public/lib/angular-scroll-glue/src/scrollglue.js'
+        'public/lib/angular-scroll-glue/src/scrollglue.js',
+        'public/lib/angular-busy/dist/angular-busy.js'
       ]
     },
     css   : [
