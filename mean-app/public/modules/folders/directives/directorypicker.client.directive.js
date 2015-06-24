@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('folders').directive('directoryPicker', ['$compile',
-  function ($compile) {
+angular.module('folders').directive('directoryPicker', ['$compile', '$timeout',
+  function ($compile, $timeout) {
     return {
       restrict    : 'E',
       replace     : true,
@@ -17,7 +17,7 @@ angular.module('folders').directive('directoryPicker', ['$compile',
             if (val) {
               controller.$setViewValue(val);
               // http://stackoverflow.com/a/17958847/218882
-              require('lodash').defer(function () {
+              $timeout(function () {
                 // to update the model into the scope - http://stackoverflow.com/a/18264323/218882
                 scope.$apply();
               });
