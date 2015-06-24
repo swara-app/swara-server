@@ -50,7 +50,7 @@
 		</section>
 	</section>
 
-	<footer class="group"><small class="text-muted">&copy; 2014-{{ Date.now()|date('Y') }} - The Swara App Team</small></footer>
+	<footer class="group"><small class="text-muted"><a href="http://swara-app.github.io/swara-server/" class="js-external-link">&copy; 2014-{{ Date.now()|date('Y') }} - The Swara App Team</a></small></footer>
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">
@@ -68,6 +68,10 @@
 	<!-- Socket.io -->
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/lib/angular-socket-io/socket.min.js"></script>
+
+	<!-- Electron Boilerplate -->
+	<script src="/vendors/electron_boilerplate/context_menu.js"></script>
+	<script src="/vendors/electron_boilerplate/external_links.js"></script>
 </body>
 
 </html>
