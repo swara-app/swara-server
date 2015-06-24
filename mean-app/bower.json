@@ -1,7 +1,7 @@
 {
   "name": "swara-server",
   "version": "0.0.1",
-  "description": "A MEAN.js based node-webkit desktop/server application that catalogs your music collection and streams it to the Swara client apps.",
+  "description": "A cross-platform server that catalogs music collections for streaming to the Swara client apps.",
   "dependencies": {
     "bootstrap": "~3",
     "angular": "~1.3",

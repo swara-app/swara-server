@@ -58,19 +58,6 @@ module.exports = function (grunt) {
           'cwd'  : '<%= config.tmp %>/<%= config.app %>'
         }
       }
-    },
-    nodewebkit    : {
-      options : {
-        buildDir  : '<%= config.dist %>',
-        platforms : ['osx64', 'win64'],
-        version   : 'v0.11.5'
-      },
-      src     : ['<%= config.tmp %>/<%= config.app %>/**/*']
-    },
-    hub           : {
-      meanApp : {
-        src : ['<%= config.app %>/gruntfile.js']
-      }
     }
   });
 
@@ -79,8 +66,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'hub:meanApp:build',
     'copy:app',
-    'npm-install',
-    'nodewebkit'
+    'npm-install'
   ]);
 
   grunt.registerTask('check', [

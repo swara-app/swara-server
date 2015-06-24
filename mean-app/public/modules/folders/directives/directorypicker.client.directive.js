@@ -8,7 +8,7 @@ angular.module('folders').directive('directoryPicker', ['$compile',
       require     : '?ngModel',
       templateUrl : 'modules/folders/templates/directorypicker.client.template.html',
       link        : function (scope, element, attrs, controller) {
-        if (typeof process === 'object') {  // node-webkit
+        if (typeof process === 'object') {  // node context
           var span = element.find('span'),
             button = element.find('button');
 
@@ -39,7 +39,7 @@ angular.module('folders').directive('directoryPicker', ['$compile',
             input.click();
           });
         } else {  // web app
-          // FIXME: This below else is only for trying out the app from without the node-webkit container
+          // FIXME: This below else is only for trying out the app from without the electronjs container
           var html = '<input name="path" type="text" id="path" data-ng-model="path" class="form-control" ' +
             'placeholder="Path (for example: /Users/username/Music/)" required>';
           var e = $compile(html)(scope);

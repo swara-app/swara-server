@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-var fs = require('fs'),
+var debug = require('debug')('swara:express'),
+  fs = require('fs'),
   http = require('http'),
   https = require('https'),
   express = require('express'),
@@ -26,14 +27,17 @@ var fs = require('fs'),
 
 module.exports = function (db) {
   // Initialize express app
+  debug('Initializing a new express app...');
   var app = express();
 
   // Globbing model files
+  debug('Reading the app data models...');
   config.getGlobbedFiles('./app/models/**/*.js').forEach(function (modelPath) {
     require(path.resolve(modelPath));
   });
 
   // Setting application local variables
+  debug('Setting up the local variables');
   app.locals.title = config.app.title;
   app.locals.description = config.app.description;
   app.locals.keywords = config.app.keywords;

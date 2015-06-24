@@ -13,7 +13,7 @@ angular.module('folders').controller('FoldersController', ['$scope', '$statePara
         sep = require('path').sep;
         return path.substr(path.lastIndexOf(sep) + 1);
       } else {  // web app
-        // FIXME: This below else is only for trying out the app from without the node-webkit container
+        // FIXME: This below else is only for trying out the app from without the electronjs container
         sep = '';
         if (path.indexOf('/') > -1) {
           sep = '/';

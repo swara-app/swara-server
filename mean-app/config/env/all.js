@@ -8,8 +8,8 @@ var MINUTE = 60000,
 module.exports = {
   app                 : {
     title       : 'Swara Server',
-    description : 'A MEAN.js based node-webkit desktop/server application that catalogs your music collection and streams it to the Swara client apps.',
-    keywords    : 'swara, swara-server, mp3-streaming, self-hosted, nodejs, meanjs, node-webkit, music-streaming, music-library'
+    description : 'A cross-platform server that catalogs music collections for streaming to the Swara client apps.',
+    keywords    : 'swara, swara-server, mp3-streaming, self-hosted, nodejs, meanjs, electronjs, music-streaming, music-library'
   },
   appLogFile          : 'swara-server.log',
   libraryLogFile      : 'swara-server-library.log',

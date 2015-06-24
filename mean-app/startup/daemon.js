@@ -13,13 +13,6 @@ var debug = require('debug')('swara:daemon'),
   serverReadyPoller = function (callback) {
     return function () {
       if (stdout) {
-        //if (app.debugMode) {
-        //  debug('Server is being debugged and will be ready shortly...');
-        //  setTimeout(function () {
-        //    callback();
-        //  }, 3000);
-        //  clearInterval(serverReadyPollerInterval);
-        //} else {
         fs.readFile(stdout, {encoding : 'utf8'}, function (err, data) {
           if (err) throw err;
           if (data.indexOf(serverReadyMarker) > -1) {
@@ -28,12 +21,11 @@ var debug = require('debug')('swara:daemon'),
             callback();
           }
         });
-        //}
       }
     };
   };
 
-debug('Declaring daemon:start function');
+debug('Declaring daemon object with start and ready handlers...');
 var daemon = {
   start        : function () {
     debug('Entered daemon:start function');
