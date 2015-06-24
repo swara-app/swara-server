@@ -1,6 +1,6 @@
 'use strict';
 
-var debug = require('debug')('swara:daemon'),
+var debug = require('debug')('swara:startup'),
   fs = require('fs'),
   mkdirp = require('mkdirp'),
   app = require('../server'),

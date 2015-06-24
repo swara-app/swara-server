@@ -29,14 +29,14 @@ angular.module('folders').directive('directoryPicker', ['$compile', '$timeout',
           }, true);
 
           button.on('click', function () {
-            var input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('nwdirectory', 'true');
-            input.setAttribute('nwworkingdir', controller.$viewValue || '');
-            input.onchange = function () {
-              setPath(this.value);
-            };
-            input.click();
+            var ipc = require('ipc');
+            ipc.on('directory-picker-closed', function(selectedDirectory){
+              setPath(selectedDirectory);
+            });
+            ipc.send('open-directory-picker', {
+              title: 'Select folder to add to the library',
+              defaultPath: controller.$viewValue || ''
+            });
           });
         } else {  // web app
           // FIXME: This below else is only for trying out the app from without the electronjs container

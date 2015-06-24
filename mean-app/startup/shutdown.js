@@ -1,7 +1,7 @@
 'use strict';
 
 var debug = require('debug')('swara:shutdown'),
-  daemon = require('./daemon.js'),
+  daemon = require('./startup'),
   kill = require('tree-kill'),
   isWindows = process.platform === 'win32';
 

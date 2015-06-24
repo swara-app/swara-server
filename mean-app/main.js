@@ -3,9 +3,9 @@
 var debug = require('debug')('swara:main');
 var app = require('app');
 var BrowserWindow = require('browser-window');
-//var env = require('./libs/electron_boilerplate/env_config');
-var devHelper = require('./libs/electron_boilerplate/dev_helper');
-var windowStateKeeper = require('./libs/electron_boilerplate/window_state');
+var devHelper = require('./libs/electron/devHelper');
+var windowStateKeeper = require('./libs/electron/windowState');
+var directoryPickerIPC = require('./libs/electron/directoryPickerIPC');
 var mainWindow;
 
 // Preserver of the window size and position between app launches.
@@ -28,6 +28,9 @@ app.on('ready', function () {
     mainWindow.maximize();
   }
 
+  //set up IPC for opening the directory picker from the angular directive
+  directoryPickerIPC.setupIPC(mainWindow);
+
   // load the loading page
   mainWindow.loadUrl('file://' + __dirname + '/startup/index.html');
 
@@ -42,7 +45,7 @@ app.on('ready', function () {
 
   // navigate to the meanjs app
   debug('Setting the daemon.ready handler to navigate to the meanjs app');
-  var daemon = require('./startup/daemon.js');
+  var daemon = require('./startup/startup.js');
   daemon.ready(function () {
     mainWindow.loadUrl('http://localhost:3000/');
   });
