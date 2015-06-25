@@ -4,11 +4,11 @@ var debug = require('debug')('swara:dialogHelper'),
   dialog = require('dialog');
 
 var dialogHelper = {
-  showDirectoryPickerDialog: function(browserWindow, title, defaultPath, callback) {
+  showDirectoryPickerDialog : function (browserWindow, title, defaultPath, callback) {
     dialog.showOpenDialog(browserWindow, {
-      title: title,
-      defaultPath: defaultPath,
-      properties: ['openDirectory', 'createDirectory']
+      title       : title,
+      defaultPath : defaultPath,
+      properties  : ['openDirectory', 'createDirectory']
     }, callback);
   }
 };
