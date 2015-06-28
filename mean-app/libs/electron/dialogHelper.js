@@ -5,6 +5,7 @@ var debug = require('debug')('swara:dialogHelper'),
 
 var dialogHelper = {
   showDirectoryPickerDialog : function (browserWindow, title, defaultPath, callback) {
+    debug('Within showDirectoryPickerDialog - title: %s, path: %s', title, defaultPath);
     dialog.showOpenDialog(browserWindow, {
       title       : title,
       defaultPath : defaultPath,
