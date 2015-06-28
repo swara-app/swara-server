@@ -29,6 +29,7 @@ node_modules
 
 # Built files
 dist/
+releases/
 
 # Temp Dir
 build/
