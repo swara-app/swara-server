@@ -13,7 +13,7 @@ module.exports = {
       spawn = require('child_process').spawn,
       util = require('util'),
       mkdirp = require('mkdirp'),
-      app = require('../server');
+      app = require('../app');
 
     var defaults = {
       name          : '',

@@ -32,27 +32,27 @@ app.on('ready', function () {
   directoryPickerIPC.setupIPC(mainWindow);
 
   // load the loading page
-  mainWindow.loadUrl('file://' + __dirname + '/startup/index.html');
+  mainWindow.loadUrl('file://' + __dirname + '/bootstrap/index.html');
 
   devHelper.setDevMenu();
   // mainWindow.openDevTools();
 
   mainWindow.on('close', function () {
-    var shutdownHandler = require('./startup/shutdown');
+    var shutdownHandler = require('./bootstrap/shutdown');
     shutdownHandler.shutdown();
     mainWindowState.saveState(mainWindow);
   });
 
   // navigate to the meanjs app
-  debug('Setting the daemon.ready handler to navigate to the meanjs app');
-  var daemon = require('./startup/startup.js');
-  daemon.ready(function () {
+  debug('Setting the startupHandler.ready handler to navigate to the meanjs app');
+  var startupHandler = require('./bootstrap/startup.js');
+  startupHandler.ready(function () {
     mainWindow.loadUrl('http://localhost:3000/');
   });
 
   // Start the server
   debug('Starting the MEAN app');
-  daemon.start();
+  startupHandler.start();
 
   debug('Finishing the elctron app ready handler');
 });

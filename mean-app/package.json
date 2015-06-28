@@ -10,16 +10,6 @@
     "npm": "1.4.x"
   },
   "main": "main.js",
-  "window": {
-    "title": "Swara Server",
-    "width": 1366,
-    "height": 768,
-    "min_width": 1068,
-    "min_height": 600,
-    "position": "center",
-    "toolbar": true,
-    "icon": "public/modules/core/img/icon.png"
-  },
   "config": {
     "target": "development"
   },

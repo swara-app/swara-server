@@ -3,7 +3,7 @@
 var debug = require('debug')('swara:startup'),
   fs = require('fs'),
   mkdirp = require('mkdirp'),
-  app = require('../server'),
+  app = require('../app'),
   spawnhelper = require('../libs/spawnhelper'),
   stdout = null,
   serverPid,
@@ -25,10 +25,10 @@ var debug = require('debug')('swara:startup'),
     };
   };
 
-debug('Declaring daemon object with start and ready handlers...');
-var daemon = {
+debug('Declaring startupHandler object with start and ready handlers...');
+var startupHandler = {
   start        : function () {
-    debug('Entered daemon:start function');
+    debug('Entered startupHandler:start function');
 
     var logDir = 'logs/';
 
@@ -42,7 +42,7 @@ var daemon = {
     // start the server process
     spawnhelper.spawn({
       name          : 'Mean.JS Server',
-      command       : 'startup/daemon',
+      command       : 'bootstrap/daemon',
       debugPort     : 5858,
       logFile       : app.appLogFile,
       onBeforeSpawn : function () {
@@ -66,4 +66,4 @@ var daemon = {
   }
 };
 
-module.exports = daemon;
+module.exports = startupHandler;
