@@ -11,7 +11,6 @@ var debug = require('debug')('swara:server-controller:server'),
   config = require('../../config/config'),
   convert = new Convert({fg : '#333', bg : 'transparent'});
 
-var logsDirectory = 'logs';
 var MAX_LOG_SIZE = 10000;
 
 var readAsync = function (file, callback) {
@@ -22,7 +21,7 @@ var colorize = function (line) {
   return convert.toHtml(line);
 };
 
-var setupLibraryLogTail = function (socketio, logFileName, availableLines) {
+var setupLibraryLogTail = function (socketio, logsDirectory, logFileName, availableLines) {
   debug('Inside server.server-controller.setupLibraryLogTail:' + logFileName);
 
   var lineCounter = 0;
@@ -86,6 +85,7 @@ exports.view = function (req, res) {
     db         : config.db,
     maxLogSize : MAX_LOG_SIZE
   };
+  var logsDirectory = app.get('logsDirectory');
   async.map([
     logsDirectory + '/' + config.appLogFile,
     logsDirectory + '/' + config.libraryLogFile
@@ -110,10 +110,12 @@ exports.view = function (req, res) {
 
 exports.logs = function (req, res) {
   var availableLines = req.body;
+  var app = req.app;
+  var logsDirectory = app.get('logsDirectory');
   var socketio = req.app.get('socketio');
 
-  setupLibraryLogTail(socketio, 'appLogFile', availableLines.appLogFile);
-  setupLibraryLogTail(socketio, 'libraryLogFile', availableLines.libraryLogFile);
+  setupLibraryLogTail(socketio, logsDirectory, 'appLogFile', availableLines.appLogFile);
+  setupLibraryLogTail(socketio, logsDirectory, 'libraryLogFile', availableLines.libraryLogFile);
 
   res.send('WebSockets set up successfully');
 };

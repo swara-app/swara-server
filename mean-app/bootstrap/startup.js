@@ -27,30 +27,33 @@ var debug = require('debug')('swara:startup'),
 
 debug('Declaring startupHandler object with start and ready handlers...');
 var startupHandler = {
-  start        : function () {
+  start        : function (logsDirectory) {
     debug('Entered startupHandler:start function');
 
-    var logDir = 'logs/';
+    // Set the logs directory path into the app
+    app.set('logsDirectory', logsDirectory);
 
     // initialize the library log if it does not exist
-    var libraryLogFile = logDir + app.libraryLogFile;
+    var libraryLogFile = logsDirectory + app.get('libraryLogFile');
     if (!fs.existsSync(libraryLogFile)) {
-      mkdirp.sync(logDir);
+      mkdirp.sync(logsDirectory);
       fs.writeFileSync(libraryLogFile, '');
     }
+
+    var appLogFile = app.get('appLogFile');
 
     // start the server process
     spawnhelper.spawn({
       name          : 'Mean.JS Server',
       command       : 'bootstrap/daemon',
       debugPort     : 5858,
-      logFile       : app.appLogFile,
+      logFile       : appLogFile,
       onBeforeSpawn : function () {
         debug('About to start the server');
       },
       onAfterSpawn  : function (server) {
         serverPid = server.pid;
-        stdout = logDir + app.appLogFile;
+        stdout = logsDirectory + appLogFile;
       }
     });
   },

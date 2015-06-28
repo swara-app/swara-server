@@ -51,8 +51,8 @@ app.getNextDebugPort = function () {
   return global.debugPort;
 };
 
-app.appLogFile = config.appLogFile;
-app.libraryLogFile = config.libraryLogFile;
+app.set('appLogFile', config.appLogFile);
+app.set('libraryLogFile', config.libraryLogFile);
 
 debug('Declaring the server start handler...');
 app.start = function () {
