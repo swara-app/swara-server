@@ -40,7 +40,7 @@ module.exports = function (grunt) {
       options : {
         jshintrc : '.jshintrc'
       },
-      files   : ['Gruntfile.js', '<%= config.app %>/Gruntfile.js']
+      files   : ['Gruntfile.js', '<%= config.app %>/Gruntfile.js', 'tasks/**/*.js']
     },
     copy          : {
       app : {
