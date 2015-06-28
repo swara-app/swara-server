@@ -8,13 +8,16 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   // load custom grunt task for npm install
-  require('./grunt-npm-install')(grunt);
+  require('./tasks/grunt-npm-install')(grunt);
+
+  // load custom grunt task that runs the gulp task to build releases
+  require('./tasks/grunt-gulp-release')(grunt);
 
   // configurable paths
   var config = {
     app       : 'mean-app',
-    dist      : 'dist',
-    tmp       : 'tmp',
+    build     : 'build',
+    dist      : 'releases',
     resources : 'resources'
   };
 
@@ -27,7 +30,7 @@ module.exports = function (grunt) {
             dot : true,
             src : [
               '<%= config.dist %>/*',
-              '<%= config.tmp %>/*'
+              '<%= config.build %>/*'
             ]
           }
         ]
@@ -46,16 +49,28 @@ module.exports = function (grunt) {
             expand : true,
             dot    : true,
             src    : ['<%= config.app %>/**', '!<%= config.app %>/node_modules/**', '!<%= config.app %>/public/lib/*/**'],
-            dest   : '<%= config.tmp %>/'
+            dest   : '<%= config.build %>/'
           }
         ]
+      }
+    },
+    hub           : {
+      meanApp : {
+        src : ['<%= config.app %>/gruntfile.js']
       }
     },
     'npm-install' : {
       'dist' : {
         'options' : {
           'args' : '--production',
-          'cwd'  : '<%= config.tmp %>/<%= config.app %>'
+          'cwd'  : '<%= config.build %>/<%= config.app %>'
+        }
+      }
+    },
+    'gulp-release' : {
+      'dist' : {
+        'options' : {
+          'args' : '--env=production'
         }
       }
     }
@@ -65,8 +80,9 @@ module.exports = function (grunt) {
     'check',
     'clean:dist',
     'hub:meanApp:build',
-    'copy:app',
-    'npm-install'
+    'copy',
+    'npm-install',
+    'gulp-release'
   ]);
 
   grunt.registerTask('check', [

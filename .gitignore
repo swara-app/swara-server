@@ -28,8 +28,7 @@ node_modules
 .lock-wscript
 
 # Built files
-build/
 dist/
 
 # Temp Dir
-tmp/
+build/
