@@ -25,7 +25,7 @@ var debug = require('debug')('swara:express'),
   consolidate = require('consolidate'),
   path = require('path');
 
-module.exports = function (db) {
+module.exports = function (db, logsDirectory) {
   // Initialize express app
   debug('Initializing a new express app...');
   var app = express();
@@ -43,6 +43,11 @@ module.exports = function (db) {
   app.locals.keywords = config.app.keywords;
   app.locals.jsFiles = config.getJavaScriptAssets();
   app.locals.cssFiles = config.getCSSAssets();
+
+  if (logsDirectory) {
+    app.locals.appLogFile = logsDirectory + config.appLogFile;
+    app.locals.libraryLogFile = logsDirectory + config.libraryLogFile;
+  }
 
   // Passing the request url to environment locals
   app.use(function (req, res, next) {

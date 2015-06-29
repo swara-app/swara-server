@@ -12,12 +12,10 @@ module.exports = {
       domain = require('domain').create(),
       spawn = require('child_process').spawn,
       util = require('util'),
-      mkdirp = require('mkdirp'),
-      app = require('../app');
+      app = require('../app')();
 
     var defaults = {
       name          : '',
-      outputDir     : 'logs',
       command       : '',
       debugPort     : app.getNextDebugPort(),
       logFile       : '',
@@ -39,38 +37,27 @@ module.exports = {
 
     domain.run(function () {
 
-      mkdirp(settings.outputDir, function (err) {
-        if (err) {
-          console.error(err);
-        }
+      var stdout, stderr;
 
-        var stdout, stderr;
+      stderr = stdout = fs.openSync(settings.logFile, 'w+');
 
-        //if (app.debugMode) {
-        //  stdout = process.stdout;
-        //  stderr = process.stderr;
-        //} else {
-        stderr = stdout = fs.openSync(settings.outputDir + '/' + settings.logFile, 'w+');
+      var startMarker = util.format('Beginning process <strong>%s</strong> - (%s)\n--------------\n',
+        settings.name, moment());
+      fs.writeSync(stdout, startMarker);
 
-        var startMarker = util.format('Beginning process <strong>%s</strong> - (%s)\n--------------\n',
-          settings.name, moment());
-        fs.writeSync(stdout, startMarker);
-        //}
+      if (typeof(settings.onBeforeSpawn) === 'function') {
+        settings.onBeforeSpawn();
+      }
 
-        if (typeof(settings.onBeforeSpawn) === 'function') {
-          settings.onBeforeSpawn();
-        }
-
-        debug('Starting the spawnedProcess named %s...', settings.name);
-        var spawnedProcess = spawn('node', ['--debug=' + settings.debugPort, settings.command], {
-          env   : process.env,
-          stdio : ['pipe', stdout, stderr]
-        });
-
-        if (typeof(settings.onAfterSpawn) === 'function') {
-          settings.onAfterSpawn(spawnedProcess);
-        }
+      debug('Starting the spawnedProcess named %s...', settings.name);
+      var spawnedProcess = spawn('node', ['--debug=' + settings.debugPort, settings.command], {
+        env   : process.env,
+        stdio : ['pipe', stdout, stderr]
       });
+
+      if (typeof(settings.onAfterSpawn) === 'function') {
+        settings.onAfterSpawn(spawnedProcess);
+      }
 
     });
 

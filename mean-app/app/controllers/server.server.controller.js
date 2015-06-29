@@ -21,12 +21,12 @@ var colorize = function (line) {
   return convert.toHtml(line);
 };
 
-var setupLibraryLogTail = function (socketio, logsDirectory, logFileName, availableLines) {
+var setupLibraryLogTail = function (socketio, logFilePath, logFileName, availableLines) {
   debug('Inside server.server-controller.setupLibraryLogTail:' + logFileName);
 
   var lineCounter = 0;
   // TODO: createReadStream suddenly stops at the end of scanning for some reason
-  var logStream = fs.createReadStream(logsDirectory + '/' + config[logFileName])
+  var logStream = fs.createReadStream(logFilePath)
     .pipe(es.split())
     .pipe(es.map(function (line) {
       lineCounter++;
@@ -85,12 +85,11 @@ exports.view = function (req, res) {
     db         : config.db,
     maxLogSize : MAX_LOG_SIZE
   };
-  var logsDirectory = app.get('logsDirectory');
   async.map([
-    logsDirectory + '/' + config.appLogFile,
-    logsDirectory + '/' + config.libraryLogFile
+    app.locals.appLogFile,
+    app.locals.libraryLogFile
   ], readAsync, function (err, results) {
-    debug('Read both log files asynchronously');
+    debug('Read both log files asynchronously');å
     if (err) {
       return res.status(400).send(err);
     } else {
@@ -111,11 +110,10 @@ exports.view = function (req, res) {
 exports.logs = function (req, res) {
   var availableLines = req.body;
   var app = req.app;
-  var logsDirectory = app.get('logsDirectory');
   var socketio = req.app.get('socketio');
 
-  setupLibraryLogTail(socketio, logsDirectory, 'appLogFile', availableLines.appLogFile);
-  setupLibraryLogTail(socketio, logsDirectory, 'libraryLogFile', availableLines.libraryLogFile);
+  setupLibraryLogTail(socketio, app.locals.appLogFile, 'appLogFile', availableLines.appLogFile);
+  setupLibraryLogTail(socketio, app.locals.libraryLogFile, 'libraryLogFile', availableLines.libraryLogFile);
 
   res.send('WebSockets set up successfully');
 };

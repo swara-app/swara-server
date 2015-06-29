@@ -12,9 +12,8 @@ var debug = require('debug')('swara:server-controller:folder'),
   spawnhelper = require('../../libs/spawnhelper'),
   Folder = mongoose.model('Folder'),
   Subfolder = mongoose.model('Subfolder'),
-  config = require('../../config/config'),
   _ = require('lodash'),
-  spawnProcess = function (action, folder) {
+  spawnProcess = function (action, folder, libraryLogFile) {
     var name = action === 'Add' ? 'scanner' : (action === 'Remove' ? 'cleaner' : '');
     if (!name) {
       throw new Error('Invalid action');
@@ -22,7 +21,7 @@ var debug = require('debug')('swara:server-controller:folder'),
     spawnhelper.spawn({
       name          : util.format('%s `%s`', action, folder.path),
       command       : 'app/workers/background.js',
-      logFile       : config.libraryLogFile,
+      logFile       : libraryLogFile,
       onBeforeSpawn : function () {
         debug('About to start `%s` on the folder at %s', action, folder.path);
         fs.writeFileSync(util.format('app/workers/%s.json', name), JSON.stringify(folder.toObject()));
@@ -32,11 +31,11 @@ var debug = require('debug')('swara:server-controller:folder'),
       }
     });
   },
-  cleanFolder = function (folder) {
-    spawnProcess('Remove', folder);
+  cleanFolder = function (folder, libraryLogFile) {
+    spawnProcess('Remove', folder, libraryLogFile);
   },
-  scanFolder = function (folder) {
-    spawnProcess('Add', folder);
+  scanFolder = function (folder, libraryLogFile) {
+    spawnProcess('Add', folder, libraryLogFile);
   };
 
 /**
@@ -46,6 +45,7 @@ exports.create = function (req, res) {
   var folder = new Folder(req.body);
   folder.user = req.user;
   folder.scanning = true;
+  var app = req.app;
 
   Subfolder.findOne({path : new RegExp('^' + escapeStringRegexp(folder.path))}, function (err, existingSubfolder) {
     if (err) {
@@ -65,10 +65,10 @@ exports.create = function (req, res) {
             });
           } else {
             // initiate an asynchronous scan on this folder
-            _.defer(scanFolder, folder);
+            _.defer(scanFolder, folder, app.locals.libraryLogFile);
             res.json(folder);
           }
-        });
+        });å
       }
     }
   });
@@ -86,6 +86,7 @@ exports.read = function (req, res) {
  */
 exports.update = function (req, res) {
   var folder = req.folder;
+  var app = req.app;
 
   folder = _.extend(folder, req.body);
   folder.modified = Date.now();
@@ -97,7 +98,7 @@ exports.update = function (req, res) {
     } else {
       if (folder.scanning) {
         // initiate a rescan on this folder
-        _.defer(scanFolder, folder);
+        _.defer(scanFolder, folder, app.locals.libraryLogFile);
       }
       res.json(folder);
     }
@@ -109,8 +110,9 @@ exports.update = function (req, res) {
  */
 exports.delete = function (req, res) {
   var folder = req.folder;
+  var app = req.app;
 
-  _.defer(cleanFolder, folder);
+  _.defer(cleanFolder, folder, app.locals.libraryLogFile);
 
   folder.remove(function (err) {
     if (err) {

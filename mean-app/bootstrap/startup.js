@@ -3,7 +3,6 @@
 var debug = require('debug')('swara:startup'),
   fs = require('fs'),
   mkdirp = require('mkdirp'),
-  app = require('../app'),
   spawnhelper = require('../libs/spawnhelper'),
   stdout = null,
   serverPid,
@@ -30,17 +29,22 @@ var startupHandler = {
   start        : function (logsDirectory) {
     debug('Entered startupHandler:start function');
 
-    // Set the logs directory path into the app
-    app.set('logsDirectory', logsDirectory);
+    var app = require('../app')(logsDirectory);
 
-    // initialize the library log if it does not exist
-    var libraryLogFile = logsDirectory + app.get('libraryLogFile');
-    if (!fs.existsSync(libraryLogFile)) {
-      mkdirp.sync(logsDirectory);
-      fs.writeFileSync(libraryLogFile, '');
+    // create the logs directory
+    mkdirp.sync(logsDirectory);
+
+    // initialize the app log if it does not exist
+    var appLogFile = app.locals.appLogFile;
+    if (!fs.existsSync(appLogFile)) {
+      fs.writeFileSync(appLogFile, '');
     }
 
-    var appLogFile = app.get('appLogFile');
+    // initialize the library log if it does not exist
+    var libraryLogFile = app.locals.libraryLogFile;
+    if (!fs.existsSync(libraryLogFile)) {
+      fs.writeFileSync(libraryLogFile, '');
+    }
 
     // start the server process
     spawnhelper.spawn({
@@ -53,7 +57,7 @@ var startupHandler = {
       },
       onAfterSpawn  : function (server) {
         serverPid = server.pid;
-        stdout = logsDirectory + appLogFile;
+        stdout = appLogFile;
       }
     });
   },

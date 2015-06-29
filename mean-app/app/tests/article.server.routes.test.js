@@ -3,7 +3,7 @@
 
 var should = require('should'),
   request = require('supertest'),
-  app = require('../../app'),
+  app = require('../../app')(),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Article = mongoose.model('Article'),
