@@ -7,6 +7,7 @@ before_install:
   - brew outdated node || brew upgrade node
 before_script:
   - npm install -g grunt-cli
+  - npm install -g gulp
   - npm install
 script:
   - grunt build
