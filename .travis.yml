@@ -1,0 +1,12 @@
+language: objective-c
+before_install:
+  - brew update
+  - brew outdated mongo || brew upgrade mongo
+  - ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
+  - launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+  - brew outdated node || brew upgrade node
+before_script:
+  - npm install -g grunt-cli
+  - npm install
+script:
+  - grunt build

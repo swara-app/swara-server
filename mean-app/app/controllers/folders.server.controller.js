@@ -68,7 +68,7 @@ exports.create = function (req, res) {
             _.defer(scanFolder, folder, app.locals.libraryLogFile);
             res.json(folder);
           }
-        });å
+        });
       }
     }
   });

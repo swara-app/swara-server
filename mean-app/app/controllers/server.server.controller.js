@@ -89,7 +89,7 @@ exports.view = function (req, res) {
     app.locals.appLogFile,
     app.locals.libraryLogFile
   ], readAsync, function (err, results) {
-    debug('Read both log files asynchronously');å
+    debug('Read both log files asynchronously');
     if (err) {
       return res.status(400).send(err);
     } else {
@@ -117,5 +117,3 @@ exports.logs = function (req, res) {
 
   res.send('WebSockets set up successfully');
 };
-
-
