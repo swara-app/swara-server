@@ -35,12 +35,14 @@ var startupHandler = {
 
     // initialize the app log if it does not exist
     var appLogFile = app.locals.appLogFile;
+    debug('App Log File: %s', appLogFile);
     if (!fs.existsSync(appLogFile)) {
       fs.writeFileSync(appLogFile, '');
     }
 
     // initialize the library log if it does not exist
     var libraryLogFile = app.locals.libraryLogFile;
+    debug('Library Log File: %s', libraryLogFile);
     if (!fs.existsSync(libraryLogFile)) {
       fs.writeFileSync(libraryLogFile, '');
     }

@@ -50,10 +50,12 @@ app.on('ready', function () {
     mainWindow.loadUrl('http://localhost:3000/');
   });
 
+  // set the logs directory to be in electron supplied user data folder
+  global.logsDirectory = app.getPath('userData') + '/swara-server-logs/';
+  debug('Logs Directory: %s', global.logsDirectory);
+
   // Start the server
   debug('Starting the MEAN app');
-  var logsDirectory = app.getPath('userData') + '/swara-server-logs/';
-  global.logsDirectory = logsDirectory;
   startupHandler.start();
 
   debug('Finishing the elctron app ready handler');

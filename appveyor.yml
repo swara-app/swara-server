@@ -5,13 +5,17 @@ environment:
 # Install scripts. (runs after repo cloning)
 install:
   # Install NullSoft Scriptable Install System
-  - choco install nsis -pre
+  - choco install nsis -pre -y
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install grunt, gulp & dependencies
   - npm install -g grunt-cli
   - npm install -g gulp
   - npm install
+
+#environment variables
+environment:
+  PATH: "%PATH%;C:\Program Files (x86)\NSIS"
 
 # Post-install test scripts.
 test_script:

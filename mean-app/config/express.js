@@ -36,6 +36,9 @@ module.exports = function (db) {
     require(path.resolve(modelPath));
   });
 
+  // Logs Directory has been set already from main.js
+  debug('Logs Directory: %s', global.logsDirectory);
+
   // Setting application local variables
   debug('Setting up the local variables');
   app.locals.title = config.app.title;
