@@ -83,8 +83,7 @@ var createInstaller = function () {
   // Remove destination file if already exists.
   releasesDir.remove(finalPackageName);
 
-  // Note: NSIS have to be added to PATH (environment variables).
-  var nsis = childProcess.spawn('makensis', [
+  var nsis = childProcess.spawn('C:\\Program Files (x86)\\NSIS\\makensis', [
     tmpDir.path('installer.nsi')
   ], {
     stdio : 'inherit'

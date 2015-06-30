@@ -7,10 +7,6 @@ environment:
 install:
   # Install NullSoft Scriptable Install System
   - choco install nsis -pre -y
-  # Set NSIS into the path and verify
-  - cmd: SET PATH="%PATH%;C:\Program Files (x86)\NSIS"
-  - cmd: echo %PATH%
-  - cmd: dir "C:\Program Files (x86)"
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install grunt, gulp & dependencies
