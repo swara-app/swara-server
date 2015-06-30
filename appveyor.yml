@@ -1,6 +1,7 @@
-# Test against this version of Node.js
+# Test against this version of Node.js and add an environment var for nsis path
 environment:
   nodejs_version: "0.12"
+  PATH: "%PATH%;C:\Program Files (x86)\NSIS"
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -12,10 +13,6 @@ install:
   - npm install -g grunt-cli
   - npm install -g gulp
   - npm install
-
-#environment variables
-environment:
-  PATH: "%PATH%;C:\Program Files (x86)\NSIS"
 
 # Post-install test scripts.
 test_script:
