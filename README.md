@@ -1,4 +1,4 @@
-swara-server [![Dependency Status](https://gemnasium.com/swara-app/swara-server.svg)](https://gemnasium.com/swara-app/swara-server) [![Build Status](https://travis-ci.org/swara-app/swara-server.svg?branch=master)](https://travis-ci.org/swara-app/swara-server) [![Build Status](https://ci.appveyor.com/api/projects/status/7w6jvgmr0t7ga0j6?svg=true)](https://ci.appveyor.com/project/floydpink/swara-server)
+swara-server [![Dependency Status](https://gemnasium.com/swara-app/swara-server.svg)](https://gemnasium.com/swara-app/swara-server) [![Build Status](https://travis-ci.org/swara-app/swara-server.svg?branch=master)](https://travis-ci.org/swara-app/swara-server) [![Build Status](https://ci.appveyor.com/api/projects/status/7w6jvgmr0t7ga0j6?svg=true)](https://ci.appveyor.com/project/floydpink/swara-server) [![wercker status](https://app.wercker.com/status/eae9699ec76d20a836337d6e508b0d8d/s/master "wercker status")](https://app.wercker.com/project/bykey/eae9699ec76d20a836337d6e508b0d8d)
 ============
 
 ![swara](logo.png)
