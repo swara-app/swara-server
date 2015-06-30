@@ -10,11 +10,11 @@ box: node
 
 # You can also use services such as databases. Read more on our dev center:
 # http://devcenter.wercker.com/docs/services/index.html
-# services:
+services:
     # - postgres
     # http://devcenter.wercker.com/docs/services/postgresql.html
 
-    # - id: mongo
+    - id: mongo
     # http://devcenter.wercker.com/docs/services/mongodb.html
 build:
   # The steps that will be executed on build
@@ -22,17 +22,17 @@ build:
   # Read more about steps on our dev center:
   # http://devcenter.wercker.com/docs/steps/index.html
   steps:
-    - npm-install -g grunt-cli
-    - npm-install -g gulp
+    - script:
+        name: install grunt and gulp
+        code: |
+          npm install -g grunt-cli
+          npm install -g gulp
     # A step that executes `npm install` command
     - npm-install
-    # A step that executes `npm test` command
-    - npm-test
-
     # A custom script step, name value is used in the UI
     # and the code value contains the command that get executed
     - script:
-        name: echo nodejs information
+        name: echo nodejs information and do the build
         code: |
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
