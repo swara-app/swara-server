@@ -53,7 +53,8 @@ app.on('ready', function () {
   // Start the server
   debug('Starting the MEAN app');
   var logsDirectory = app.getPath('userData') + '/swara-server-logs/';
-  startupHandler.start(logsDirectory);
+  global.logsDirectory = logsDirectory;
+  startupHandler.start();
 
   debug('Finishing the elctron app ready handler');
 });

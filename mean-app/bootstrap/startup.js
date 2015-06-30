@@ -3,6 +3,7 @@
 var debug = require('debug')('swara:startup'),
   fs = require('fs'),
   mkdirp = require('mkdirp'),
+  app = require('../app'),
   spawnhelper = require('../libs/spawnhelper'),
   stdout = null,
   serverPid,
@@ -26,13 +27,11 @@ var debug = require('debug')('swara:startup'),
 
 debug('Declaring startupHandler object with start and ready handlers...');
 var startupHandler = {
-  start        : function (logsDirectory) {
+  start        : function () {
     debug('Entered startupHandler:start function');
 
-    var app = require('../app')(logsDirectory);
-
     // create the logs directory
-    mkdirp.sync(logsDirectory);
+    mkdirp.sync(global.logsDirectory);
 
     // initialize the app log if it does not exist
     var appLogFile = app.locals.appLogFile;

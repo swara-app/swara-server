@@ -12,7 +12,7 @@ module.exports = {
       domain = require('domain').create(),
       spawn = require('child_process').spawn,
       util = require('util'),
-      app = require('../app')();
+      app = require('../app');
 
     var defaults = {
       name          : '',
