@@ -1,12 +1,15 @@
-# Test against this version of Node.js and add an environment var for nsis path
+# Test against this version of Node.js
 environment:
   nodejs_version: "0.12"
-  PATH: "%PATH%;C:\Program Files (x86)\NSIS"
+  PATH: "%PATH%;"
 
 # Install scripts. (runs after repo cloning)
 install:
   # Install NullSoft Scriptable Install System
   - choco install nsis -pre -y
+  # Set NSIS into the path and verify
+  - cmd: SET PATH="C:\Program Files (x86)\NSIS;%PATH%"
+  - cmd: echo %PATH%
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install grunt, gulp & dependencies
