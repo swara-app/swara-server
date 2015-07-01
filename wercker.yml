@@ -29,6 +29,7 @@ build:
           echo "npm version $(npm -v) running"
           npm install -g grunt-cli
           npm install -g gulp
+          npm install -g bower
           npm install
-          cd mean-app && npm install && bower install && cd ..
+          cd mean-app && npm install && cd ..
           grunt build
