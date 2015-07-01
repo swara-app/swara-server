@@ -30,6 +30,5 @@ build:
           npm install -g grunt-cli
           npm install -g gulp
           npm install -g bower
-          npm install
-          cd mean-app && npm install && cd ..
+          npm install --unsafe-perm
           grunt build
