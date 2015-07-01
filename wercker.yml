@@ -32,5 +32,3 @@ build:
           npm install
           cd mean-app && npm install && bower install && cd ..
           grunt build
-          cp releases/ "${WERCKER_OUTPUT_DIR}/"
-
