@@ -30,5 +30,6 @@ build:
           npm install -g grunt-cli
           npm install -g gulp
           npm install -g bower
+          echo '{ "directory": "public/lib", "allow_root": true }' > mean-app/.bowercc
           npm install && cd mean-app && npm install && bower install && cd ..
           grunt build
