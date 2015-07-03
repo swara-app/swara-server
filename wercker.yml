@@ -25,10 +25,11 @@ build:
     - script:
         name: install dependencies and do the build
         code: |
+          echo "unsafe-perm = true" >> ~/.npmrc
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
           npm install -g grunt-cli
           npm install -g gulp
           npm install -g bower
-          npm install && cd mean-app && npm install && bower install --allow-root && cd ..
+          npm install
           grunt build
