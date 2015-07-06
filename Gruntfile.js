@@ -22,8 +22,8 @@ module.exports = function (grunt) {
   };
 
   grunt.initConfig({
-    config        : config,
-    clean         : {
+    config         : config,
+    clean          : {
       dist : {
         files : [
           {
@@ -36,13 +36,21 @@ module.exports = function (grunt) {
         ]
       }
     },
-    jshint        : {
+    jshint         : {
       options : {
         jshintrc : '.jshintrc'
       },
       files   : ['Gruntfile.js', '<%= config.app %>/Gruntfile.js', 'tasks/**/*.js']
     },
-    copy          : {
+    bump           : {
+      options : {
+        files              : ['package.json', 'mean-app/package.json'],
+        commit             : false,
+        createTag          : false,
+        push               : false
+      }
+    },
+    copy           : {
       app : {
         files : [
           {
@@ -54,12 +62,12 @@ module.exports = function (grunt) {
         ]
       }
     },
-    hub           : {
+    hub            : {
       meanApp : {
         src : ['<%= config.app %>/gruntfile.js']
       }
     },
-    'npm-install' : {
+    'npm-install'  : {
       'dist' : {
         'options' : {
           'args' : '--production',
@@ -78,6 +86,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'check',
+    'bump',
     'clean:dist',
     'hub:meanApp:build',
     'copy',

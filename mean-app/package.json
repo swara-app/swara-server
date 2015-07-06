@@ -3,11 +3,11 @@
   "productName": "Swara Server",
   "identifier": "com.floydpink.swara.server",
   "description": "A cross-platform server that catalogs music collections for streaming to the Swara client apps.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "The Swara-App Team",
   "engines": {
-    "node": "0.10.x",
-    "npm": "1.4.x"
+    "node": "0.12.x",
+    "npm": "2.12.x"
   },
   "main": "main.js",
   "config": {
