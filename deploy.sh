@@ -9,6 +9,7 @@ then
   brew install jq 2>&1 1> "brewinstall.log"
   echo "About to run: curl https://api.github.com/repos/swara-app/swara-server/commits/${TRAVIS_COMMIT} | jq -r '.commit.message'"
   APPVEYOR_REPO_COMMIT_MESSAGE=$(curl -u ${GH_TOKEN}:x-oauth-basic https://api.github.com/repos/swara-app/swara-server/commits/$TRAVIS_COMMIT | jq -r '.commit.message')
+  VERSION=v$(cat package.json | jq -r '.version')
 elif [[ $WERCKER = true ]]
 then
   echo "The WERCKER_GIT_COMMIT variable has a value of - ${WERCKER_GIT_COMMIT}"
@@ -17,8 +18,10 @@ then
   chmod +x jq
   echo "About to run: curl https://api.github.com/repos/swara-app/swara-server/commits/${WERCKER_GIT_COMMIT} | jq -r '.commit.message'"
   APPVEYOR_REPO_COMMIT_MESSAGE=$(curl -u ${GH_TOKEN}:x-oauth-basic https://api.github.com/repos/swara-app/swara-server/commits/$WERCKER_GIT_COMMIT | ./jq -r '.commit.message')
+  VERSION=v$(cat package.json | ./jq -r '.version')
 else
-  wget "http://stedolan.github.io/jq/download/linux64/jq"
+  appveyor DownloadFile http://stedolan.github.io/jq/download/win64/jq.exe
+  VERSION=v$(cat package.json | jq.exe -r ".version")
 fi
 
 echo "CI Server      : ${CIENGINE}."
@@ -35,7 +38,6 @@ echo "Beginning Deploy..."
 git config --global user.name "The CI Bot"
 git config --global user.email "swara.app@gmail.com"
 
-VERSION=v$(cat package.json | jq -r '.version')
 DEPLOYVERSION="deploy-${VERSION}"
 
 echo "Version being deployed is ${VERSION} and the branch to which it will be deployed is ${DEPLOYVERSION}"
@@ -54,6 +56,7 @@ git config credential.helper "store --file=.git/swara-credentials"
 echo "https://${GH_TOKEN}:@github.com" > .git/swara-credentials
 git config push.default tracking
 git checkout -b ${DEPLOYVERSION}
+mkdir releases
 cp -r ../${THISREPOCLONEDIR}/releases/* ./releases/
 git add -f ./releases/
 git commit -m "created release ${VERSION} ($CIENGINE) [skip ci]" -s

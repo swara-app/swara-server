@@ -29,7 +29,7 @@ test_script:
   # create installer
   - grunt build
   # conditionally deploy
-  - cmd: "C:\\Program Files (x86)\\Git\\bin\\bash.exe" deploy.sh
+  - cmd: '"C:\\Program Files (x86)\\Git\\bin\\bash.exe" deploy.sh'
 
 # Don't actually build.
 build: off
