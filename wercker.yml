@@ -28,7 +28,6 @@ build:
           echo "unsafe-perm = true" >> ~/.npmrc
           echo "node version $(node -v) running"
           echo "npm version $(npm -v) running"
-          apt-get install fakeroot
           npm install -g grunt-cli
           npm install -g gulp
           npm install -g bower
