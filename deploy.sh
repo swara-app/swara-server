@@ -35,7 +35,7 @@ echo "Beginning Deploy..."
 git config --global user.name "The CI Bot"
 git config --global user.email "swara.app@gmail.com"
 
-VERSION==$(cat package.json | jq -r '.version')
+VERSION=v$(cat package.json | jq -r '.version')
 DEPLOYVERSION="deploy-${VERSION}"
 
 echo "Version being deployed is ${VERSION} and the branch to which it will be deployed is ${DEPLOYVERSION}"
@@ -54,7 +54,7 @@ git config credential.helper "store --file=.git/swara-credentials"
 echo "https://${GH_TOKEN}:@github.com" > .git/swara-credentials
 git config push.default tracking
 git checkout -b ${DEPLOYVERSION}
-cp -r ../${THISREPOCLONEDIR}/releases/* ./releases
+cp -r ../${THISREPOCLONEDIR}/releases/* ./releases/
 git add -f ./releases/
 git commit -m "created release ${VERSION} ($CIENGINE) [skip ci]" -s
 git ls-remote --heads origin | grep ${DEPLOYVERSION} && git pull --rebase origin ${DEPLOYVERSION}
