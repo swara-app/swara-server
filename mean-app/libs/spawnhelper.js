@@ -19,6 +19,7 @@ module.exports = {
       command       : '',
       debugPort     : app.getNextDebugPort(),
       logFile       : '',
+      args          : [],
       onBeforeSpawn : function () {
       },
       onAfterSpawn  : function (/* spawnedProcess */) {
@@ -50,7 +51,8 @@ module.exports = {
       }
 
       debug('Starting the spawnedProcess named %s...', settings.name);
-      var spawnedProcess = spawn('node', ['--debug=' + settings.debugPort, settings.command], {
+      var args = ['--debug=' + settings.debugPort, settings.command].concat(settings.args);
+      var spawnedProcess = spawn('node', args, {
         env   : process.env,
         stdio : ['pipe', stdout, stderr]
       });

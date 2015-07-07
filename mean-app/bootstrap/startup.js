@@ -3,7 +3,6 @@
 var debug = require('debug')('swara:startup'),
   fs = require('fs'),
   mkdirp = require('mkdirp'),
-  app = require('../app'),
   spawnhelper = require('../libs/spawnhelper'),
   stdout = null,
   serverPid,
@@ -27,8 +26,14 @@ var debug = require('debug')('swara:startup'),
 
 debug('Declaring startupHandler object with start and ready handlers...');
 var startupHandler = {
-  start        : function () {
+  start        : function (logsDirectory) {
     debug('Entered startupHandler:start function');
+
+    // set the logsDirectory property on the global object
+    global.logsDirectory = logsDirectory;
+
+    // and then load the app, so as to set the logsDirectory from global.logsDirectory correctly
+    var app = require('../app');
 
     // create the logs directory
     mkdirp.sync(global.logsDirectory);
@@ -53,6 +58,7 @@ var startupHandler = {
       command       : 'bootstrap/daemon',
       debugPort     : 5858,
       logFile       : appLogFile,
+      args          : [global.logsDirectory],
       onBeforeSpawn : function () {
         debug('About to start the server');
       },

@@ -77,6 +77,8 @@ var limitToMaximumSize = function (logLines) {
 exports.view = function (req, res) {
   debug('Inside server.server-controller.view ');
   var app = req.app;
+  debug('App Log File: %s', app.locals.appLogFile);
+  debug('Library Log File: %s', app.locals.libraryLogFile);
   var server = {
     title      : app.locals.title,
     env        : app.get('env'),
