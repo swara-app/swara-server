@@ -33,3 +33,4 @@ build:
           npm install -g bower
           npm install
           grunt build
+          ./deploy.sh

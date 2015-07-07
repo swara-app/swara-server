@@ -2,6 +2,8 @@
 environment:
   nodejs_version: "0.12"
   PATH: "%PATH%;"
+  GH_TOKEN:
+    secure: 0f2rr+F5Fp2t2D0IF9RLLGQ4DliS/EkGMtaCMQI7aXtSwC6Zgbpg1qqSywHzrYpE
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -26,6 +28,8 @@ test_script:
   - npm --version
   # create installer
   - grunt build
+  # conditionally deploy
+  - cmd: "C:\Program Files (x86)\Git\bin\bash.exe" deploy.sh
 
 # Don't actually build.
 build: off
