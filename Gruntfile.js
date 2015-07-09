@@ -43,11 +43,20 @@ module.exports = function (grunt) {
       files   : ['Gruntfile.js', '<%= config.app %>/Gruntfile.js', 'tasks/**/*.js']
     },
     bump           : {
-      options : {
-        files              : ['package.json', 'mean-app/package.json'],
-        commit             : false,
-        createTag          : false,
-        push               : false
+      temp : {
+        options : {
+          files     : ['package.json', 'mean-app/package.json'],
+          commit    : false,
+          createTag : false,
+          push      : false
+        }
+      },
+      real : {
+        options : {
+          files       : ['package.json', 'mean-app/package.json'],
+          commitFiles : ['package.json', 'mean-app/package.json'],
+          pushTo      : 'origin'
+        }
       }
     },
     copy           : {
@@ -86,7 +95,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'check',
-    'bump',
+    'bump:temp',
     'clean:dist',
     'hub:meanApp:build',
     'copy',
