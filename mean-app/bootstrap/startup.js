@@ -55,7 +55,7 @@ var startupHandler = {
     // start the server process
     spawnhelper.spawn({
       name          : 'Mean.JS Server',
-      command       : 'bootstrap/daemon',
+      command       : __dirname + '/daemon',
       debugPort     : 5858,
       logFile       : appLogFile,
       args          : [global.logsDirectory],
