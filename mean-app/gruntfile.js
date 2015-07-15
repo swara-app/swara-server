@@ -84,7 +84,7 @@ module.exports = function (grunt) {
     },
     nodemon          : {
       dev : {
-        script  : 'startup/daemon',
+        script  : 'bootstrap/daemon',
         options : {
           nodeArgs : ['--debug'],
           ext      : 'js,html',
