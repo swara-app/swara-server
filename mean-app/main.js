@@ -47,6 +47,7 @@ app.on('ready', function () {
   debug('Setting the startupHandler.ready handler to navigate to the meanjs app');
   var startupHandler = require('./bootstrap/startup.js');
   startupHandler.ready(function () {
+    debug('Within the server ready callback - about to redirect to the home page');
     mainWindow.loadUrl('http://localhost:3000/');
   });
 

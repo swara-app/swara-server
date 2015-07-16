@@ -3,7 +3,7 @@
 var debug = require('debug')('swara:startup'),
   fs = require('fs'),
   mkdirp = require('mkdirp'),
-  spawnhelper = require('../libs/spawnhelper'),
+  cpHelper = require('../libs/childProcessHelper'),
   stdout = null,
   serverPid,
   serverReady = false,
@@ -53,7 +53,7 @@ var startupHandler = {
     }
 
     // start the server process
-    spawnhelper.spawn({
+    cpHelper.spawn({
       name          : 'Mean.JS Server',
       command       : __dirname + '/daemon',
       debugPort     : 5858,

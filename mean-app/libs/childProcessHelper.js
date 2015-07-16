@@ -1,6 +1,6 @@
 'use strict';
 
-var debug = require('debug')('swara:spawnhelper');
+var debug = require('debug')('swara:childProcessHelper');
 
 module.exports = {
 
@@ -10,7 +10,7 @@ module.exports = {
       _ = require('lodash'),
       moment = require('moment'),
       domain = require('domain').create(),
-      spawn = require('child_process').spawn,
+      fork = require('child_process').fork,
       util = require('util'),
       app = require('../app');
 
@@ -40,22 +40,27 @@ module.exports = {
 
       var stdout, stderr;
 
-      stderr = stdout = fs.openSync(settings.logFile, 'w+');
+      var logFd = fs.openSync(settings.logFile, 'w+');
 
       var startMarker = util.format('Beginning process <strong>%s</strong> - (%s)\n--------------\n',
         settings.name, moment());
-      fs.writeSync(stdout, startMarker);
+      fs.writeSync(logFd, startMarker);
 
       if (typeof(settings.onBeforeSpawn) === 'function') {
         settings.onBeforeSpawn();
       }
 
+      stderr = stdout = fs.createWriteStream(null, {fd : logFd, encoding : 'utf8'});
+
       debug('Starting the spawnedProcess named %s...', settings.name);
-      var args = ['--debug=' + settings.debugPort, settings.command].concat(settings.args);
-      var spawnedProcess = spawn('node', args, {
-        env   : process.env,
-        stdio : ['pipe', stdout, stderr]
+      var args = ['--debug=' + settings.debugPort].concat(settings.args);
+      var spawnedProcess = fork(settings.command, args, {
+        env    : process.env,
+        silent : true
       });
+
+      spawnedProcess.stderr.pipe(stderr);
+      spawnedProcess.stdout.pipe(stdout);
 
       if (typeof(settings.onAfterSpawn) === 'function') {
         settings.onAfterSpawn(spawnedProcess);

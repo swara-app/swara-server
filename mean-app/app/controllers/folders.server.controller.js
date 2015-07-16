@@ -9,7 +9,7 @@ var debug = require('debug')('swara:server-controller:folder'),
   mongoose = require('mongoose'),
   escapeStringRegexp = require('escape-string-regexp'),
   errorHandler = require('./errors.server.controller'),
-  spawnhelper = require('../../libs/spawnhelper'),
+  cpHelper = require('../../libs/childProcessHelper'),
   Folder = mongoose.model('Folder'),
   Subfolder = mongoose.model('Subfolder'),
   _ = require('lodash'),
@@ -18,7 +18,7 @@ var debug = require('debug')('swara:server-controller:folder'),
     if (!name) {
       throw new Error('Invalid action');
     }
-    spawnhelper.spawn({
+    cpHelper.spawn({
       name          : util.format('%s `%s`', action, folder.path),
       command       : __dirname + '/../workers/background.js',
       logFile       : libraryLogFile,
