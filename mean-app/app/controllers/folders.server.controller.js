@@ -20,7 +20,7 @@ var debug = require('debug')('swara:server-controller:folder'),
     }
     spawnhelper.spawn({
       name          : util.format('%s `%s`', action, folder.path),
-      command       : 'app/workers/background.js',
+      command       : __dirname + '/../workers/background.js',
       logFile       : libraryLogFile,
       onBeforeSpawn : function () {
         debug('About to start `%s` on the folder at %s', action, folder.path);
