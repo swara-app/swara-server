@@ -6,7 +6,7 @@ var BrowserWindow = require('browser-window');
 var devHelper = require('./libs/electron/devHelper');
 var windowStateKeeper = require('./libs/electron/windowState');
 var directoryPickerIPC = require('./libs/electron/directoryPickerIPC');
-var mainWindow;
+var mainWindow = null;
 
 // Preserver of the window size and position between app launches.
 var mainWindowState = windowStateKeeper('main', {
@@ -51,6 +51,10 @@ app.on('ready', function () {
     mainWindow.loadUrl('http://localhost:3000/');
   });
 
+  mainWindow.on('closed', function () {
+    mainWindow = null;
+  });
+
   // get the logs directory from the electron supplied user data folder
   var logsDirectory = app.getPath('userData') + '/swara-server-logs/';
   debug('Logs Directory: %s', global.logsDirectory);
@@ -63,5 +67,7 @@ app.on('ready', function () {
 });
 
 app.on('window-all-closed', function () {
-  app.quit();
+  if (process.platform != 'darwin') {
+    app.quit();
+  }
 });
