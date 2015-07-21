@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-var debug = require('debug')('swara:server'),
+var debug = require('debug')('swara:server-app'),
   init = require('./config/init');
 
 // initialize the configuration

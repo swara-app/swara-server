@@ -57,7 +57,7 @@ app.on('ready', function () {
 
   // get the logs directory from the electron supplied user data folder
   var logsDirectory = app.getPath('userData') + '/swara-server-logs/';
-  debug('Logs Directory: %s', global.logsDirectory);
+  debug('Logs Directory: %s', logsDirectory);
 
   // Start the server passing in the logs directory
   debug('Starting the MEAN app');
@@ -67,7 +67,7 @@ app.on('ready', function () {
 });
 
 app.on('window-all-closed', function () {
-  if (process.platform != 'darwin') {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });

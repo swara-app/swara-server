@@ -55,7 +55,7 @@ module.exports = {
       debug('Starting the spawnedProcess named %s...', settings.name);
       var args = ['--debug=' + settings.debugPort].concat(settings.args);
       var spawnedProcess = fork(settings.command, args, {
-        env    : process.env,
+        env    : _.defaults({ATOM_SHELL_INTERNAL_RUN_AS_NODE : 0}, process.env),
         silent : true
       });
 
