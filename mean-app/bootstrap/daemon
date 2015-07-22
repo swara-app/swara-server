@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 if (process.argv.length === 4) {
-  global.logsDirectory = process.argv[3];
+  global.userDataDirectory = process.argv[3];
 }
 require('../app.js').start();

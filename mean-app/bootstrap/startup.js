@@ -2,6 +2,7 @@
 
 var debug = require('debug')('swara:startup'),
   fs = require('fs'),
+  path = require('path'),
   mkdirp = require('mkdirp'),
   cpHelper = require('../libs/childProcessHelper'),
   stdout = null,
@@ -26,20 +27,21 @@ var debug = require('debug')('swara:startup'),
 
 debug('Declaring startupHandler object with start and ready handlers...');
 var startupHandler = {
-  start        : function (logsDirectory) {
+  start        : function (userDataDirectory) {
     debug('Entered startupHandler:start function');
 
-    // set the logsDirectory property on the global object
-    global.logsDirectory = logsDirectory;
+    // set the userDataDirectory property on the global object
+    global.userDataDirectory = userDataDirectory;
 
-    // and then load the app, so as to set the logsDirectory from global.logsDirectory correctly
+    // and then load the app, so as to set the userDataDirectory from global.userDataDirectory correctly
     var app = require('../app');
-
-    // create the logs directory
-    mkdirp.sync(global.logsDirectory);
 
     // initialize the app log if it does not exist
     var appLogFile = app.locals.appLogFile;
+
+    // create the logs directory
+    mkdirp.sync(path.dirname(appLogFile));
+
     debug('App Log File: %s', appLogFile);
     if (!fs.existsSync(appLogFile)) {
       fs.writeFileSync(appLogFile, '');
@@ -58,7 +60,7 @@ var startupHandler = {
       command       : __dirname + '/daemon',
       debugPort     : 5858,
       logFile       : appLogFile,
-      args          : [global.logsDirectory],
+      args          : [global.userDataDirectory],
       onBeforeSpawn : function () {
         debug('About to start the server');
       },

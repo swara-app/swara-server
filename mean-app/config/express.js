@@ -36,8 +36,10 @@ module.exports = function (db) {
     require(path.resolve(modelPath));
   });
 
-  // Logs Directory has been set already from main.js
-  debug('Logs Directory: %s', global.logsDirectory);
+  // User Data Directory from electron has been set from within main.js
+  debug('User Data Directory: %s', global.userDataDirectory);
+  var logsDirectory = global.userDataDirectory + '/logs/';
+  var tempDirectory = global.userDataDirectory + '/temp/';
 
   // Setting application local variables
   debug('Setting up the local variables');
@@ -46,8 +48,9 @@ module.exports = function (db) {
   app.locals.keywords = config.app.keywords;
   app.locals.jsFiles = config.getJavaScriptAssets();
   app.locals.cssFiles = config.getCSSAssets();
-  app.locals.appLogFile = global.logsDirectory + config.appLogFile;
-  app.locals.libraryLogFile = global.logsDirectory + config.libraryLogFile;
+  app.locals.appLogFile = logsDirectory + config.appLogFile;
+  app.locals.libraryLogFile = logsDirectory + config.libraryLogFile;
+  app.locals.tempDirectory = tempDirectory;
 
   // Passing the request url to environment locals
   app.use(function (req, res, next) {

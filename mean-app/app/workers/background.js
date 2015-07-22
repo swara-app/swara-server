@@ -4,12 +4,18 @@ console.log('background process has begun');
 
 var fs = require('fs'),
   path = require('path'),
-  scannerJson = './app/workers/scanner.json',
-  cleanerJson = './app/workers/cleaner.json',
   mongoose = require('mongoose'),
   chalk = require('chalk'),
   init = require('../../config/init'),
-  config = require('../../config/config');
+  config = require('../../config/config'),
+  tempDirPath = null;
+
+if (process.argv.length === 4) {
+  tempDirPath = process.argv[3];
+}
+
+var scannerJson = tempDirPath + 'scanner.json',
+  cleanerJson = tempDirPath + 'cleaner.json';
 
 init();
 
@@ -23,7 +29,7 @@ mongoose.connect(config.db, function (err) {
 });
 
 // set up the models
-config.getGlobbedFiles('./app/models/**/*.js').forEach(function (modelPath) {
+config.getGlobbedFiles(__dirname + '/../models/**/*.js').forEach(function (modelPath) {
   'use strict';
   require(path.resolve(modelPath));
 });
