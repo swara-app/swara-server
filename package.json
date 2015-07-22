@@ -1,6 +1,6 @@
 {
   "name": "swara-server",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A cross-platform server that catalogs music collections for streaming to the Swara client apps.",
   "keywords": [
     "swara",
