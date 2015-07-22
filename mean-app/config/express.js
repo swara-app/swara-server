@@ -32,7 +32,7 @@ module.exports = function (db) {
 
   // Globbing model files
   debug('Reading the app data models...');
-  config.getGlobbedFiles('./app/models/**/*.js').forEach(function (modelPath) {
+  config.getGlobbedFiles(__dirname + '/../app/models/**/*.js').forEach(function (modelPath) {
     require(path.resolve(modelPath));
   });
 
@@ -71,7 +71,7 @@ module.exports = function (db) {
 
   // Set views path and view engine
   app.set('view engine', 'server.view.html');
-  app.set('views', './app/views');
+  app.set('views', __dirname + '/../app/views');
 
   // Environment dependent middleware
   if (process.env.NODE_ENV === 'development') {
@@ -123,10 +123,10 @@ module.exports = function (db) {
   app.disable('x-powered-by');
 
   // Setting the app router and static folder
-  app.use(express.static(path.resolve('./public')));
+  app.use(express.static(path.resolve(__dirname + '/../public')));
 
   // Globbing routing files
-  config.getGlobbedFiles('./app/routes/**/*.js').forEach(function (routePath) {
+  config.getGlobbedFiles(__dirname + '/../app/routes/**/*.js').forEach(function (routePath) {
     require(path.resolve(routePath))(app);
   });
 
@@ -157,8 +157,8 @@ module.exports = function (db) {
     console.log('Securely using https protocol');
 
     // Load SSL key and certificate
-    var privateKey = fs.readFileSync('./config/sslcerts/key.pem', 'utf8');
-    var certificate = fs.readFileSync('./config/sslcerts/cert.pem', 'utf8');
+    var privateKey = fs.readFileSync(__dirname + '/sslcerts/key.pem', 'utf8');
+    var certificate = fs.readFileSync(__dirname + '/sslcerts/cert.pem', 'utf8');
 
     // Create HTTPS Server
     var httpsServer = https.createServer({

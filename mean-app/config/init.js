@@ -16,7 +16,7 @@ module.exports = function () {
    * We'll Look for a valid NODE_ENV variable and if one cannot be found load the development NODE_ENV
    */
   debug('Within the server init. About to set up the configurations');
-  var environmentFiles = glob.sync('./config/env/' + process.env.NODE_ENV + '.js');
+  var environmentFiles = glob.sync(__dirname + '/env/' + process.env.NODE_ENV + '.js');
   if (!environmentFiles.length) {
     if (process.env.NODE_ENV) {
       console.warn(chalk.red('No configuration file found for "' + process.env.NODE_ENV + '" environment using development instead'));

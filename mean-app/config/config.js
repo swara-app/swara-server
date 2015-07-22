@@ -3,7 +3,9 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash'),
+var debug = require('debug')('swara:config'),
+  path = require('path'),
+  _ = require('lodash'),
   glob = require('glob');
 
 /**
@@ -18,6 +20,7 @@ module.exports = _.extend(
  * Get files by glob patterns
  */
 module.exports.getGlobbedFiles = function (globPatterns, removeRoot) {
+
   // For context switching
   var _this = this;
 
@@ -36,6 +39,12 @@ module.exports.getGlobbedFiles = function (globPatterns, removeRoot) {
     if (urlRegex.test(globPatterns)) {
       output.push(globPatterns);
     } else {
+      var publicRE = /^public\//;
+      if (publicRE.test(globPatterns)) {
+        globPatterns = __dirname + '/../' + globPatterns;
+        var newRoot = __dirname + '/../' + removeRoot;
+        removeRoot = path.normalize(newRoot);
+      }
       var files = glob.sync(globPatterns);
       if (removeRoot) {
         files = files.map(function (file) {
@@ -46,6 +55,8 @@ module.exports.getGlobbedFiles = function (globPatterns, removeRoot) {
       output = _.union(output, files);
     }
   }
+
+  debug('Returning with output: %j', output);
 
   return output;
 };
@@ -61,6 +72,8 @@ module.exports.getJavaScriptAssets = function (includeTests) {
     output = _.union(output, this.getGlobbedFiles(this.assets.tests));
   }
 
+  debug('getJavaScriptAssets returning with:  %j', output);
+
   return output;
 };
 
@@ -69,5 +82,8 @@ module.exports.getJavaScriptAssets = function (includeTests) {
  */
 module.exports.getCSSAssets = function () {
   var output = this.getGlobbedFiles(this.assets.lib.css.concat(this.assets.css), 'public/');
+
+  debug('getCSSAssets returning with:  %j', output);
+
   return output;
 };
