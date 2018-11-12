@@ -45,7 +45,7 @@
   },
   "optionalDependencies": {
     "appdmg": "^0.3.5",
-    "rcedit": "^0.4.0"
+    "rcedit": "^1.1.1"
   },
   "scripts": {
     "start": "cd mean-app && electron .",
